@@ -1,0 +1,50 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Target environment
+        required: true
+        default: staging
+        type: choice
+        options:
+          - staging
+          - production
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to ${{ inputs.environment || 'production' }}
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment || 'production' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build release image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          tags: |
+            burgerz:${{ github.sha }}
+            burgerz:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Mock deploy to server
+        env:
+          DEPLOY_ENV: ${{ inputs.environment || 'production' }}
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST || 'deploy-placeholder.example.com' }}
+          IMAGE_TAG: burgerz:${{ github.sha }}
+          DRY_RUN: "false"
+        run: bash scripts/mock-deploy.sh

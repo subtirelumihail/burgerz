@@ -1,0 +1,172 @@
+---
+description: Keep React components small by splitting complexity
+globs: **/*.{tsx,jsx,scss}
+alwaysApply: false
+---
+
+# React Component Composition
+
+Components should do one thing well. When complexity grows, split — don't grow a single file.
+
+## When to Split
+
+Extract a subcomponent or hook when a component has any of these:
+
+- More than ~80 lines of JSX or logic
+- Multiple distinct UI sections (header, body, footer, sidebar)
+- Nested conditionals or repeated markup blocks
+- Logic mixed with presentation (data fetching, formatting, event handlers)
+
+## How to Split
+
+- **UI sections** → subcomponents in a `components/` folder inside the parent component folder (see [Folder Structure](#folder-structure))
+- **Reusable logic** → custom hook (`useOrderSummary`, not inline `useEffect` + state)
+- **Static content** → constants outside the component
+- **Types** → colocated `types.ts` in the same component folder (required)
+
+```tsx
+// ❌ BAD — one component doing everything
+function OrderPage() {
+  const [order, setOrder] = useState(null);
+  // 40 lines of fetch/format logic...
+  return (
+    <div>
+      {/* 100+ lines: header, items list, totals, actions */}
+    </div>
+  );
+}
+
+// ✅ GOOD — orchestrator + focused pieces
+function OrderPage() {
+  const order = useOrder();
+  return (
+    <main>
+      <OrderHeader order={order} />
+      <OrderItems items={order.items} />
+      <OrderSummary total={order.total} />
+      <OrderActions orderId={order.id} />
+    </main>
+  );
+}
+```
+
+## Folder Structure
+
+Every component lives in its own folder. Folder name matches the component name in **PascalCase**. Component files also use **PascalCase** (first letter uppercase).
+
+```
+components/
+  Button/
+    Button.tsx
+    Button.module.scss
+    Button.unit.test.tsx
+    types.ts
+  Menu/
+    Menu.tsx
+    Menu.module.scss
+    Menu.unit.test.tsx
+    types.ts
+    components/
+      MenuItem/
+        MenuItem.tsx
+        MenuItem.module.scss
+        MenuItem.unit.test.tsx
+        types.ts
+```
+
+Rules:
+
+- One folder per component — never a loose `button.tsx` at the root of `components/`
+- **`types.ts` required** in every component folder (including subcomponents) — all props, local state, and UI-only interfaces live here
+- **`ComponentName.module.scss` required** in every component folder — all component styles live here, not in JSX
+- Component files import types from `./types`; do not define interfaces inline in `.tsx`
+- Colocate tests, styles, and helpers in the same folder (`Button.unit.test.tsx`, `Button.module.scss`, etc.)
+- Subcomponents go in `components/<SubComponentName>/` inside the parent folder, each with its own folder, `types.ts`, and PascalCase files
+- Import subcomponents from their folder: `./components/MenuItem/MenuItem`
+- Hooks used only by one component can live in the same folder (`useMenu.ts`); shared hooks go in `hooks/`
+- Domain/API entities used by hooks or services → `types/` at project root (see typescript-global-types), not duplicated in component `types.ts`
+
+## Component `types.ts`
+
+```typescript
+// components/Menu/types.ts
+import type { MenuItem } from "@/types/menu";
+
+export interface MenuProps {
+  items: MenuItem[];
+  onSelect: (id: string) => void;
+}
+
+export interface MenuItemRowProps {
+  item: MenuItem;
+  isActive: boolean;
+}
+```
+
+- Export only types for that component tree; keep private helpers unexported if unused elsewhere
+- Import shared entities from `@/types/*`; re-export only when a parent passes them through unchanged
+
+## File Structure
+
+Within a component `.tsx` file, order exports top-to-bottom:
+
+1. Exported component
+2. Private subcomponents (only when kept in the same file — prefer a subfolder instead)
+3. Helpers
+4. Static content / constants
+
+Types live in `types.ts`, not in the component file.
+
+## Styling (CSS Modules + Tailwind `@apply`)
+
+Do **not** put Tailwind utility classes directly on JSX elements. Keep presentation in a colocated CSS module and use Tailwind only via `@apply` inside that file.
+
+- File name: `ComponentName.module.scss` (matches the component file name)
+- Import: `import styles from "./ComponentName.module.scss"`
+- Use semantic class names in SCSS (`.root`, `.title`, `.actions`) — not utility names like `.flex` or `.textBlue500`
+- Group related utilities on separate `@apply` lines; put responsive variants on their own lines
+
+```tsx
+// ❌ BAD — Tailwind utilities in JSX
+function Button({ label }: ButtonProps) {
+  return (
+    <button className="flex font-bold text-blue-500 md:grid lg:block sm:inline">
+      {label}
+    </button>
+  );
+}
+
+// ✅ GOOD — styles in the module, semantic classes in JSX
+import styles from "./Button.module.scss";
+
+function Button({ label }: ButtonProps) {
+  return <button className={styles.root}>{label}</button>;
+}
+```
+
+```scss
+// components/Button/Button.module.scss
+.root {
+  @apply flex font-bold text-blue-500;
+  @apply sm:inline md:grid lg:block;
+}
+
+.title {
+  @apply text-lg font-semibold;
+}
+```
+
+Rules:
+
+- One `ComponentName.module.scss` per component — subcomponents get their own module in their folder
+- Prefer `styles.className` over string concatenation; use `clsx` / `cn` only when composing module classes with conditional or external classes
+- Raw CSS is fine in the module when `@apply` is awkward (complex selectors, keyframes, CSS variables)
+- Shared design tokens or global resets stay in app-level styles — not duplicated across modules
+- Page components in `app/` follow the same pattern when they need local styles (`page.module.scss` or a colocated component folder)
+
+## Rules of Thumb
+
+- One component = one reason to change = one folder + one `types.ts` + one `ComponentName.module.scss`
+- Prefer named exports; default export only for pages
+- Pass only the props a subcomponent needs — avoid passing entire objects when 2 fields suffice
+- Don't extract prematurely: a 20-line component with clear intent is fine as-is (still include `types.ts`, even if minimal)

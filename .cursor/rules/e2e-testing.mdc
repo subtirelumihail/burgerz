@@ -1,0 +1,76 @@
+---
+description: Require Playwright e2e tests when adding or changing App Router pages
+globs: app/**/page.tsx
+alwaysApply: false
+---
+
+# E2E Testing
+
+Every new or changed **App Router page** must ship with Playwright e2e tests in the same PR.
+
+## What to Test
+
+| Focus | Test |
+|-------|------|
+| Page loads | Navigate to route; assert HTTP success and key content visible |
+| Primary heading | Assert main `heading` (level 1 or page title) is visible |
+| Critical actions | Assert primary links, buttons, or forms render and behave correctly |
+| Navigation | Assert outbound links have expected `href` or in-app navigation works |
+
+Prefer role-based locators (`getByRole`, `getByLabel`) over CSS selectors or test IDs.
+
+## File Placement
+
+Add specs under `e2e/`. Name them after the route, using kebab-case and a `.spec.ts` suffix:
+
+```
+app/page.tsx                    →  e2e/home.spec.ts
+app/menu/page.tsx               →  e2e/menu.spec.ts
+app/orders/[id]/page.tsx        →  e2e/order-detail.spec.ts
+```
+
+One spec file per page is enough; group related scenarios in `test()` blocks within that file.
+
+Do not put e2e specs next to page files or in `__tests__/`. The `.spec.ts` suffix in `e2e/` distinguishes Playwright specs from Vitest unit tests.
+
+## Conventions
+
+- Use `@playwright/test`; import `test` and `expect` from it
+- Use relative paths in `page.goto()` — `baseURL` is configured in `playwright.config.ts`
+- Run `npm run test:e2e` before finishing; CI runs the same command on every PR
+
+```typescript
+// e2e/menu.spec.ts
+import { expect, test } from "@playwright/test";
+
+test("menu page renders main content", async ({ page }) => {
+  await page.goto("/menu");
+
+  await expect(
+    page.getByRole("heading", { level: 1, name: /menu/i }),
+  ).toBeVisible();
+});
+
+test("menu item links to detail page", async ({ page }) => {
+  await page.goto("/menu");
+
+  const itemLink = page.getByRole("link", { name: /classic burger/i });
+  await expect(itemLink).toHaveAttribute("href", "/menu/classic-burger");
+});
+```
+
+## Relationship to Unit Tests
+
+- **Pages with client components** — unit-test interactive pieces in colocated `.unit.test.tsx` files; e2e covers the full page in a real browser
+- **Async Server Components** — cover with Playwright e2e, not Vitest (see unit-testing rule)
+- **Layout-only route groups** with no unique page content — no e2e required for the layout itself
+
+## Exceptions
+
+- **Redirect-only pages** — test that the redirect target is reached
+- **Auth-gated pages** — use Playwright auth fixtures or setup when added; until then, test the unauthenticated behavior explicitly
+- **Minor copy or styling tweaks** — update existing e2e assertions when they break; no new spec file needed
+
+## When Editing Existing Pages
+
+Adding a new route segment or meaningful page behavior? Add or extend the matching e2e spec. Refactoring page structure? Update e2e assertions alongside the change.

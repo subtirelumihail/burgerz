@@ -1,0 +1,79 @@
+---
+description: Clean, simple backend services for hooks and components
+globs: {lib/services,hooks}/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Backend Services
+
+Services talk to the backend. Hooks and Server Components consume services — never call `fetch` directly in UI code.
+
+## Layer Responsibilities
+
+| Layer | Location | Does | Does not |
+|-------|----------|------|----------|
+| HTTP client | `lib/api/client.ts` | Base URL, headers, JSON parse, error mapping | Domain logic |
+| Service | `lib/services/*.ts` | One resource/domain, typed request/response | React state, JSX, `useEffect` |
+| Hook | `hooks/use*.ts` | Loading/error state, refetch, client-side calls | Raw `fetch`, URL strings |
+| Server Component | `app/**` | Import service directly, pass data as props | `'use client'` for data fetch |
+
+## Service Rules
+
+- **One domain per file** — `order.service.ts`, not `api.ts` with everything
+- **Named async functions** — `getOrder`, `createOrder`; no classes, no singletons
+- **Typed I/O** — import request/response interfaces from `@/types/*` (see typescript-global-types), not inline in the service file
+- **Throw on failure** — return data on success; let hooks/components decide how to show errors
+- **Same paths as MSW** — service URLs must match handlers in `mocks/handlers/`
+
+```typescript
+// lib/services/health.service.ts
+import { apiClient } from "@/lib/api/client";
+import type { HealthResponse } from "@/types/health";
+
+export async function getHealth(): Promise<HealthResponse> {
+  return apiClient.get<HealthResponse>("/api/health");
+}
+```
+
+```typescript
+// ❌ BAD — React in a service
+export function useHealth() {
+  const [data, setData] = useState(null);
+  useEffect(() => { fetch("/api/health")... }, []);
+}
+
+// ❌ BAD — fetch scattered in a hook
+export function useOrder(id: string) {
+  useEffect(() => {
+    fetch(`/api/orders/${id}`).then((r) => r.json()).then(setOrder);
+  }, [id]);
+}
+
+// ✅ GOOD — hook delegates to service
+import { getOrder } from "@/lib/services/order.service";
+
+export function useOrder(id: string) {
+  const [order, setOrder] = useState<Order | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setIsLoading(true);
+    getOrder(id)
+      .then((data) => { if (!cancelled) setOrder(data); })
+      .catch((err) => { if (!cancelled) setError(err); })
+      .finally(() => { if (!cancelled) setIsLoading(false); });
+    return () => { cancelled = true; };
+  }, [id]);
+
+  return { order, isLoading, error };
+}
+```
+
+## Keep It Simple
+
+- No premature abstractions — a plain function per endpoint beats a generic CRUD factory
+- No caching in services — cache at the Server Component (`'use cache'`) or hook level if needed
+- Extract a shared client only when the second service appears; until then, one small helper is fine
+- Server Components: `const orders = await getOrders()` — no hook required

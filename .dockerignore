@@ -1,0 +1,16 @@
+Dockerfile
+.dockerignore
+node_modules
+npm-debug.log
+.next
+.git
+.gitignore
+.husky
+coverage
+test-results
+playwright-report
+playwright/.cache
+__tests__
+e2e
+*.md
+.env*

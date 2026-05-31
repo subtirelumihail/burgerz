@@ -1,0 +1,77 @@
+---
+description: Hybrid server/client rendering for Next.js React components
+globs: **/*.{tsx,jsx}
+alwaysApply: false
+---
+
+# Next.js Hybrid Rendering
+
+Components default to **Server Components**. Add `'use client'` only at the smallest interactive leaf — never on pages or layouts by default.
+
+## Server vs Client
+
+**Server Component (default)** — use for:
+- Data fetching (DB, APIs, `fetch`)
+- Secrets and server-only logic
+- Static or cacheable UI
+
+**Client Component (`'use client'`)** — use only for:
+- State, event handlers, `useEffect`
+- Browser APIs (`window`, `localStorage`)
+- Client hooks and React context
+
+```tsx
+// ✅ GOOD — server page, client leaf
+// app/products/page.tsx (Server Component)
+import { getProducts } from '@/lib/data'
+import { ProductFilters } from './product-filters'
+
+export default async function ProductsPage() {
+  const products = await getProducts()
+  return (
+    <main>
+      <h1>Products</h1>
+      <ProductFilters products={products} />
+    </main>
+  )
+}
+
+// product-filters.tsx
+'use client'
+export function ProductFilters({ products }: { products: Product[] }) {
+  const [query, setQuery] = useState('')
+  // interactive filtering...
+}
+```
+
+```tsx
+// ❌ BAD — entire page is client for one button
+'use client'
+export default function ProductsPage() {
+  useEffect(() => { fetch('/api/products').then(...) }, [])
+}
+```
+
+## Composition Patterns
+
+- **Push the client boundary down** — keep layouts, shells, and static sections as Server Components
+- **Pass serializable props** from server → client (no functions, no class instances)
+- **Children slot pattern** — Client wrapper renders `{children}`; server passes server-rendered content as children
+- **Extract thin client wrappers** for third-party components that need browser APIs
+
+## Streaming & Caching
+
+- Wrap slow/async sections in `<Suspense fallback={...}>` so static shell renders immediately
+- Fetch in parallel (`Promise.all`) — avoid sequential waterfalls
+- Cache at function or component level with `'use cache'` and `cacheLife()` when data can be reused
+- Prefer server fetch + streaming over client-side `useEffect` fetch
+
+## File Placement
+
+| Location | Default |
+|----------|---------|
+| `app/**/page.tsx`, `layout.tsx` | Server Component |
+| `components/ui/*` (static) | Server Component |
+| `components/*` (interactive) | Client Component |
+
+Mark server-only modules with `import 'server-only'` to prevent accidental client imports.
