@@ -1,7 +1,7 @@
 @reference "../../../app/globals.css";
 
 .trigger {
-  @apply cursor-pointer overflow-hidden rounded-md border-0 bg-transparent p-0;
+  @apply block cursor-pointer overflow-hidden rounded-md border-0 bg-transparent p-0;
 }
 
 .trigger:focus-visible {

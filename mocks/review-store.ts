@@ -1,6 +1,9 @@
 import { mockReviews } from "@/mocks/data/reviews";
 import type {
   BurgerUserReview,
+  BurgerUserReviewAspects,
+  BurgerUserReviewRating,
+  CreateBurgerReviewRequest,
   GetBurgerReviewsResponse,
 } from "@/types/review";
 import { DEFAULT_REVIEWS_PAGE_SIZE } from "@/types/review";
@@ -95,4 +98,44 @@ export function parseListReviewsParams(
       DEFAULT_REVIEWS_PAGE_SIZE,
     ),
   };
+}
+
+function averageAspectScores(
+  aspects: CreateBurgerReviewRequest["aspects"],
+): BurgerUserReviewRating {
+  const mean =
+    (aspects.taste + aspects.texture + aspects.visualPresentation) / 3;
+
+  return Math.round(mean) as BurgerUserReviewRating;
+}
+
+function toReviewAspects(
+  aspects: CreateBurgerReviewRequest["aspects"],
+): BurgerUserReviewAspects {
+  return {
+    taste: { text: "", score: aspects.taste },
+    texture: { text: "", score: aspects.texture },
+    visualPresentation: { text: "", score: aspects.visualPresentation },
+  };
+}
+
+export function createBurgerReview(
+  burgerId: string,
+  payload: CreateBurgerReviewRequest,
+): BurgerUserReview {
+  const aspects = toReviewAspects(payload.aspects);
+  const review: BurgerUserReview = {
+    id: `${burgerId}-review-${Date.now()}`,
+    burgerId,
+    authorName: payload.authorName.trim(),
+    text: payload.text.trim(),
+    score: averageAspectScores(payload.aspects),
+    aspects,
+    createdAt: new Date().toISOString(),
+    ...(payload.image ? { image: payload.image } : {}),
+  };
+
+  reviews.unshift(review);
+
+  return review;
 }

@@ -12,19 +12,10 @@
   @apply font-display text-2xl text-foreground;
 }
 
-.reviewsSection {
+.formSection {
   @apply flex flex-col gap-xl;
 }
 
-.reviewsHeader {
-  @apply flex flex-col gap-md;
-  @apply sm:flex-row sm:items-center sm:justify-between;
-}
-
-.reviewsHeading {
+.formHeading {
   @apply font-display text-2xl text-foreground;
-}
-
-.pagination {
-  @apply mt-md;
 }

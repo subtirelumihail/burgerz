@@ -7,4 +7,5 @@ export interface ThumbnailImageProps {
   imageClassName?: string;
   priority?: boolean;
   sizes?: string;
+  fitContainer?: boolean;
 }

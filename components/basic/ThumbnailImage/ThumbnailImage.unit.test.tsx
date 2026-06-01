@@ -21,6 +21,25 @@ describe("ThumbnailImage", () => {
     expect(screen.queryByRole("status")).not.toBeInTheDocument();
   });
 
+  it("fills container when fitContainer is enabled", () => {
+    render(
+      <div style={{ width: 112, height: 112 }}>
+        <ThumbnailImage
+          src="https://example.com/thumb.jpg"
+          alt="Burger photo"
+          width={160}
+          height={160}
+          fitContainer
+        />
+      </div>,
+    );
+
+    const wrapper = screen.getByRole("img", {
+      name: "Burger photo",
+    }).parentElement;
+    expect(wrapper).not.toHaveAttribute("style");
+  });
+
   it("resets loading state when src changes", () => {
     const { rerender } = render(
       <ThumbnailImage

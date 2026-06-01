@@ -39,3 +39,18 @@ export interface GetBurgerReviewsResponse {
   reviews: BurgerUserReview[];
   pagination: PaginationMeta;
 }
+
+export interface CreateBurgerReviewAspectScores {
+  taste: BurgerUserReviewRating;
+  texture: BurgerUserReviewRating;
+  visualPresentation: BurgerUserReviewRating;
+}
+
+export interface CreateBurgerReviewRequest {
+  authorName: string;
+  text: string;
+  aspects: CreateBurgerReviewAspectScores;
+  image?: ImageAsset;
+}
+
+export type CreateBurgerReviewResponse = BurgerUserReview;

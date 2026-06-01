@@ -38,6 +38,7 @@ export function ImageThumbnail({
           imageClassName={imageClassName}
           priority={priority}
           sizes={sizes}
+          fitContainer
         />
       </button>
       <Lightbox

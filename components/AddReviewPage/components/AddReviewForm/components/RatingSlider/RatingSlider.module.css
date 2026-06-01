@@ -1,0 +1,72 @@
+@reference "../../../../../../app/globals.css";
+
+.field {
+  @apply flex flex-col gap-sm;
+}
+
+.label {
+  @apply text-sm font-semibold text-foreground;
+}
+
+.controls {
+  @apply flex items-center gap-md;
+}
+
+.slider {
+  @apply min-h-[44px] flex-1 cursor-pointer appearance-none bg-transparent;
+}
+
+.slider:focus-visible {
+  @apply outline-none;
+}
+
+.slider::-webkit-slider-runnable-track {
+  @apply h-2 rounded-full bg-secondary;
+}
+
+.slider::-webkit-slider-thumb {
+  @apply size-5 appearance-none rounded-full bg-accent;
+  margin-top: -0.375rem;
+}
+
+.slider:focus-visible::-webkit-slider-thumb {
+  @apply outline-2 outline-offset-2 outline-focus-ring;
+}
+
+.slider::-moz-range-track {
+  @apply h-2 rounded-full bg-secondary;
+}
+
+.slider::-moz-range-thumb {
+  @apply size-5 rounded-full border-0 bg-accent;
+}
+
+.slider:focus-visible::-moz-range-thumb {
+  @apply outline-2 outline-offset-2 outline-focus-ring;
+}
+
+.input {
+  @apply w-16 min-h-[44px] rounded-md border border-border bg-surface-raised px-md py-md text-center text-base text-foreground;
+  @apply transition-[border-color] duration-[180ms] ease-out-expo;
+  font-family: inherit;
+}
+
+.input:hover:not(:disabled) {
+  @apply border-[oklch(0.78_0.03_var(--hue-neutral))];
+}
+
+.input:focus {
+  @apply border-accent outline-none;
+}
+
+.input:focus-visible {
+  @apply outline-2 outline-offset-2 outline-focus-ring;
+}
+
+.input[aria-invalid="true"] {
+  @apply border-[oklch(0.55_0.2_25)];
+}
+
+.error {
+  @apply text-[0.8125rem] text-[oklch(0.48_0.18_25)];
+}

@@ -1,0 +1,22 @@
+@reference "../../../../app/globals.css";
+
+.form {
+  @apply flex flex-col gap-xl;
+}
+
+.ratings {
+  @apply flex flex-col gap-lg;
+}
+
+.legend {
+  @apply font-display text-xl text-foreground;
+}
+
+.actions {
+  @apply flex flex-col gap-md;
+  @apply sm:flex-row sm:items-center sm:justify-end;
+}
+
+.status {
+  @apply text-base text-accent;
+}

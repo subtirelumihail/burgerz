@@ -8,6 +8,10 @@
   @apply absolute inset-0 animate-pulse bg-secondary;
 }
 
+.fitContainer {
+  @apply block size-full;
+}
+
 .image {
   @apply block object-cover transition-opacity duration-[180ms] ease-out-expo;
 }

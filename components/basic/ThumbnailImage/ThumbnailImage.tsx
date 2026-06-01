@@ -18,14 +18,19 @@ export function ThumbnailImage({
   imageClassName,
   priority = false,
   sizes,
+  fitContainer = false,
 }: ThumbnailImageProps) {
   const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
   const isLoaded = loadedSrc === src;
 
   return (
     <span
-      className={cn(styles.root, className)}
-      style={{ width, height }}
+      className={cn(
+        styles.root,
+        fitContainer ? styles.fitContainer : null,
+        className,
+      )}
+      style={fitContainer ? undefined : { width, height }}
       aria-busy={!isLoaded || undefined}
     >
       {!isLoaded ? (
