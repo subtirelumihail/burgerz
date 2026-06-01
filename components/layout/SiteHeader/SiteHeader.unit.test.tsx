@@ -11,4 +11,17 @@ describe("SiteHeader", () => {
       "/",
     );
   });
+
+  it("renders main navigation links", () => {
+    render(<SiteHeader />);
+
+    expect(screen.getByRole("link", { name: "Burgers" })).toHaveAttribute(
+      "href",
+      "/",
+    );
+    expect(screen.getByRole("link", { name: "Restaurants" })).toHaveAttribute(
+      "href",
+      "/restaurants",
+    );
+  });
 });

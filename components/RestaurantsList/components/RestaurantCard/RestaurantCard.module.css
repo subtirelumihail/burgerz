@@ -1,0 +1,82 @@
+@reference "../../../../app/globals.css";
+
+.root {
+  @apply flex items-start gap-md rounded-lg border border-border bg-surface-raised p-md;
+}
+
+.imageLink {
+  @apply shrink-0 rounded-md no-underline;
+}
+
+.imageLink:focus-visible {
+  @apply outline-2 outline-offset-2 outline-focus-ring;
+}
+
+.imageWrap {
+  @apply shrink-0;
+}
+
+.image {
+  @apply size-full object-cover;
+}
+
+.content {
+  @apply flex min-w-0 flex-1 flex-col gap-md;
+}
+
+.header {
+  @apply flex flex-col gap-sm;
+}
+
+.title {
+  @apply font-display text-xl leading-tight;
+}
+
+.titleLink {
+  @apply text-foreground no-underline;
+}
+
+.titleLink:hover {
+  @apply text-link;
+}
+
+.titleLink:focus-visible {
+  @apply rounded-sm outline-2 outline-offset-2 outline-focus-ring;
+}
+
+.distance {
+  @apply text-sm font-medium text-muted;
+}
+
+.details {
+  @apply flex flex-col gap-md;
+}
+
+.location {
+  @apply text-sm text-foreground;
+}
+
+.hours {
+  @apply flex flex-col gap-sm;
+}
+
+.hoursTitle {
+  @apply text-sm font-medium text-foreground;
+}
+
+.hoursList {
+  @apply m-0 flex list-none flex-col gap-xs p-0;
+}
+
+.hoursItem {
+  @apply flex flex-col gap-xs text-sm text-muted;
+  @apply sm:flex-row sm:gap-md;
+}
+
+.hoursDays {
+  @apply min-w-[6rem] font-medium text-foreground;
+}
+
+.hoursTime {
+  @apply text-muted;
+}

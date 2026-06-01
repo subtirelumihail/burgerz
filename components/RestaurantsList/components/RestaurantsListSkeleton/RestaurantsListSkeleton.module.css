@@ -1,0 +1,39 @@
+@reference "../../../../app/globals.css";
+
+.root {
+  @apply m-0 flex list-none flex-col gap-md p-0;
+}
+
+.item {
+  @apply flex items-start gap-md rounded-lg border border-border bg-surface-raised p-md;
+}
+
+.image {
+  @apply size-24 shrink-0 rounded-md bg-secondary;
+}
+
+.content {
+  @apply flex flex-1 flex-col gap-md;
+}
+
+.line {
+  @apply h-4 rounded-sm bg-secondary;
+}
+
+.lineShort {
+  @apply w-2/3;
+}
+
+.lineMedium {
+  @apply w-1/2;
+}
+
+.block {
+  @apply h-12 rounded-sm bg-secondary;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .item {
+    @apply animate-pulse;
+  }
+}

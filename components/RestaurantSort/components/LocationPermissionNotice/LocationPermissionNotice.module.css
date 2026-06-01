@@ -1,0 +1,21 @@
+@reference "../../../../app/globals.css";
+
+.root {
+  @apply flex items-start gap-md rounded-lg border border-border bg-surface-raised px-lg py-md;
+}
+
+.icon {
+  @apply mt-xs size-5 shrink-0 text-muted;
+}
+
+.content {
+  @apply flex min-w-0 flex-1 flex-col gap-md;
+}
+
+.message {
+  @apply text-sm text-foreground;
+}
+
+.button {
+  @apply self-start;
+}
