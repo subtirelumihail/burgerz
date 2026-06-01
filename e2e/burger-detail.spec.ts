@@ -72,7 +72,7 @@ test("back link returns to home search", async ({ page }) => {
 
   await page.getByRole("link", { name: /back to search/i }).click();
 
-  await expect(page).toHaveURL("/");
+  await expect(page).toHaveURL("/burgers");
   await expect(
     page.getByRole("heading", { level: 1, name: /find your next burger/i }),
   ).toBeVisible();

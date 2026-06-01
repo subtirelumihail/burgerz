@@ -1,6 +1,8 @@
 import Link from "next/link";
 
+import { Review } from "@/components/basic/Review/Review";
 import { ThumbnailImage } from "@/components/basic/ThumbnailImage/ThumbnailImage";
+import { BurgerScores } from "@/components/BurgersList/components/BurgerScores/BurgerScores";
 import {
   formatRestaurantListItemLabel,
   formatRestaurantThumbnailLabel,
@@ -25,11 +27,16 @@ function formatDistance(distanceKm?: number): string | null {
 function RestaurantCardContent({
   restaurant,
   usePlainText,
+  showDistance = false,
 }: {
   restaurant: RestaurantCardProps["restaurant"];
   usePlainText: boolean;
+  showDistance?: boolean;
 }) {
-  const distanceLabel = formatDistance(restaurant.distanceKm);
+  const distanceLabel =
+    showDistance && restaurant.distanceKm !== undefined
+      ? formatDistance(restaurant.distanceKm)
+      : null;
 
   return (
     <div className={styles.content}>
@@ -46,12 +53,19 @@ function RestaurantCardContent({
             </Link>
           )}
         </h2>
+        <p className={styles.location}>{restaurant.location.address}</p>
         {distanceLabel ? (
           <p className={styles.distance}>{distanceLabel}</p>
         ) : null}
       </header>
+      <div className={styles.review}>
+        <Review
+          score={restaurant.reviewScore}
+          reviewCount={restaurant.reviewCount}
+        />
+        <BurgerScores scores={restaurant.scores} />
+      </div>
       <div className={styles.details}>
-        <p className={styles.location}>{restaurant.location.address}</p>
         <div className={styles.hours}>
           <h3 className={styles.hoursTitle}>Opening times</h3>
           <ul className={styles.hoursList}>
@@ -75,6 +89,7 @@ export function RestaurantCard({
   restaurant,
   imagePriority = false,
   listMode = false,
+  showDistance = false,
 }: RestaurantCardProps) {
   const href = `/restaurants/${restaurant.id}`;
 
@@ -99,10 +114,16 @@ export function RestaurantCard({
         <Link
           href={href}
           className={styles.contentLink}
-          aria-label={formatRestaurantListItemLabel(restaurant)}
+          aria-label={formatRestaurantListItemLabel(restaurant, {
+            showDistance,
+          })}
         >
           <div aria-hidden="true">
-            <RestaurantCardContent restaurant={restaurant} usePlainText />
+            <RestaurantCardContent
+              restaurant={restaurant}
+              usePlainText
+              showDistance={showDistance}
+            />
           </div>
         </Link>
       </article>
@@ -122,7 +143,11 @@ export function RestaurantCard({
           priority={imagePriority}
         />
       </Link>
-      <RestaurantCardContent restaurant={restaurant} usePlainText={false} />
+      <RestaurantCardContent
+        restaurant={restaurant}
+        usePlainText={false}
+        showDistance={showDistance}
+      />
     </article>
   );
 }

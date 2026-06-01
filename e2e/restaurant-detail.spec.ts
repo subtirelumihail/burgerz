@@ -27,6 +27,27 @@ test("restaurant detail page renders hero content", async ({ page }) => {
   await expect(hero.getByRole("img", { name: "Smash Shack" })).toBeVisible();
 });
 
+test("restaurant detail page renders aggregated ratings in hero", async ({
+  page,
+}) => {
+  await page.goto(RESTAURANT_DETAIL_PATH);
+
+  const hero = page.locator("header").filter({
+    has: page.getByRole("heading", { level: 1, name: /smash shack/i }),
+  });
+
+  await expect(hero.getByText(/\(\d+ reviews\)/)).toBeVisible({
+    timeout: 10000,
+  });
+  await expect(hero.getByText("Taste", { exact: true }).first()).toBeVisible();
+  await expect(
+    hero.getByText("Visual presentation", { exact: true }).first(),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { level: 2, name: /customer reviews/i }),
+  ).not.toBeVisible();
+});
+
 test("restaurant detail page lists burgers for the restaurant", async ({
   page,
 }) => {
@@ -77,7 +98,7 @@ test("back link returns to restaurants search", async ({ page }) => {
 
   await page.getByRole("link", { name: /back to restaurants/i }).click();
 
-  await expect(page).toHaveURL("/restaurants");
+  await expect(page).toHaveURL("/");
   await expect(
     page.getByRole("heading", { level: 1, name: /find your next spot/i }),
   ).toBeVisible();
@@ -91,5 +112,5 @@ test("unknown restaurant shows not found message", async ({ page }) => {
   });
   await expect(
     page.getByRole("link", { name: /back to restaurants/i }),
-  ).toHaveAttribute("href", "/restaurants");
+  ).toHaveAttribute("href", "/");
 });

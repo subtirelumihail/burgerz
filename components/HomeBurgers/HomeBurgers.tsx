@@ -25,12 +25,8 @@ export function HomeBurgers() {
       <BurgerSearch
         query={query}
         onQueryChange={setQuery}
-        onSearch={() => {
-          void search();
-        }}
-        onClear={() => {
-          void clearSearch();
-        }}
+        onSearch={search}
+        onClear={clearSearch}
         isLoading={isLoading}
       />
       {error ? (

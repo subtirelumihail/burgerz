@@ -1,7 +1,7 @@
-import type { BurgerUserReview } from "@/types/review";
+import type { UserReviewContent } from "@/types/review";
 
 export interface UserReviewCardProps {
-  review: BurgerUserReview;
+  review: UserReviewContent;
   showReviewImage?: boolean;
   /** Enables split keyboard focus: photo button + review details region. */
   listMode?: boolean;

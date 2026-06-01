@@ -56,12 +56,16 @@
   @apply text-sm font-medium text-muted;
 }
 
-.details {
+.review {
   @apply flex flex-col gap-md;
 }
 
 .location {
   @apply text-sm text-foreground;
+}
+
+.details {
+  @apply flex flex-col gap-md;
 }
 
 .hours {

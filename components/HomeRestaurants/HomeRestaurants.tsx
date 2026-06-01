@@ -22,6 +22,7 @@ export function HomeRestaurants() {
     isLoading,
     error,
     needsLocationAccess,
+    isLocationAvailable,
     isLocationPending,
     locationStatus,
     enableLocation,
@@ -32,12 +33,8 @@ export function HomeRestaurants() {
       <RestaurantSearch
         query={query}
         onQueryChange={setQuery}
-        onSearch={() => {
-          void search();
-        }}
-        onClear={() => {
-          void clearSearch();
-        }}
+        onSearch={search}
+        onClear={clearSearch}
         isLoading={isLoading}
       />
       <RestaurantSort
@@ -54,7 +51,11 @@ export function HomeRestaurants() {
           {error.message}
         </p>
       ) : null}
-      <RestaurantsList restaurants={restaurants} isLoading={isLoading} />
+      <RestaurantsList
+        restaurants={restaurants}
+        isLoading={isLoading}
+        showDistance={isLocationAvailable}
+      />
       <Pagination
         page={pagination.page}
         totalPages={pagination.totalPages}

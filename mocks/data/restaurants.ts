@@ -1,4 +1,6 @@
 import { createMockRestaurantImage } from "@/mocks/data/images";
+import { enrichRestaurantWithRatings } from "@/mocks/restaurant-ratings";
+import { getAllReviews } from "@/mocks/review-store";
 import type { Restaurant, RestaurantSummary } from "@/types/restaurant";
 
 const weekdayHours = [
@@ -12,7 +14,7 @@ const lateNightHours = [
   { days: "Sun", hours: "17:00 – 00:00" },
 ];
 
-export const mockRestaurants: Restaurant[] = [
+const restaurantSeeds = [
   {
     id: "restaurant-1",
     name: "Smash Shack",
@@ -93,10 +95,20 @@ export const mockRestaurants: Restaurant[] = [
     },
     openingHours: weekdayHours,
   },
-];
+] as const;
+
+export const mockRestaurants: Restaurant[] = restaurantSeeds.map((restaurant) =>
+  enrichRestaurantWithRatings(restaurant, getAllReviews()),
+);
 
 export function getRestaurantById(id: string): Restaurant | null {
-  return mockRestaurants.find((restaurant) => restaurant.id === id) ?? null;
+  const restaurant = restaurantSeeds.find((entry) => entry.id === id);
+
+  if (!restaurant) {
+    return null;
+  }
+
+  return enrichRestaurantWithRatings(restaurant, getAllReviews());
 }
 
 export function getRestaurantSummaryById(id: string): RestaurantSummary | null {

@@ -33,5 +33,5 @@ export function resolveBurgerBackNavigation(from: string | undefined): {
     return { href: from, label: "Back" };
   }
 
-  return { href: "/", label: "Back to search" };
+  return { href: "/burgers", label: "Back to search" };
 }

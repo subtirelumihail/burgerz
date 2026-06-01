@@ -1,4 +1,5 @@
 import type { PaginationMeta } from "@/types/api";
+import type { BurgerScores } from "@/types/burger";
 import type { ImageAsset } from "@/types/image";
 
 export const DEFAULT_RESTAURANTS_PAGE_SIZE = 6;
@@ -29,6 +30,9 @@ export interface Restaurant extends RestaurantSummary {
   image: ImageAsset;
   location: RestaurantLocation;
   openingHours: OpeningHours[];
+  reviewCount: number;
+  reviewScore: number;
+  scores: BurgerScores;
   distanceKm?: number;
 }
 

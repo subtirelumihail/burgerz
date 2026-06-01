@@ -1,25 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { mockImageAsset } from "@/test/mock-image";
-import type { Restaurant } from "@/types/restaurant";
+import { mockRestaurant } from "@/test/mock-restaurant";
 
 import { RestaurantsList } from "./RestaurantsList";
-
-const mockRestaurant: Restaurant = {
-  id: "restaurant-1",
-  name: "Smash Shack",
-  image: mockImageAsset,
-  location: {
-    address: "Strada Lipscani 25, Bucharest, Romania",
-    coordinates: { latitude: 44.4319, longitude: 26.1027 },
-  },
-  openingHours: [
-    { days: "Mon – Fri", hours: "11:00 – 22:00" },
-    { days: "Sat – Sun", hours: "10:00 – 23:00" },
-  ],
-  distanceKm: 1.2,
-};
 
 describe("RestaurantsList", () => {
   it("renders restaurant cards with location and opening times", () => {
@@ -30,27 +14,16 @@ describe("RestaurantsList", () => {
     ).toHaveAttribute("href", "/restaurants/restaurant-1");
     expect(
       screen.getByRole("link", {
-        name: /smash shack\. 1\.2 kilometers away\. strada lipscani 25, bucharest, romania\. opening times:/i,
+        name: /smash shack\. strada lipscani 25, bucharest, romania\. 4\.5 out of 5 stars based on 42 reviews/i,
       }),
     ).toHaveAttribute("href", "/restaurants/restaurant-1");
     expect(
-      screen.getByText("Smash Shack", { hidden: true }),
+      screen.getByText("Strada Lipscani 25, Bucharest, Romania"),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText("Strada Lipscani 25, Bucharest, Romania", {
-        hidden: true,
-      }),
-    ).toBeInTheDocument();
-    expect(screen.getByText("Mon – Fri", { hidden: true })).toBeInTheDocument();
-    expect(
-      screen.getByText("11:00 – 22:00", { hidden: true }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("1.2 km away", { hidden: true }),
-    ).toBeInTheDocument();
+    expect(screen.getByText("(42 reviews)")).toBeInTheDocument();
   });
 
-  it("shows empty state when there are no restaurants", () => {
+  it("renders empty state when there are no restaurants", () => {
     render(<RestaurantsList restaurants={[]} isLoading={false} />);
 
     expect(

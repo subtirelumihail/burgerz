@@ -34,12 +34,8 @@ export function RestaurantBurgers({ restaurantId }: RestaurantBurgersProps) {
       <BurgerSearch
         query={query}
         onQueryChange={setQuery}
-        onSearch={() => {
-          void search();
-        }}
-        onClear={() => {
-          void clearSearch();
-        }}
+        onSearch={search}
+        onClear={clearSearch}
         isLoading={isLoading}
       />
       {error ? (

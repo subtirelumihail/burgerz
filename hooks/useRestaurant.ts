@@ -2,33 +2,35 @@
 
 import { useEffect, useState } from "react";
 
-import { getBurger } from "@/lib/services/burger.service";
-import type { Burger } from "@/types/burger";
+import { getRestaurant } from "@/lib/services/restaurant.service";
+import type { Restaurant } from "@/types/restaurant";
 
-interface UseBurgerResult {
-  burger: Burger | null;
+interface UseRestaurantResult {
+  restaurant: Restaurant | null;
   isLoading: boolean;
   error: Error | null;
 }
 
 function toError(error: unknown): Error {
-  return error instanceof Error ? error : new Error("Failed to load burger");
+  return error instanceof Error
+    ? error
+    : new Error("Failed to load restaurant");
 }
 
-export function useBurger(id: string): UseBurgerResult {
-  const [burger, setBurger] = useState<Burger | null>(null);
+export function useRestaurant(id: string): UseRestaurantResult {
+  const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     let isCancelled = false;
 
-    async function loadBurger() {
+    async function loadRestaurant() {
       try {
-        const result = await getBurger(id);
+        const result = await getRestaurant(id);
 
         if (!isCancelled) {
-          setBurger(result);
+          setRestaurant(result);
           setError(null);
         }
       } catch (err) {
@@ -42,7 +44,7 @@ export function useBurger(id: string): UseBurgerResult {
       }
     }
 
-    loadBurger();
+    loadRestaurant();
 
     return () => {
       isCancelled = true;
@@ -50,7 +52,7 @@ export function useBurger(id: string): UseBurgerResult {
   }, [id]);
 
   return {
-    burger,
+    restaurant,
     isLoading,
     error,
   };

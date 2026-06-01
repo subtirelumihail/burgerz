@@ -1,7 +1,8 @@
-import { apiClient } from "@/lib/api/client";
+import { ApiError, apiClient } from "@/lib/api/client";
 import type {
   GetRestaurantsParams,
   GetRestaurantsResponse,
+  Restaurant,
 } from "@/types/restaurant";
 
 function buildRestaurantsPath(params?: GetRestaurantsParams): string {
@@ -40,4 +41,16 @@ export async function getRestaurants(
   params?: GetRestaurantsParams,
 ): Promise<GetRestaurantsResponse> {
   return apiClient.get<GetRestaurantsResponse>(buildRestaurantsPath(params));
+}
+
+export async function getRestaurant(id: string): Promise<Restaurant | null> {
+  try {
+    return await apiClient.get<Restaurant>(`/api/restaurants/${id}`);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) {
+      return null;
+    }
+
+    throw error;
+  }
 }

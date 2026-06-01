@@ -41,24 +41,29 @@ export function useBurgerReviews(burgerId: string): UseBurgerReviewsResult {
   const [error, setError] = useState<Error | null>(null);
 
   const loadReviews = useCallback(
-    async (q?: string, nextPage = 1) => {
+    (q?: string, nextPage = 1) => {
       setIsLoading(true);
       setError(null);
 
-      try {
-        const response = await getBurgerReviews(burgerId, {
-          q,
-          page: nextPage,
-          pageSize: DEFAULT_REVIEWS_PAGE_SIZE,
-        });
-        setReviews(response.reviews);
-        setPagination(response.pagination);
-        setPage(response.pagination.page);
-      } catch (err) {
-        setError(toError(err));
-      } finally {
-        setIsLoading(false);
+      async function fetchReviews() {
+        try {
+          const response = await getBurgerReviews(burgerId, {
+            q,
+            page: nextPage,
+            pageSize: DEFAULT_REVIEWS_PAGE_SIZE,
+          });
+          setReviews(response.reviews);
+          setPagination(response.pagination);
+          setPage(response.pagination.page);
+          setError(null);
+        } catch (err) {
+          setError(toError(err));
+        } finally {
+          setIsLoading(false);
+        }
       }
+
+      fetchReviews();
     },
     [burgerId],
   );
@@ -66,28 +71,33 @@ export function useBurgerReviews(burgerId: string): UseBurgerReviewsResult {
   useEffect(() => {
     let isCancelled = false;
 
-    getBurgerReviews(burgerId, {
-      page: 1,
-      pageSize: DEFAULT_REVIEWS_PAGE_SIZE,
-    })
-      .then((response) => {
-        if (!isCancelled) {
-          setReviews(response.reviews);
-          setPagination(response.pagination);
-          setPage(response.pagination.page);
-          setError(null);
+    async function loadInitialReviews() {
+      try {
+        const response = await getBurgerReviews(burgerId, {
+          page: 1,
+          pageSize: DEFAULT_REVIEWS_PAGE_SIZE,
+        });
+
+        if (isCancelled) {
+          return;
         }
-      })
-      .catch((err) => {
+
+        setReviews(response.reviews);
+        setPagination(response.pagination);
+        setPage(response.pagination.page);
+        setError(null);
+      } catch (err) {
         if (!isCancelled) {
           setError(toError(err));
         }
-      })
-      .finally(() => {
+      } finally {
         if (!isCancelled) {
           setIsLoading(false);
         }
-      });
+      }
+    }
+
+    loadInitialReviews();
 
     return () => {
       isCancelled = true;
@@ -96,18 +106,18 @@ export function useBurgerReviews(burgerId: string): UseBurgerReviewsResult {
 
   const search = useCallback(() => {
     const trimmedQuery = query.trim();
-    void loadReviews(trimmedQuery || undefined, 1);
+    loadReviews(trimmedQuery || undefined, 1);
   }, [loadReviews, query]);
 
   const clearSearch = useCallback(() => {
     setQuery("");
-    void loadReviews(undefined, 1);
+    loadReviews(undefined, 1);
   }, [loadReviews]);
 
   const goToPage = useCallback(
     (nextPage: number) => {
       const trimmedQuery = query.trim();
-      void loadReviews(trimmedQuery || undefined, nextPage);
+      loadReviews(trimmedQuery || undefined, nextPage);
     },
     [loadReviews, query],
   );

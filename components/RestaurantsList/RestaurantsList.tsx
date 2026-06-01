@@ -10,6 +10,7 @@ import styles from "./RestaurantsList.module.css";
 export function RestaurantsList({
   restaurants,
   isLoading = false,
+  showDistance = false,
 }: RestaurantsListProps) {
   const showSkeleton = isLoading && restaurants.length === 0;
   const showList = restaurants.length > 0;
@@ -31,6 +32,7 @@ export function RestaurantsList({
               restaurant={restaurant}
               imagePriority={index === 0}
               listMode
+              showDistance={showDistance}
             />
           )}
           emptyMessage="No restaurants match your search."

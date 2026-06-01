@@ -10,13 +10,17 @@ import type { SiteHeaderNavProps } from "./types";
 import styles from "./SiteHeaderNav.module.css";
 
 const navItems = [
-  { href: "/", label: "Burgers" },
-  { href: "/restaurants", label: "Restaurants" },
+  { href: "/", label: "Restaurants" },
+  { href: "/burgers", label: "Burgers" },
 ] as const;
 
 function isNavItemActive(pathname: string, href: string): boolean {
   if (href === "/") {
-    return pathname === "/" || pathname.startsWith("/burgers");
+    return pathname === "/" || pathname.startsWith("/restaurants");
+  }
+
+  if (href === "/burgers") {
+    return pathname === "/burgers" || pathname.startsWith("/burgers/");
   }
 
   return pathname === href || pathname.startsWith(`${href}/`);

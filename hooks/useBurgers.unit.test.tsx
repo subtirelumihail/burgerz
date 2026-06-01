@@ -58,28 +58,13 @@ function TestHarness() {
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
-      <button
-        type="button"
-        onClick={() => {
-          void search();
-        }}
-      >
+      <button type="button" onClick={search}>
         Search
       </button>
-      <button
-        type="button"
-        onClick={() => {
-          void clearSearch();
-        }}
-      >
+      <button type="button" onClick={clearSearch}>
         Clear search
       </button>
-      <button
-        type="button"
-        onClick={() => {
-          void goToPage(2);
-        }}
-      >
+      <button type="button" onClick={() => goToPage(2)}>
         Page 2
       </button>
       <p>Current page: {page}</p>

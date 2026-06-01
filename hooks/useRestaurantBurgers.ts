@@ -43,25 +43,30 @@ export function useRestaurantBurgers(
   const [error, setError] = useState<Error | null>(null);
 
   const loadBurgers = useCallback(
-    async (q?: string, nextPage = 1) => {
+    (q?: string, nextPage = 1) => {
       setIsLoading(true);
       setError(null);
 
-      try {
-        const response = await getBurgers({
-          restaurantId,
-          q,
-          page: nextPage,
-          pageSize: DEFAULT_BURGERS_PAGE_SIZE,
-        });
-        setBurgers(response.burgers);
-        setPagination(response.pagination);
-        setPage(response.pagination.page);
-      } catch (err) {
-        setError(toError(err));
-      } finally {
-        setIsLoading(false);
+      async function fetchBurgers() {
+        try {
+          const response = await getBurgers({
+            restaurantId,
+            q,
+            page: nextPage,
+            pageSize: DEFAULT_BURGERS_PAGE_SIZE,
+          });
+          setBurgers(response.burgers);
+          setPagination(response.pagination);
+          setPage(response.pagination.page);
+          setError(null);
+        } catch (err) {
+          setError(toError(err));
+        } finally {
+          setIsLoading(false);
+        }
       }
+
+      fetchBurgers();
     },
     [restaurantId],
   );
@@ -69,29 +74,34 @@ export function useRestaurantBurgers(
   useEffect(() => {
     let isCancelled = false;
 
-    getBurgers({
-      restaurantId,
-      page: 1,
-      pageSize: DEFAULT_BURGERS_PAGE_SIZE,
-    })
-      .then((response) => {
-        if (!isCancelled) {
-          setBurgers(response.burgers);
-          setPagination(response.pagination);
-          setPage(response.pagination.page);
-          setError(null);
+    async function loadInitialBurgers() {
+      try {
+        const response = await getBurgers({
+          restaurantId,
+          page: 1,
+          pageSize: DEFAULT_BURGERS_PAGE_SIZE,
+        });
+
+        if (isCancelled) {
+          return;
         }
-      })
-      .catch((err) => {
+
+        setBurgers(response.burgers);
+        setPagination(response.pagination);
+        setPage(response.pagination.page);
+        setError(null);
+      } catch (err) {
         if (!isCancelled) {
           setError(toError(err));
         }
-      })
-      .finally(() => {
+      } finally {
         if (!isCancelled) {
           setIsLoading(false);
         }
-      });
+      }
+    }
+
+    loadInitialBurgers();
 
     return () => {
       isCancelled = true;
@@ -100,18 +110,18 @@ export function useRestaurantBurgers(
 
   const search = useCallback(() => {
     const trimmedQuery = query.trim();
-    void loadBurgers(trimmedQuery || undefined, 1);
+    loadBurgers(trimmedQuery || undefined, 1);
   }, [loadBurgers, query]);
 
   const clearSearch = useCallback(() => {
     setQuery("");
-    void loadBurgers(undefined, 1);
+    loadBurgers(undefined, 1);
   }, [loadBurgers]);
 
   const goToPage = useCallback(
     (nextPage: number) => {
       const trimmedQuery = query.trim();
-      void loadBurgers(trimmedQuery || undefined, nextPage);
+      loadBurgers(trimmedQuery || undefined, nextPage);
     },
     [loadBurgers, query],
   );

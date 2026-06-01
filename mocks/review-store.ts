@@ -119,6 +119,10 @@ function toReviewAspects(
   };
 }
 
+export function getAllReviews(): readonly BurgerUserReview[] {
+  return reviews;
+}
+
 export function createBurgerReview(
   burgerId: string,
   payload: CreateBurgerReviewRequest,

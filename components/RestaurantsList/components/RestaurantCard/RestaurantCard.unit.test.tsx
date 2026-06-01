@@ -1,24 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import { mockImageAsset } from "@/test/mock-image";
-import type { Restaurant } from "@/types/restaurant";
+import { mockRestaurant } from "@/test/mock-restaurant";
 
 import { RestaurantCard } from "./RestaurantCard";
 
-const baseRestaurant: Restaurant = {
-  id: "restaurant-1",
-  name: "Smash Shack",
-  image: mockImageAsset,
-  location: {
-    address: "Strada Lipscani 25, Bucharest, Romania",
-    coordinates: { latitude: 44.4319, longitude: 26.1027 },
-  },
-  openingHours: [
-    { days: "Mon – Fri", hours: "11:00 – 22:00" },
-    { days: "Sat – Sun", hours: "10:00 – 23:00" },
-  ],
-};
+const baseRestaurant = mockRestaurant;
 
 describe("RestaurantCard", () => {
   it("renders restaurant details with linked title and image", () => {
@@ -28,10 +15,8 @@ describe("RestaurantCard", () => {
       "href",
       "/restaurants/restaurant-1",
     );
-    expect(screen.getByRole("img", { name: "Smash Shack" })).toHaveAttribute(
-      "src",
-      mockImageAsset.thumbnailUrl,
-    );
+    expect(screen.getByText("(42 reviews)")).toBeInTheDocument();
+    expect(screen.getByText("Taste", { exact: true })).toBeInTheDocument();
     expect(
       screen.getByText("Strada Lipscani 25, Bucharest, Romania"),
     ).toBeInTheDocument();
@@ -39,17 +24,31 @@ describe("RestaurantCard", () => {
     expect(screen.getByText("11:00 – 22:00")).toBeInTheDocument();
   });
 
-  it("formats distance in meters when under one kilometer", () => {
+  it("hides distance when location access is not granted", () => {
     render(
-      <RestaurantCard restaurant={{ ...baseRestaurant, distanceKm: 0.45 }} />,
+      <RestaurantCard restaurant={{ ...baseRestaurant, distanceKm: 1.2 }} />,
+    );
+
+    expect(screen.queryByText("1.2 km away")).not.toBeInTheDocument();
+  });
+
+  it("formats distance in meters when location access is granted", () => {
+    render(
+      <RestaurantCard
+        restaurant={{ ...baseRestaurant, distanceKm: 0.45 }}
+        showDistance
+      />,
     );
 
     expect(screen.getByText("450 m away")).toBeInTheDocument();
   });
 
-  it("formats distance in kilometers when one kilometer or more", () => {
+  it("formats distance in kilometers when location access is granted", () => {
     render(
-      <RestaurantCard restaurant={{ ...baseRestaurant, distanceKm: 1.2 }} />,
+      <RestaurantCard
+        restaurant={{ ...baseRestaurant, distanceKm: 1.2 }}
+        showDistance
+      />,
     );
 
     expect(screen.getByText("1.2 km away")).toBeInTheDocument();
@@ -60,6 +59,7 @@ describe("RestaurantCard", () => {
       <RestaurantCard
         restaurant={{ ...baseRestaurant, distanceKm: 1.2 }}
         listMode
+        showDistance
       />,
     );
 
@@ -68,7 +68,7 @@ describe("RestaurantCard", () => {
     ).toHaveAttribute("href", "/restaurants/restaurant-1");
     expect(
       screen.getByRole("link", {
-        name: /smash shack\. 1\.2 kilometers away\. strada lipscani 25, bucharest, romania\. opening times:/i,
+        name: /smash shack\. strada lipscani 25, bucharest, romania\. 4\.5 out of 5 stars based on 42 reviews/i,
       }),
     ).toHaveAttribute("href", "/restaurants/restaurant-1");
     expect(

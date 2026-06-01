@@ -16,17 +16,18 @@ export interface BurgerUserReviewAspects {
   visualPresentation: BurgerUserReviewAspect;
 }
 
-export interface BurgerUserReview {
+export interface UserReviewContent {
   id: string;
-  burgerId: string;
   authorName: string;
-  /** Overall review text */
   text: string;
-  /** Overall score (1–5, whole stars only) */
   score: BurgerUserReviewRating;
   aspects: BurgerUserReviewAspects;
   image?: ImageAsset;
   createdAt: string;
+}
+
+export interface BurgerUserReview extends UserReviewContent {
+  burgerId: string;
 }
 
 export interface GetBurgerReviewsParams {

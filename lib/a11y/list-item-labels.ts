@@ -1,7 +1,7 @@
 import { formatReviewDate } from "@/lib/utils/reviews.util";
 import type { Burger } from "@/types/burger";
 import type { Restaurant } from "@/types/restaurant";
-import type { BurgerUserReview } from "@/types/review";
+import type { UserReviewContent } from "@/types/review";
 
 const ASPECT_LABELS = {
   taste: "Taste",
@@ -52,10 +52,22 @@ export function formatRestaurantThumbnailLabel(restaurant: Restaurant): string {
   return `View photo of ${restaurant.name}`;
 }
 
-function formatBurgerReviewSummary(burger: Burger): string {
-  const reviewSummary = `${formatStarRating(burger.reviewScore)} based on ${burger.reviewCount} reviews`;
+function formatReviewSummary(
+  reviewScore: number,
+  reviewCount: number,
+  scores: Burger["scores"],
+): string {
+  const reviewSummary = `${formatStarRating(reviewScore)} based on ${reviewCount} reviews`;
 
-  return `${reviewSummary}. Aspect scores: ${formatAspectScores(burger.scores)}`;
+  return `${reviewSummary}. Aspect scores: ${formatAspectScores(scores)}`;
+}
+
+function formatBurgerReviewSummary(burger: Burger): string {
+  return formatReviewSummary(
+    burger.reviewScore,
+    burger.reviewCount,
+    burger.scores,
+  );
 }
 
 export function formatBurgerSummaryLabel(burger: Burger): string {
@@ -66,27 +78,47 @@ export function formatBurgerListItemLabel(burger: Burger): string {
   return `${burger.title}, from ${burger.restaurant.name}. ${formatBurgerReviewSummary(burger)}`;
 }
 
-export function formatRestaurantListItemLabel(restaurant: Restaurant): string {
-  const parts = [restaurant.name];
-  const distanceLabel = formatDistanceLabel(restaurant.distanceKm);
+export function formatRestaurantSummaryLabel(restaurant: Restaurant): string {
+  return `${restaurant.name}. ${formatReviewSummary(
+    restaurant.reviewScore,
+    restaurant.reviewCount,
+    restaurant.scores,
+  )}`;
+}
+
+export function formatRestaurantListItemLabel(
+  restaurant: Restaurant,
+  options?: { showDistance?: boolean },
+): string {
+  const parts = [
+    restaurant.name,
+    restaurant.location.address,
+    formatReviewSummary(
+      restaurant.reviewScore,
+      restaurant.reviewCount,
+      restaurant.scores,
+    ).replace(/\.$/, ""),
+  ];
+  const distanceLabel =
+    options?.showDistance && restaurant.distanceKm !== undefined
+      ? formatDistanceLabel(restaurant.distanceKm)
+      : null;
 
   if (distanceLabel) {
     parts.push(distanceLabel);
   }
 
-  parts.push(restaurant.location.address);
-
   const openingHours = restaurant.openingHours
     .map((entry) => `${entry.days}, ${entry.hours}`)
     .join(". ");
 
-  parts.push(`Opening times: ${openingHours}.`);
+  parts.push(`Opening times: ${openingHours}`);
 
-  return parts.join(". ");
+  return `${parts.join(". ")}.`;
 }
 
 export function formatReviewListItemLabel(
-  review: BurgerUserReview,
+  review: UserReviewContent,
   options?: { includePhotoNote?: boolean },
 ): string {
   const parts = [

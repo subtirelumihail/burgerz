@@ -72,12 +72,8 @@ export function BurgerPageContent({ burgerId }: BurgerPageContentProps) {
         <ReviewSearch
           query={query}
           onQueryChange={setQuery}
-          onSearch={() => {
-            void search();
-          }}
-          onClear={() => {
-            void clearSearch();
-          }}
+          onSearch={search}
+          onClear={clearSearch}
           isLoading={isReviewsLoading}
         />
         <BurgerReviewsList

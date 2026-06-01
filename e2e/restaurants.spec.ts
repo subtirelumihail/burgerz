@@ -5,7 +5,7 @@ import {
   getLocationNoticeGroup,
 } from "./helpers/location-notice";
 
-const RESTAURANTS_PATH = "/restaurants";
+const RESTAURANTS_PATH = "/";
 const BUCHAREST_GEO = { latitude: 44.437, longitude: 26.097 };
 
 function getRestaurantSearchButton(page: Page) {
@@ -52,6 +52,11 @@ test.describe("restaurants page", () => {
     ).toBeVisible();
 
     await expectRestaurantListLoaded(page);
+    await expect(
+      getRestaurantResultsRegion(page)
+        .getByText(/\(\d+ reviews\)/)
+        .first(),
+    ).toBeVisible();
     await expect(
       page.getByRole("link", { name: "Restaurants" }),
     ).toHaveAttribute("aria-current", "page");
@@ -224,11 +229,20 @@ test.describe("restaurants page", () => {
   test("header link navigates from burgers to restaurants", async ({
     page,
   }) => {
-    await page.goto("/");
+    await page.goto("/burgers");
 
     await page.getByRole("link", { name: "Restaurants" }).click();
 
     await expect(page).toHaveURL(RESTAURANTS_PATH);
+    await expect(
+      page.getByRole("heading", { level: 1, name: /find your next spot/i }),
+    ).toBeVisible();
+  });
+
+  test("legacy /restaurants path redirects to home", async ({ page }) => {
+    await page.goto("/restaurants");
+
+    await expect(page).toHaveURL("/");
     await expect(
       page.getByRole("heading", { level: 1, name: /find your next spot/i }),
     ).toBeVisible();
@@ -254,6 +268,9 @@ test.describe("restaurants page without location access", () => {
       getRestaurantListLink(page, /^coastal burger co\./i),
     ).toBeVisible({ timeout: 10000 });
     await expect(page.getByRole("option", { name: "Near By" })).toBeDisabled();
+    await expect(
+      getRestaurantResultsRegion(page).getByText(/\d+ (m|km) away/),
+    ).not.toBeVisible();
   });
 
   test("shows chrome settings guidance when location is blocked", async ({

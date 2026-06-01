@@ -22,6 +22,7 @@ interface UseRestaurantsResult {
   isLoading: boolean;
   error: Error | null;
   needsLocationAccess: boolean;
+  isLocationAvailable: boolean;
   isLocationPending: boolean;
   locationStatus: ReturnType<typeof useGeolocation>["status"];
   enableLocation: () => void;
@@ -104,7 +105,7 @@ export function useRestaurants(): UseRestaurantsResult {
   const [error, setError] = useState<Error | null>(null);
 
   const loadRestaurants = useCallback(
-    async (
+    (
       q?: string,
       nextPage = 1,
       nextSort: RestaurantSortOption = sort,
@@ -113,24 +114,29 @@ export function useRestaurants(): UseRestaurantsResult {
       setIsLoading(true);
       setError(null);
 
-      try {
-        const response = await getRestaurants(
-          buildRestaurantRequest({
-            q,
-            page: nextPage,
-            sort: nextSort,
-            coordinates: location,
-            isLocationAvailable,
-          }),
-        );
-        setRestaurants(response.restaurants);
-        setPagination(response.pagination);
-        setPage(response.pagination.page);
-      } catch (err) {
-        setError(toError(err));
-      } finally {
-        setIsLoading(false);
+      async function fetchRestaurants() {
+        try {
+          const response = await getRestaurants(
+            buildRestaurantRequest({
+              q,
+              page: nextPage,
+              sort: nextSort,
+              coordinates: location,
+              isLocationAvailable,
+            }),
+          );
+          setRestaurants(response.restaurants);
+          setPagination(response.pagination);
+          setPage(response.pagination.page);
+          setError(null);
+        } catch (err) {
+          setError(toError(err));
+        } finally {
+          setIsLoading(false);
+        }
       }
+
+      fetchRestaurants();
     },
     [coordinates, isLocationAvailable, sort],
   );
@@ -142,32 +148,37 @@ export function useRestaurants(): UseRestaurantsResult {
 
     let isCancelled = false;
 
-    getRestaurants(
-      buildRestaurantRequest({
-        page: 1,
-        sort,
-        coordinates,
-        isLocationAvailable,
-      }),
-    )
-      .then((response) => {
-        if (!isCancelled) {
-          setRestaurants(response.restaurants);
-          setPagination(response.pagination);
-          setPage(response.pagination.page);
-          setError(null);
+    async function loadInitialRestaurants() {
+      try {
+        const response = await getRestaurants(
+          buildRestaurantRequest({
+            page: 1,
+            sort,
+            coordinates,
+            isLocationAvailable,
+          }),
+        );
+
+        if (isCancelled) {
+          return;
         }
-      })
-      .catch((err) => {
+
+        setRestaurants(response.restaurants);
+        setPagination(response.pagination);
+        setPage(response.pagination.page);
+        setError(null);
+      } catch (err) {
         if (!isCancelled) {
           setError(toError(err));
         }
-      })
-      .finally(() => {
+      } finally {
         if (!isCancelled) {
           setIsLoading(false);
         }
-      });
+      }
+    }
+
+    loadInitialRestaurants();
 
     return () => {
       isCancelled = true;
@@ -176,23 +187,18 @@ export function useRestaurants(): UseRestaurantsResult {
 
   const search = useCallback(() => {
     const trimmedQuery = query.trim();
-    void loadRestaurants(trimmedQuery || undefined, 1, sort, coordinates);
+    loadRestaurants(trimmedQuery || undefined, 1, sort, coordinates);
   }, [coordinates, loadRestaurants, query, sort]);
 
   const clearSearch = useCallback(() => {
     setQuery("");
-    void loadRestaurants(undefined, 1, sort, coordinates);
+    loadRestaurants(undefined, 1, sort, coordinates);
   }, [coordinates, loadRestaurants, sort]);
 
   const goToPage = useCallback(
     (nextPage: number) => {
       const trimmedQuery = query.trim();
-      void loadRestaurants(
-        trimmedQuery || undefined,
-        nextPage,
-        sort,
-        coordinates,
-      );
+      loadRestaurants(trimmedQuery || undefined, nextPage, sort, coordinates);
     },
     [coordinates, loadRestaurants, query, sort],
   );
@@ -221,6 +227,7 @@ export function useRestaurants(): UseRestaurantsResult {
     isLoading,
     error,
     needsLocationAccess,
+    isLocationAvailable,
     isLocationPending,
     locationStatus: geolocationStatus,
     enableLocation,

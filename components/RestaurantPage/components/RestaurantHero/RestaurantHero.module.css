@@ -25,9 +25,25 @@
   @apply max-sm:contents sm:min-w-0 sm:flex-1;
 }
 
+.summaryFocus {
+  @apply flex min-w-0 flex-col gap-md rounded-md outline-none;
+  @apply max-sm:col-start-2 max-sm:row-start-1;
+}
+
+.summaryFocus:focus-visible {
+  @apply outline-2 outline-offset-2 outline-focus-ring;
+}
+
+.srOnly {
+  @apply sr-only;
+}
+
 .intro {
   @apply flex min-w-0 flex-col gap-xs;
-  @apply max-sm:col-start-2 max-sm:row-start-1;
+}
+
+.metrics {
+  @apply flex flex-col gap-md;
 }
 
 .title {

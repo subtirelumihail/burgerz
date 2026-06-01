@@ -3,8 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getRestaurants } from "@/lib/services/restaurant.service";
-import { mockImageAsset } from "@/test/mock-image";
-import type { Restaurant } from "@/types/restaurant";
+import { mockRestaurant } from "@/test/mock-restaurant";
 import { DEFAULT_RESTAURANTS_PAGE_SIZE } from "@/types/restaurant";
 
 import { useRestaurants } from "./useRestaurants";
@@ -18,17 +17,6 @@ vi.mock("@/lib/services/restaurant.service", () => ({
 }));
 
 const { useGeolocation } = await import("@/hooks/useGeolocation");
-
-const mockRestaurant: Restaurant = {
-  id: "restaurant-1",
-  name: "Smash Shack",
-  image: mockImageAsset,
-  location: {
-    address: "Strada Lipscani 25, Bucharest, Romania",
-    coordinates: { latitude: 44.4319, longitude: 26.1027 },
-  },
-  openingHours: [{ days: "Mon – Fri", hours: "11:00 – 22:00" }],
-};
 
 const mockPaginatedResponse = {
   restaurants: [mockRestaurant],
@@ -64,28 +52,13 @@ function TestHarness() {
         value={query}
         onChange={(event) => setQuery(event.target.value)}
       />
-      <button
-        type="button"
-        onClick={() => {
-          void search();
-        }}
-      >
+      <button type="button" onClick={search}>
         Search
       </button>
-      <button
-        type="button"
-        onClick={() => {
-          void clearSearch();
-        }}
-      >
+      <button type="button" onClick={clearSearch}>
         Clear search
       </button>
-      <button
-        type="button"
-        onClick={() => {
-          void goToPage(2);
-        }}
-      >
+      <button type="button" onClick={() => goToPage(2)}>
         Page 2
       </button>
       <button type="button" onClick={() => setSort("name")}>

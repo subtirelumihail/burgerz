@@ -1,5 +1,7 @@
 import { getDistanceKm } from "@/lib/distance";
 import { mockRestaurants } from "@/mocks/data/restaurants";
+import { enrichRestaurantWithRatings } from "@/mocks/restaurant-ratings";
+import { getAllReviews } from "@/mocks/review-store";
 import type {
   GeoCoordinates,
   GetRestaurantsResponse,
@@ -8,7 +10,13 @@ import type {
 } from "@/types/restaurant";
 import { DEFAULT_RESTAURANTS_PAGE_SIZE } from "@/types/restaurant";
 
-const restaurants: Restaurant[] = [...mockRestaurants];
+const restaurants: Restaurant[] = mockRestaurants.map((restaurant) =>
+  enrichRestaurantWithRatings(restaurant, getAllReviews()),
+);
+
+function withCurrentRatings(restaurant: Restaurant): Restaurant {
+  return enrichRestaurantWithRatings(restaurant, getAllReviews());
+}
 
 interface ListRestaurantsOptions {
   query?: string | null;
@@ -41,25 +49,31 @@ function sortRestaurants(
 
   if (sort === "nearby" && userLocation) {
     return sorted
-      .map((restaurant) => ({
-        ...restaurant,
-        distanceKm: getDistanceKm(
-          userLocation,
-          restaurant.location.coordinates,
-        ),
-      }))
+      .map((restaurant) =>
+        withCurrentRatings({
+          ...restaurant,
+          distanceKm: getDistanceKm(
+            userLocation,
+            restaurant.location.coordinates,
+          ),
+        }),
+      )
       .sort((left, right) => (left.distanceKm ?? 0) - (right.distanceKm ?? 0));
   }
 
   if (sort === "name-desc") {
-    return sorted.sort((left, right) =>
-      right.name.localeCompare(left.name, undefined, { sensitivity: "base" }),
-    );
+    return sorted
+      .map(withCurrentRatings)
+      .sort((left, right) =>
+        right.name.localeCompare(left.name, undefined, { sensitivity: "base" }),
+      );
   }
 
-  return sorted.sort((left, right) =>
-    left.name.localeCompare(right.name, undefined, { sensitivity: "base" }),
-  );
+  return sorted
+    .map(withCurrentRatings)
+    .sort((left, right) =>
+      left.name.localeCompare(right.name, undefined, { sensitivity: "base" }),
+    );
 }
 
 function parsePositiveInteger(value: string | null, fallback: number): number {

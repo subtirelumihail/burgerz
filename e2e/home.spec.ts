@@ -1,133 +1,66 @@
 import { expect, type Page, test } from "@playwright/test";
 
-function getBurgerResultsRegion(page: Page) {
-  return page.getByRole("region", { name: /burger results/i });
-}
+const RESTAURANTS_PATH = "/";
+const BUCHAREST_GEO = { latitude: 44.437, longitude: 26.097 };
 
-function getBurgerListLink(page: Page, name: RegExp) {
-  return getBurgerResultsRegion(page).getByRole("link", { name });
-}
-
-function getBurgerSearchButton(page: Page) {
+function getRestaurantSearchButton(page: Page) {
   return page
-    .getByRole("region", { name: /search burgers/i })
+    .getByRole("region", { name: /search restaurants/i })
     .getByRole("button", { name: "Search", exact: true });
 }
 
-test("home page renders burger search and list", async ({ page }) => {
-  await page.goto("/");
+function getRestaurantResultsRegion(page: Page) {
+  return page.getByRole("region", { name: /restaurant results/i });
+}
 
-  await expect(
-    page.getByRole("heading", { level: 1, name: /find your next burger/i }),
-  ).toBeVisible();
+function getRestaurantListLink(page: Page, name: RegExp) {
+  return getRestaurantResultsRegion(page).getByRole("link", { name });
+}
 
-  await expect(
-    page.getByRole("searchbox", { name: /search burgers/i }),
-  ).toBeVisible();
-  await expect(getBurgerSearchButton(page)).toBeVisible();
-  await expect(getBurgerResultsRegion(page)).toBeVisible();
-  await expect(
-    getBurgerListLink(page, /smash shack classic, from smash shack\./i),
-  ).toBeVisible({ timeout: 10000 });
-});
+async function expectRestaurantListLoaded(page: Page) {
+  await expect(getRestaurantResultsRegion(page)).toBeVisible();
+  await expect(getRestaurantListLink(page, /^smash shack\./i)).toBeVisible({
+    timeout: 10000,
+  });
+}
 
-test("list item navigates to burger detail on click", async ({ page }) => {
-  await page.goto("/");
+test.describe("home page (restaurants)", () => {
+  test.beforeEach(async ({ context }) => {
+    await context.grantPermissions(["geolocation"]);
+    await context.setGeolocation(BUCHAREST_GEO);
+  });
 
-  const burgerLink = getBurgerListLink(
+  test("renders restaurant search, sort, and list", async ({ page }) => {
+    await page.goto(RESTAURANTS_PATH);
+
+    await expect(
+      page.getByRole("heading", { level: 1, name: /find your next spot/i }),
+    ).toBeVisible();
+
+    await expect(
+      page.getByRole("searchbox", { name: /search restaurants/i }),
+    ).toBeVisible();
+    await expect(getRestaurantSearchButton(page)).toBeVisible();
+    await expect(page.getByRole("combobox", { name: "Sort by" })).toBeVisible();
+
+    await expectRestaurantListLoaded(page);
+    await expect(
+      page.getByRole("link", { name: "Restaurants" }),
+    ).toHaveAttribute("aria-current", "page");
+  });
+
+  test("list item navigates to restaurant detail on click", async ({
     page,
-    /smash shack classic, from smash shack\./i,
-  ).first();
-  await expect(burgerLink).toBeVisible({ timeout: 10000 });
-  await burgerLink.click();
+  }) => {
+    await page.goto(RESTAURANTS_PATH);
 
-  await expect(page).toHaveURL("/burgers/burger-1");
-  await expect(
-    page.getByRole("heading", { level: 1, name: /smash shack classic/i }),
-  ).toBeVisible();
-});
+    const restaurantLink = getRestaurantListLink(page, /^smash shack\./i);
+    await expect(restaurantLink).toBeVisible({ timeout: 10000 });
+    await restaurantLink.click();
 
-test("list item navigates to burger detail on enter", async ({ page }) => {
-  await page.goto("/");
-
-  const burgerLink = getBurgerListLink(page, /garden stack, from/i).first();
-  await expect(burgerLink).toBeVisible({ timeout: 10000 });
-  await burgerLink.focus();
-  await page.keyboard.press("Enter");
-
-  await expect(page).toHaveURL("/burgers/burger-3");
-});
-
-test("search filters burgers by query without reloading", async ({ page }) => {
-  await page.goto("/");
-
-  await expect(
-    getBurgerListLink(page, /smash shack classic, from smash shack\./i),
-  ).toBeVisible({ timeout: 10000 });
-
-  await page.getByRole("searchbox", { name: /search burgers/i }).fill("garden");
-  await getBurgerSearchButton(page).click();
-
-  await expect(page).toHaveURL("/");
-  await expect(getBurgerListLink(page, /garden stack, from/i)).toBeVisible({
-    timeout: 10000,
+    await expect(page).toHaveURL("/restaurants/restaurant-1");
+    await expect(
+      page.getByRole("heading", { level: 1, name: /smash shack/i }),
+    ).toBeVisible();
   });
-  await expect(
-    getBurgerListLink(page, /smash shack classic, from smash shack\./i),
-  ).not.toBeVisible();
-});
-
-test("clear search resets filtered results", async ({ page }) => {
-  await page.goto("/");
-
-  await expect(
-    getBurgerListLink(page, /smash shack classic, from smash shack\./i),
-  ).toBeVisible({ timeout: 10000 });
-
-  await page.getByRole("searchbox", { name: /search burgers/i }).fill("garden");
-  await getBurgerSearchButton(page).click();
-
-  await expect(getBurgerListLink(page, /garden stack, from/i)).toBeVisible({
-    timeout: 10000,
-  });
-  await expect(
-    getBurgerListLink(page, /smash shack classic, from smash shack\./i),
-  ).not.toBeVisible();
-
-  await page.getByRole("button", { name: /clear search/i }).click();
-
-  await expect(
-    page.getByRole("searchbox", { name: /search burgers/i }),
-  ).toHaveValue("");
-  await expect(getBurgerResultsRegion(page)).not.toHaveAttribute(
-    "aria-busy",
-    "true",
-    { timeout: 10000 },
-  );
-  await expect(
-    getBurgerListLink(page, /smash shack classic, from smash shack\./i),
-  ).toBeVisible({ timeout: 10000 });
-  await expect(getBurgerListLink(page, /garden stack, from/i)).toBeVisible({
-    timeout: 10000,
-  });
-});
-
-test("pagination loads the next page of burgers", async ({ page }) => {
-  await page.goto("/");
-
-  await expect(
-    getBurgerListLink(page, /smash shack classic, from smash shack\./i),
-  ).toBeVisible({ timeout: 10000 });
-  await expect(
-    getBurgerListLink(page, /patty palace original, from/i),
-  ).not.toBeVisible();
-
-  await page.getByRole("button", { name: /go to page 2/i }).click();
-
-  await expect(
-    getBurgerListLink(page, /patty palace original, from/i),
-  ).toBeVisible({ timeout: 10000 });
-  await expect(
-    getBurgerListLink(page, /smash shack classic, from smash shack\./i),
-  ).not.toBeVisible();
 });
