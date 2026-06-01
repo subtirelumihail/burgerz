@@ -1,0 +1,51 @@
+```mermaid
+C4Container
+    title Burgerz — System & Containers
+
+    UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
+
+    Person(visitor, "Visitor", "Browses burgers, restaurants, and reviews.")
+
+    System_Ext(geolocation, "Browser Geolocation API", "Coordinates for distance sort.")
+
+    Container_Boundary(burgerz, "Burgerz Web Application") {
+        Container(nextApp, "Next.js Application", "React 19, App Router", "RSC page shells and client UI.")
+        Container(clientUI, "Client UI Layer", "React", "Lists, detail views, forms, skeletons.")
+        Container(hooks, "Data Hooks", "React hooks", "Fetch lifecycle and UI state.")
+        Container(services, "Domain Services", "lib/services", "Burgers, restaurants, reviews.")
+        Container(apiClient, "HTTP Client", "lib/api/client.ts", "Base URL, JSON, errors.")
+    }
+
+    Container_Boundary(mocking, "MSW Mocking") {
+        Container_Ext(mswBootstrap, "MSW Bootstrap", "instrumentation, MswProvider", "MswWrapper in layout; Node and browser MSW startup.")
+        Container_Ext(msw, "MSW Handlers", "mocks/handlers", "Intercepts fetch when mocking enabled.")
+        ContainerDb_Ext(mockStores, "Mock Data Stores", "mocks/*-store.ts", "In-memory seed and state.")
+    }
+
+    Container_Boundary(backend, "Backend API Service") {
+        Container(apiService, "REST API", "HTTP service", "Exposes burgers, restaurants, and reviews.")
+        ContainerDb(database, "Database", "SQL database", "Persistent burger, restaurant, and review data.")
+    }
+
+    Rel_L(clientUI, geolocation, "useGeolocation", "Hook")
+    Rel_L(visitor, nextApp, "Uses")
+
+    Rel_R(nextApp, clientUI, "Composes")
+    Rel_D(clientUI, hooks, "Calls")
+    Rel_R(hooks, services, "Invokes")
+    Rel_D(services, apiClient, "Delegates transport")
+
+    Rel_R(mswBootstrap, msw, "Starts")
+    Rel_D(msw, mockStores, "Uses")
+
+    Rel_D(apiClient, msw, "Intercepted")
+
+    Rel_R(apiService, database, "")
+    Rel_D(apiClient, apiService, "")
+
+    UpdateRelStyle(clientUI, hooks, $offsetX="-15")
+    UpdateRelStyle(services, apiClient, $offsetX="-15")
+    UpdateRelStyle(apiClient, msw, $offsetX="-20")
+    UpdateRelStyle(apiClient, apiService, $offsetX="20")
+    UpdateRelStyle(clientUI, geolocation, $offsetX="-35", $offsetY="-5")
+```
