@@ -70,7 +70,7 @@ test("back link returns to restaurant when opened from restaurant page", async (
 test("back link returns to home search", async ({ page }) => {
   await page.goto(BURGER_DETAIL_PATH);
 
-  await page.getByRole("link", { name: /back to search/i }).click();
+  await page.getByRole("link", { name: /back to burgers/i }).click();
 
   await expect(page).toHaveURL("/burgers");
   await expect(

@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { FiSearch } from "react-icons/fi";
 
 import { Input } from "./Input";
 
@@ -16,5 +17,11 @@ describe("Input", () => {
       "aria-invalid",
       "true",
     );
+  });
+
+  it("renders a left icon when iconLeft is provided", () => {
+    render(<Input label="Search" iconLeft={FiSearch} />);
+    const input = screen.getByLabelText("Search");
+    expect(input.parentElement?.querySelector("svg")).toBeInTheDocument();
   });
 });

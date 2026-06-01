@@ -1,6 +1,7 @@
 "use client";
 
 import { type FormEvent } from "react";
+import { FiSearch } from "react-icons/fi";
 
 import { Button, Input } from "@/components/basic";
 
@@ -31,6 +32,7 @@ export function ReviewSearch({
             name="q"
             label="Search reviews"
             placeholder="Search by reviewer or review text"
+            iconLeft={FiSearch}
             value={query}
             onChange={(event) => onQueryChange(event.target.value)}
             disabled={isLoading}

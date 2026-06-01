@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { BackLink } from "@/components/basic/BackLink/BackLink";
 import { AddReviewPageContent } from "@/components/AddReviewPage/AddReviewPageContent";
 
 import styles from "./page.module.css";
@@ -13,9 +12,7 @@ export default async function AddReviewPage({ params }: AddReviewPageProps) {
 
   return (
     <div className={styles.root}>
-      <Link href={`/burgers/${id}`} className={styles.back}>
-        Back to burger
-      </Link>
+      <BackLink href={`/burgers/${id}`}>Back to burger</BackLink>
       <AddReviewPageContent burgerId={id} />
     </div>
   );

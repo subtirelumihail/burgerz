@@ -11,6 +11,7 @@ export function Input({
   hint,
   id: idProp,
   className,
+  iconLeft: IconLeft,
   ...props
 }: InputProps) {
   const generatedId = useId();
@@ -30,13 +31,20 @@ export function Input({
       <label htmlFor={inputId} className={styles.label}>
         {label}
       </label>
-      <input
-        id={inputId}
-        className={cn(styles.input, className)}
-        aria-invalid={hasError || undefined}
-        aria-describedby={describedBy || undefined}
-        {...props}
-      />
+      <div className={styles.inputWrap}>
+        {IconLeft ? <IconLeft className={styles.icon} aria-hidden /> : null}
+        <input
+          id={inputId}
+          className={cn(
+            styles.input,
+            IconLeft && styles.inputWithIcon,
+            className,
+          )}
+          aria-invalid={hasError || undefined}
+          aria-describedby={describedBy || undefined}
+          {...props}
+        />
+      </div>
       {hint && !hasError ? (
         <p id={hintId} className={styles.hint}>
           {hint}

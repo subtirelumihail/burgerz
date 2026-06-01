@@ -1,0 +1,17 @@
+@reference "../../../app/globals.css";
+
+.root {
+  @apply inline-flex items-center gap-1 text-sm font-medium text-link no-underline;
+}
+
+.root:hover {
+  @apply text-link-hover underline;
+}
+
+.root:focus-visible {
+  @apply rounded-sm outline-2 outline-offset-2 outline-focus-ring;
+}
+
+.icon {
+  @apply size-4 shrink-0;
+}

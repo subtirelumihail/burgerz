@@ -8,6 +8,14 @@
   @apply text-sm font-semibold text-foreground;
 }
 
+.inputWrap {
+  @apply relative;
+}
+
+.icon {
+  @apply pointer-events-none absolute top-1/2 left-lg size-[1.125rem] -translate-y-1/2 text-muted;
+}
+
 .input {
   @apply w-full rounded-md border border-border bg-surface-raised px-lg py-md text-base text-foreground;
   @apply transition-[border-color] duration-[180ms] ease-out-expo;
@@ -23,6 +31,10 @@
 
 .input:focus {
   @apply border-accent outline-none;
+}
+
+.inputWithIcon {
+  @apply pl-[2.75rem];
 }
 
 .input[aria-invalid="true"] {

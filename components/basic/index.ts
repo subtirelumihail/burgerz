@@ -1,3 +1,5 @@
+export { BackLink } from "./BackLink/BackLink";
+export type { BackLinkProps } from "./BackLink/types";
 export { Button } from "./Button/Button";
 export type { ButtonProps, ButtonVariant } from "./Button/types";
 export { Input } from "./Input/Input";

@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { BackLink } from "@/components/basic/BackLink/BackLink";
 import { BurgerPageContent } from "@/components/BurgerPage/BurgerPageContent";
 import {
   BURGER_FROM_SEARCH_PARAM,
@@ -25,9 +24,7 @@ export default async function BurgerPage({
 
   return (
     <div className={styles.root}>
-      <Link href={back.href} className={styles.back}>
-        {back.label}
-      </Link>
+      <BackLink href={back.href}>{back.label}</BackLink>
       <BurgerPageContent burgerId={id} />
     </div>
   );

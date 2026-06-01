@@ -1,5 +1,4 @@
-import Link from "next/link";
-
+import { BackLink } from "@/components/basic/BackLink/BackLink";
 import { RestaurantPageContent } from "@/components/RestaurantPage/RestaurantPageContent";
 
 import styles from "./page.module.css";
@@ -13,9 +12,7 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
 
   return (
     <div className={styles.root}>
-      <Link href="/" className={styles.back}>
-        Back to restaurants
-      </Link>
+      <BackLink href="/">Back to restaurants</BackLink>
       <RestaurantPageContent restaurantId={id} />
     </div>
   );

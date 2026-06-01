@@ -25,7 +25,7 @@ describe("burger-navigation", () => {
   it("resolveBurgerBackNavigation defaults to burger search", () => {
     expect(resolveBurgerBackNavigation(undefined)).toEqual({
       href: "/burgers",
-      label: "Back to search",
+      label: "Back to burgers",
     });
   });
 
