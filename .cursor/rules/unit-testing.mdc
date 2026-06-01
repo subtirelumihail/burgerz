@@ -6,15 +6,18 @@ alwaysApply: false
 
 # Unit Testing
 
-Every new or changed **component**, **hook**, or **service** must ship with Vitest unit tests.
+Every new or changed **component**, **subcomponent**, **hook**, or **service** must ship with Vitest unit tests.
 
 ## What to Test
 
 | Layer | Location | Test focus |
 |-------|----------|------------|
 | Component | `components/**`, `app/**` | Renders, user-visible output, interactions |
+| Subcomponent | `components/**/components/**` | Same as components — each exported subcomponent gets its own colocated test file |
 | Hook | `hooks/use*.ts` | Return values, loading/error states, side effects |
 | Service | `lib/services/*.ts` | Success path, error handling, correct API calls |
+
+Parent component tests do **not** replace subcomponent tests. Test subcomponents directly even when they are also exercised through a parent.
 
 ## File Placement
 
@@ -22,6 +25,8 @@ Colocate unit tests next to the source file. Name them `<source>.unit.test.ts(x)
 
 ```
 components/order-summary.tsx       →  components/order-summary.unit.test.tsx
+components/orders-list/components/order-card/order-card.tsx
+                                   →  components/orders-list/components/order-card/order-card.unit.test.tsx
 hooks/use-order.ts                 →  hooks/use-order.unit.test.ts
 lib/services/order.service.ts      →  lib/services/order.service.unit.test.ts
 app/page.tsx                       →  app/page.unit.test.tsx
@@ -69,6 +74,14 @@ test("getOrder calls correct endpoint", async () => {
 - **Layout-only wrappers** with no logic — no test required
 - **Type-only files** (`types.ts`, interfaces with no runtime code) — skip
 
+## Subcomponents
+
+Feature folders often split UI into nested `components/` directories (cards, heroes, skeletons, form sections). Each exported subcomponent is a first-class test target:
+
+- Add `<Subcomponent>.unit.test.tsx` next to the subcomponent source file
+- Cover the subcomponent's own props, variants, and a11y labels — not only the happy path through its parent
+- When adding a new subcomponent, add its test in the same change
+
 ## When Editing Existing Code
 
-Adding behavior to an untested file? Add tests for the new behavior at minimum. Refactoring? Add tests first or alongside the change.
+Adding behavior to an untested file? Add tests for the new behavior at minimum. Refactoring? Add tests first or alongside the change. Adding or changing a subcomponent? Add or update its colocated unit test.
