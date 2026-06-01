@@ -1,0 +1,70 @@
+# React Accessibility
+
+**Applies when editing:** `**/*.{tsx,jsx}`
+
+Every component must be usable with keyboard, screen readers, and assistive tech. Prefer semantic HTML over ARIA.
+
+## Semantic HTML First
+
+- Use native elements: `<button>`, `<a>`, `<nav>`, `<main>`, `<section>`, `<label>`, `<input>`.
+- Never use `<div>` or `<span>` with `onClick` for interactive actions — use `<button>` or `<a>`.
+- Maintain logical heading order (`h1` → `h2` → `h3`); don't skip levels for styling.
+
+```tsx
+// ❌ BAD
+<div onClick={handleSubmit}>Submit</div>
+
+// ✅ GOOD
+<button type="button" onClick={handleSubmit}>Submit</button>
+```
+
+## Forms
+
+- Every input needs a visible `<label>` linked via `htmlFor`/`id`, or `aria-label` when a visible label isn't possible.
+- Group related fields with `<fieldset>` and `<legend>`.
+- Surface errors with `aria-invalid` and `aria-describedby` pointing to the error message id.
+
+```tsx
+<label htmlFor="email">Email</label>
+<input id="email" aria-invalid={hasError} aria-describedby={hasError ? "email-error" : undefined} />
+{hasError && <p id="email-error" role="alert">{errorMessage}</p>}
+```
+
+## Images & Icons
+
+- Meaningful images: descriptive `alt` text. Decorative images: `alt=""`.
+- Icon-only buttons: require `aria-label` (or visually hidden text).
+
+```tsx
+<button type="button" aria-label="Close dialog">
+  <XIcon aria-hidden="true" />
+</button>
+```
+
+## Keyboard & Focus
+
+- All interactive elements must be reachable and operable via keyboard (Tab, Enter, Space, Escape).
+- Visible focus styles are required — never remove outlines without a replacement.
+- Modals/menus: trap focus, restore focus on close, close on Escape.
+- Dropdowns/menus: support arrow keys where appropriate.
+
+## ARIA (Use Sparingly)
+
+- No ARIA is better than wrong ARIA. Don't add roles/states that duplicate native semantics.
+- Use `aria-expanded`, `aria-controls`, `aria-haspopup` for disclosure widgets.
+- Dynamic updates: `role="alert"` or `aria-live="polite"` for status messages.
+
+## Links & Navigation
+
+- Links navigate (`<a href="...">`); buttons perform actions. Don't mix them.
+- Current page/link: `aria-current="page"`.
+- Skip links for main content on layout pages.
+
+## Testing Checklist
+
+Before finishing a component, verify:
+
+- [ ] Tab through all interactive elements in logical order
+- [ ] Screen reader announces name, role, and state correctly
+- [ ] Color is not the only indicator of meaning or state
+- [ ] Text meets WCAG AA contrast (4.5:1 body, 3:1 large text/UI)

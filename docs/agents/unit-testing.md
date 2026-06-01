@@ -1,0 +1,87 @@
+# Unit Testing
+
+**Applies when editing:** `components/`, `hooks/`, `lib/services/`, `app/`
+
+Every new or changed **component**, **subcomponent**, **hook**, or **service** must ship with Vitest unit tests.
+
+## What to Test
+
+| Layer        | Location                      | Test focus                                                                       |
+| ------------ | ----------------------------- | -------------------------------------------------------------------------------- |
+| Component    | `components/**`, `app/**`     | Renders, user-visible output, interactions                                       |
+| Subcomponent | `components/**/components/**` | Same as components — each exported subcomponent gets its own colocated test file |
+| Hook         | `hooks/use*.ts`               | Return values, loading/error states, side effects                                |
+| Service      | `lib/services/*.ts`           | Success path, error handling, correct API calls                                  |
+
+Parent component tests do **not** replace subcomponent tests. Test subcomponents directly even when they are also exercised through a parent.
+
+## File Placement
+
+Colocate unit tests next to the source file. Name them `<source>.unit.test.ts(x)`:
+
+```
+components/order-summary.tsx       →  components/order-summary.unit.test.tsx
+components/orders-list/components/order-card/order-card.tsx
+                                   →  components/orders-list/components/order-card/order-card.unit.test.tsx
+hooks/use-order.ts                 →  hooks/use-order.unit.test.ts
+lib/services/order.service.ts      →  lib/services/order.service.unit.test.ts
+app/page.tsx                       →  app/page.unit.test.tsx
+```
+
+Do not put unit tests in `__tests__/` or `e2e/`. The `.unit.test` suffix distinguishes unit tests from Playwright e2e specs.
+
+## Conventions
+
+- Use Vitest + `@testing-library/react` (components/hooks) or plain Vitest (services)
+- Prefer `screen.getByRole` over test IDs or CSS selectors
+- Mock Next.js APIs via `vitest.setup.tsx`; mock services in hook tests
+- Run `npm run test:run` before finishing
+
+```tsx
+// components/order-summary.unit.test.tsx
+import { render, screen } from "@testing-library/react";
+import { expect, test } from "vitest";
+import { OrderSummary } from "./order-summary";
+
+test("shows order total", () => {
+  render(<OrderSummary total={1299} currency="USD" />);
+  expect(screen.getByText("$12.99")).toBeInTheDocument();
+});
+```
+
+```typescript
+// lib/services/order.service.unit.test.ts
+import { expect, test, vi } from "vitest";
+import { getOrder } from "./order.service";
+
+vi.mock("@/lib/api/client", () => ({
+  apiClient: { get: vi.fn(() => Promise.resolve({ id: "1" })) },
+}));
+
+test("getOrder calls correct endpoint", async () => {
+  const order = await getOrder("1");
+  expect(order.id).toBe("1");
+});
+```
+
+## Exceptions
+
+- **Async Server Components** with `await` — cover with Playwright e2e, not Vitest
+- **Layout-only wrappers** with no logic — no test required
+- **Type-only files** (`types.ts`, interfaces with no runtime code) — skip
+
+## Subcomponents
+
+Feature folders often split UI into nested `components/` directories (cards, heroes, skeletons, form sections). Each exported subcomponent is a first-class test target:
+
+- Add `<Subcomponent>.unit.test.tsx` next to the subcomponent source file
+- Cover the subcomponent's own props, variants, and a11y labels — not only the happy path through its parent
+- When adding a new subcomponent, add its test in the same change
+
+## When Editing Existing Code
+
+Adding behavior to an untested file? Add tests for the new behavior at minimum. Refactoring? Add tests first or alongside the change. Adding or changing a subcomponent? Add or update its colocated unit test.
+
+## Related
+
+- [E2E Testing](./e2e-testing.md) — page-level Playwright coverage
