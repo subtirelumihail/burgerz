@@ -3,8 +3,8 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getBurgerReviews } from "@/lib/services/review.service";
-import type { BurgerUserReview } from "@/types/review";
 import { DEFAULT_REVIEWS_PAGE_SIZE } from "@/types/review";
+import { mockBurgerUserReview } from "@/test/mock-review";
 
 import { useBurgerReviews } from "./useBurgerReviews";
 
@@ -12,14 +12,7 @@ vi.mock("@/lib/services/review.service", () => ({
   getBurgerReviews: vi.fn(),
 }));
 
-const mockReview: BurgerUserReview = {
-  id: "review-1",
-  burgerId: "burger-1",
-  authorName: "Alex Rivera",
-  text: "Perfect smash crust with juicy beef.",
-  score: 4.5,
-  createdAt: "2025-12-01T12:00:00.000Z",
-};
+const mockReview = mockBurgerUserReview;
 
 const mockPaginatedResponse = {
   reviews: [mockReview],

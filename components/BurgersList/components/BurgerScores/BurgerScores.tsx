@@ -14,17 +14,21 @@ const SCORE_ITEMS = [
   },
 ] as const;
 
-function formatScore(score: number): string {
-  return Math.min(Math.max(score, 0), 5).toFixed(1);
+function formatScore(score: number, decimals: 0 | 1): string {
+  const clamped = Math.min(Math.max(score, 0), 5);
+
+  return decimals === 0 ? String(Math.round(clamped)) : clamped.toFixed(1);
 }
 
-export function BurgerScores({ scores }: BurgerScoresProps) {
+export function BurgerScores({ scores, decimals = 1 }: BurgerScoresProps) {
   return (
     <div className={styles.root}>
       {SCORE_ITEMS.map(({ key, label, variant }) => (
         <span key={key} className={cn(styles.pill, styles[variant])}>
           <span className={styles.label}>{label}</span>
-          <span className={styles.score}>{formatScore(scores[key])}</span>
+          <span className={styles.score}>
+            {formatScore(scores[key], decimals)}
+          </span>
         </span>
       ))}
     </div>

@@ -2,18 +2,11 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 
-import type { BurgerUserReview } from "@/types/review";
+import { mockBurgerUserReview } from "@/test/mock-review";
 
 import { UserReviewCard } from "./UserReviewCard";
 
-const baseReview: BurgerUserReview = {
-  id: "review-1",
-  burgerId: "burger-1",
-  authorName: "Alex Rivera",
-  text: "Perfect smash crust with juicy beef.",
-  score: 4.5,
-  createdAt: "2025-12-01T12:00:00.000Z",
-};
+const baseReview = mockBurgerUserReview;
 
 describe("UserReviewCard", () => {
   it("renders review details", () => {
@@ -23,7 +16,11 @@ describe("UserReviewCard", () => {
     expect(
       screen.getByText("Perfect smash crust with juicy beef."),
     ).toBeInTheDocument();
-    expect(screen.getByText("4.5")).toBeInTheDocument();
+    expect(screen.getByText("Taste")).toBeInTheDocument();
+    expect(screen.getByText("Texture")).toBeInTheDocument();
+    expect(screen.getByText("Visual presentation")).toBeInTheDocument();
+    expect(screen.getAllByText("4")).toHaveLength(3);
+    expect(screen.getByText("5")).toBeInTheDocument();
   });
 
   it("renders review image when provided", () => {

@@ -12,4 +12,6 @@ export interface BurgerCardProps {
 
 export interface BurgerScoresProps {
   scores: Burger["scores"];
+  /** Decimal places for displayed scores (burgers use 1; user reviews use 0) */
+  decimals?: 0 | 1;
 }

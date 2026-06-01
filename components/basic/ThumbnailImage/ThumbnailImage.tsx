@@ -47,6 +47,8 @@ export function ThumbnailImage({
           imageClassName,
         )}
         priority={priority}
+        loading={priority ? undefined : "lazy"}
+        fetchPriority={priority ? "high" : "low"}
         sizes={sizes}
         onLoad={() => setLoadedSrc(src)}
       />

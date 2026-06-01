@@ -12,11 +12,16 @@ function clampScore(score: number): number {
 }
 
 function formatScore(score: number): string {
-  return clampScore(score).toFixed(1);
+  const clampedScore = clampScore(score);
+
+  return Number.isInteger(clampedScore)
+    ? String(clampedScore)
+    : clampedScore.toFixed(1);
 }
 
 function renderStars(score: number) {
   const clampedScore = clampScore(score);
+  const usesHalfStars = !Number.isInteger(clampedScore);
 
   return Array.from({ length: MAX_STARS }, (_, index) => {
     const starValue = index + 1;
@@ -25,7 +30,7 @@ function renderStars(score: number) {
       return <FaStar key={starValue} aria-hidden />;
     }
 
-    if (clampedScore >= starValue - 0.5) {
+    if (usesHalfStars && clampedScore >= starValue - 0.5) {
       return <FaStarHalfAlt key={starValue} aria-hidden />;
     }
 
