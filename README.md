@@ -246,7 +246,7 @@ Shared pa11y settings live in `pa11y.json`. Route list lives in `pa11y-ci.config
 - Server running without MSW — stop it and use `npm run dev:mock`, or let the script start its own server.
 - Puppeteer/Chrome missing locally — CI installs Chrome via `npx puppeteer browsers install chrome`.
 
-**ESLint** — `eslint-config-next` includes `eslint-plugin-jsx-a11y` (via core web vitals). Run `npm run lint` to catch common JSX accessibility mistakes.
+**ESLint** — `eslint-plugin-jsx-a11y` recommended rules run as **errors** on `.tsx`/`.jsx` files (via `eslint.config.mjs`). `eslint-config-next` still supplies the plugin and Next.js-specific checks such as `next/image` alt text. Run `npm run lint` to catch common JSX accessibility mistakes.
 
 **Unit and E2E tests** — prefer role-based queries (`getByRole`, `getByLabelText`) over test IDs or CSS selectors. This keeps tests aligned with how assistive tech discovers elements.
 
