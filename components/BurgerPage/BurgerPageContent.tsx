@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+
 import { BurgerReviewsList } from "@/components/BurgerReviewsList/BurgerReviewsList";
 import { Pagination } from "@/components/basic/Pagination/Pagination";
 import { ReviewSearch } from "@/components/ReviewSearch/ReviewSearch";
@@ -31,7 +33,14 @@ export function BurgerPageContent({ burgerId }: BurgerPageContentProps) {
     error: reviewsError,
   } = useBurgerReviews(burgerId);
 
+  const [heroImageReadyForBurgerId, setHeroImageReadyForBurgerId] = useState<
+    string | null
+  >(null);
+
   const error = burgerError ?? reviewsError;
+  const isHeroImageReady = heroImageReadyForBurgerId === burgerId;
+  const canShowReviewImages =
+    !isBurgerLoading && burger !== null && isHeroImageReady;
 
   if (!isBurgerLoading && !burger && !burgerError) {
     return <p className={styles.notFound}>Burger not found</p>;
@@ -40,7 +49,14 @@ export function BurgerPageContent({ burgerId }: BurgerPageContentProps) {
   return (
     <div className={styles.root}>
       {isBurgerLoading ? <BurgerHeroSkeleton /> : null}
-      {!isBurgerLoading && burger ? <BurgerHero burger={burger} /> : null}
+      {!isBurgerLoading && burger ? (
+        <BurgerHero
+          burger={burger}
+          onHeroImageLoad={() => {
+            setHeroImageReadyForBurgerId(burgerId);
+          }}
+        />
+      ) : null}
       {error ? (
         <p className={styles.error} role="alert">
           {error.message}
@@ -67,7 +83,7 @@ export function BurgerPageContent({ burgerId }: BurgerPageContentProps) {
         <BurgerReviewsList
           reviews={reviews}
           isLoading={isReviewsLoading}
-          showReviewImages={!isBurgerLoading && burger !== null}
+          showReviewImages={canShowReviewImages}
         />
         <Pagination
           page={pagination.page}

@@ -34,7 +34,7 @@
 }
 
 .promptAccent {
-  @apply font-semibold text-accent;
+  @apply font-semibold text-link;
 }
 
 .preview {

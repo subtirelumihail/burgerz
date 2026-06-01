@@ -9,4 +9,5 @@ export interface ImageThumbnailProps {
   imageClassName?: string;
   priority?: boolean;
   sizes?: string;
+  onImageLoad?: () => void;
 }

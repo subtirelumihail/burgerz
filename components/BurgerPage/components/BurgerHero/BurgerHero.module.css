@@ -11,9 +11,9 @@
 }
 
 .imageWrap {
-  @apply size-28 shrink-0;
+  @apply size-40 shrink-0;
   @apply max-sm:col-start-1 max-sm:row-start-1 max-sm:self-start;
-  @apply sm:size-40;
+  @apply sm:size-48;
 }
 
 .image {

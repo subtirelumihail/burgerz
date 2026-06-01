@@ -8,4 +8,5 @@ export interface ThumbnailImageProps {
   priority?: boolean;
   sizes?: string;
   fitContainer?: boolean;
+  onImageLoad?: () => void;
 }

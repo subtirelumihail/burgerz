@@ -4,7 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.join(__dirname, "..");
-const configPath = path.join(projectRoot, "pa11y.json");
+const pa11yCiConfigPath = path.join(projectRoot, "pa11y-ci.config.cjs");
 
 const PORT = process.env.PORT || 3000;
 const baseURL = `http://localhost:${PORT}`;
@@ -14,13 +14,6 @@ const mockEnv = {
   PORT: String(PORT),
   NEXT_PUBLIC_API_MOCKING: "enabled",
 };
-
-const paths = [
-  "/",
-  "/restaurants",
-  "/burgers/burger-1",
-  "/restaurants/restaurant-1",
-];
 
 function log(message) {
   console.log(`[a11y] ${message}`);
@@ -50,9 +43,9 @@ async function probeServer(url) {
   }
 }
 
-function runPa11y(url) {
+function runPa11yCi() {
   return new Promise((resolve, reject) => {
-    const child = spawn("npx", ["pa11y", url, "--config", configPath], {
+    const child = spawn("npx", ["pa11y-ci", "--config", pa11yCiConfigPath], {
       cwd: projectRoot,
       stdio: "inherit",
       env: mockEnv,
@@ -65,11 +58,7 @@ function runPa11y(url) {
         return;
       }
 
-      reject(
-        new Error(
-          `pa11y failed for ${url} with exit code ${code ?? "unknown"}`,
-        ),
-      );
+      reject(new Error(`pa11y-ci failed with exit code ${code ?? "unknown"}`));
     });
   });
 }
@@ -204,11 +193,8 @@ async function main() {
   try {
     ({ server, startedServer } = await ensureMockServer());
 
-    for (const route of paths) {
-      const url = `${baseURL}${route}`;
-      log(`Running pa11y on ${url}`);
-      await runPa11y(url);
-    }
+    log("Running pa11y-ci against all routes...");
+    await runPa11yCi();
   } finally {
     if (startedServer) {
       stopServer(server);

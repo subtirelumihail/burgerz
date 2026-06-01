@@ -32,6 +32,7 @@ export function RatingSlider({
   const fieldId = idProp ?? generatedId;
   const sliderId = `${fieldId}-slider`;
   const inputId = `${fieldId}-input`;
+  const labelId = `${fieldId}-label`;
   const errorId = `${fieldId}-error`;
   const hasError = Boolean(error);
 
@@ -51,7 +52,7 @@ export function RatingSlider({
 
   return (
     <div className={styles.field}>
-      <label htmlFor={sliderId} className={styles.label}>
+      <label htmlFor={sliderId} id={labelId} className={styles.label}>
         {label}
       </label>
       <div className={styles.controls}>
@@ -68,7 +69,7 @@ export function RatingSlider({
           aria-valuemax={MAX_RATING}
           aria-valuenow={value}
           aria-invalid={hasError || undefined}
-          aria-describedby={hasError ? errorId : `${inputId}-label`}
+          aria-describedby={hasError ? errorId : labelId}
           className={styles.slider}
         />
         <input

@@ -15,6 +15,7 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
     "public/mockServiceWorker.js",
+    "pa11y-ci.config.cjs",
   ]),
 ]);
 

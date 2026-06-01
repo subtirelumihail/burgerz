@@ -19,9 +19,10 @@ export function ThumbnailImage({
   priority = false,
   sizes,
   fitContainer = false,
+  onImageLoad,
 }: ThumbnailImageProps) {
   const [loadedSrc, setLoadedSrc] = useState<string | null>(null);
-  const isLoaded = loadedSrc === src;
+  const isLoaded = priority || loadedSrc === src;
 
   return (
     <span
@@ -52,10 +53,13 @@ export function ThumbnailImage({
           imageClassName,
         )}
         priority={priority}
-        loading={priority ? undefined : "lazy"}
+        loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "low"}
         sizes={sizes}
-        onLoad={() => setLoadedSrc(src)}
+        onLoad={() => {
+          setLoadedSrc(src);
+          onImageLoad?.();
+        }}
       />
     </span>
   );

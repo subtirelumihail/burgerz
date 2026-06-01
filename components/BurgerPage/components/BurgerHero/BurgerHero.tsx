@@ -9,7 +9,7 @@ import type { BurgerHeroProps } from "./types";
 
 import styles from "./BurgerHero.module.css";
 
-export function BurgerHero({ burger }: BurgerHeroProps) {
+export function BurgerHero({ burger, onHeroImageLoad }: BurgerHeroProps) {
   const summaryId = `${burger.id}-summary`;
 
   return (
@@ -18,12 +18,13 @@ export function BurgerHero({ burger }: BurgerHeroProps) {
         <ImageThumbnail
           image={burger.image}
           alt={burger.title}
-          width={160}
-          height={160}
+          width={192}
+          height={192}
           className={styles.imageWrap}
           imageClassName={styles.image}
           priority
-          sizes="(max-width: 640px) 112px, 160px"
+          sizes="(max-width: 640px) 160px, 192px"
+          onImageLoad={onHeroImageLoad}
         />
         <div className={styles.details}>
           <Link

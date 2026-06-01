@@ -49,7 +49,8 @@
 }
 
 .imageWrap {
-  @apply aspect-[4/3] w-48 max-w-full shrink-0;
+  @apply aspect-[4/3] w-32 max-w-full shrink-0;
+  @apply sm:w-36;
 }
 
 .image {

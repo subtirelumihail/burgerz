@@ -40,6 +40,24 @@ describe("ThumbnailImage", () => {
     expect(wrapper).not.toHaveAttribute("style");
   });
 
+  it("skips loading placeholder for priority images", () => {
+    render(
+      <ThumbnailImage
+        src="https://example.com/thumb.jpg"
+        alt="Burger photo"
+        width={96}
+        height={96}
+        priority
+      />,
+    );
+
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+    expect(screen.getByRole("img", { name: "Burger photo" })).toHaveAttribute(
+      "loading",
+      "eager",
+    );
+  });
+
   it("resets loading state when src changes", () => {
     const { rerender } = render(
       <ThumbnailImage

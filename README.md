@@ -230,13 +230,15 @@ npm run test:a11y
 The script (`scripts/run-pa11y.mjs`):
 
 1. Starts a mock dev server with MSW if none is running on port `3000` (or reuses an existing `dev:mock` server).
-2. Scans these routes with [axe](https://www.deque.com/axe/) via pa11y:
+2. Runs [pa11y-ci](https://github.com/pa11y/pa11y-ci) once against all routes with [axe](https://www.deque.com/axe/):
    - `/`
+   - `/restaurants`
    - `/burgers/burger-1`
+   - `/burgers/burger-1/add-review`
    - `/restaurants/restaurant-1`
 3. Fails on **error**-level issues only (`pa11y.json` — standard: `WCAG2AA`).
 
-Configuration lives in `pa11y.json`. Add new routes to `paths` in `scripts/run-pa11y.mjs` when you ship pages that should be covered.
+Shared pa11y settings live in `pa11y.json`. Route list lives in `pa11y-ci.config.cjs` — add new paths there when you ship pages that should be covered.
 
 **Troubleshooting `test:a11y`:**
 
@@ -284,7 +286,7 @@ Use browser DevTools (Accessibility tree, Lighthouse) or VoiceOver (macOS) / NVD
 ### Adding a new page
 
 1. Build with semantic HTML and the guidelines above.
-2. Add the route to `paths` in `scripts/run-pa11y.mjs` if it should be scanned in CI.
+2. Add the route to `pa11y-ci.config.cjs` if it should be scanned in CI.
 3. Use role-based locators in E2E specs (`getByRole`, `getByLabel`).
 4. Run `npm run test:a11y` before opening a PR.
 

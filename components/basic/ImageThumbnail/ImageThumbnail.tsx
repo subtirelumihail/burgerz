@@ -19,6 +19,7 @@ export function ImageThumbnail({
   imageClassName,
   priority = false,
   sizes,
+  onImageLoad,
 }: ImageThumbnailProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -39,6 +40,7 @@ export function ImageThumbnail({
           priority={priority}
           sizes={sizes}
           fitContainer
+          onImageLoad={onImageLoad}
         />
       </button>
       <Lightbox

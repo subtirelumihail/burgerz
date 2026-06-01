@@ -77,11 +77,11 @@ export function UserReviewCard({
           <ImageThumbnail
             image={review.image!}
             alt={`Photo from ${review.authorName}'s review`}
-            width={200}
-            height={150}
+            width={128}
+            height={96}
             className={styles.imageWrap}
             imageClassName={styles.image}
-            sizes="200px"
+            sizes="(max-width: 640px) 128px, 144px"
           />
         ) : null}
       </article>
@@ -95,11 +95,11 @@ export function UserReviewCard({
         <ImageThumbnail
           image={review.image!}
           alt={`Photo from ${review.authorName}'s review`}
-          width={200}
-          height={150}
+          width={128}
+          height={96}
           className={styles.imageWrap}
           imageClassName={styles.image}
-          sizes="200px"
+          sizes="(max-width: 640px) 128px, 144px"
         />
       ) : null}
     </article>
