@@ -207,7 +207,7 @@ npm run test:e2e        # headless
 npm run test:e2e:ui     # interactive UI
 ```
 
-See `.cursor/rules/e2e-testing.mdc` for conventions.
+See [docs/agents/e2e-testing.md](docs/agents/e2e-testing.md) for conventions.
 
 ## Accessibility
 
@@ -246,7 +246,7 @@ Shared pa11y settings live in `pa11y.json`. Route list lives in `pa11y-ci.config
 
 ### Component guidelines
 
-Full details: `.cursor/rules/react-accessibility.mdc`. Summary:
+Full details: [docs/agents/react-accessibility.md](docs/agents/react-accessibility.md). Summary:
 
 | Area                 | Rule                                                                                                                             |
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
@@ -286,7 +286,7 @@ Use browser DevTools (Accessibility tree, Lighthouse) or VoiceOver (macOS) / NVD
 
 ## Building components
 
-Components follow a consistent folder structure, styling approach, and composition rules. Full details live in `.cursor/rules/react-component-composition.mdc`; the essentials:
+Components follow a consistent folder structure, styling approach, and composition rules. Full details live in [docs/agents/react-component-composition.md](docs/agents/react-component-composition.md); the essentials:
 
 ### Folder structure
 
