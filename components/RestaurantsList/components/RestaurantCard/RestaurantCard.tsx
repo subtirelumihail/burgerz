@@ -1,6 +1,10 @@
 import Link from "next/link";
 
 import { ThumbnailImage } from "@/components/basic/ThumbnailImage/ThumbnailImage";
+import {
+  formatRestaurantListItemLabel,
+  formatRestaurantThumbnailLabel,
+} from "@/lib/a11y/list-item-labels";
 
 import type { RestaurantCardProps } from "../../types";
 
@@ -18,15 +22,96 @@ function formatDistance(distanceKm?: number): string | null {
   return `${distanceKm.toFixed(1)} km away`;
 }
 
-export function RestaurantCard({
+function RestaurantCardContent({
   restaurant,
-  imagePriority = false,
-}: RestaurantCardProps) {
+  usePlainText,
+}: {
+  restaurant: RestaurantCardProps["restaurant"];
+  usePlainText: boolean;
+}) {
   const distanceLabel = formatDistance(restaurant.distanceKm);
 
   return (
+    <div className={styles.content}>
+      <header className={styles.header}>
+        <h2 className={styles.title}>
+          {usePlainText ? (
+            <span className={styles.titleLink}>{restaurant.name}</span>
+          ) : (
+            <Link
+              href={`/restaurants/${restaurant.id}`}
+              className={styles.titleLink}
+            >
+              {restaurant.name}
+            </Link>
+          )}
+        </h2>
+        {distanceLabel ? (
+          <p className={styles.distance}>{distanceLabel}</p>
+        ) : null}
+      </header>
+      <div className={styles.details}>
+        <p className={styles.location}>{restaurant.location.address}</p>
+        <div className={styles.hours}>
+          <h3 className={styles.hoursTitle}>Opening times</h3>
+          <ul className={styles.hoursList}>
+            {restaurant.openingHours.map((entry) => (
+              <li
+                key={`${entry.days}-${entry.hours}`}
+                className={styles.hoursItem}
+              >
+                <span className={styles.hoursDays}>{entry.days}</span>
+                <span className={styles.hoursTime}>{entry.hours}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function RestaurantCard({
+  restaurant,
+  imagePriority = false,
+  listMode = false,
+}: RestaurantCardProps) {
+  const href = `/restaurants/${restaurant.id}`;
+
+  if (listMode) {
+    return (
+      <article className={styles.root}>
+        <Link
+          href={href}
+          className={styles.imageLink}
+          aria-label={formatRestaurantThumbnailLabel(restaurant)}
+        >
+          <ThumbnailImage
+            src={restaurant.image.thumbnailUrl}
+            alt=""
+            width={96}
+            height={96}
+            className={styles.imageWrap}
+            imageClassName={styles.image}
+            priority={imagePriority}
+          />
+        </Link>
+        <Link
+          href={href}
+          className={styles.contentLink}
+          aria-label={formatRestaurantListItemLabel(restaurant)}
+        >
+          <div aria-hidden="true">
+            <RestaurantCardContent restaurant={restaurant} usePlainText />
+          </div>
+        </Link>
+      </article>
+    );
+  }
+
+  return (
     <article className={styles.root}>
-      <Link href={`/restaurants/${restaurant.id}`} className={styles.imageLink}>
+      <Link href={href} className={styles.imageLink}>
         <ThumbnailImage
           src={restaurant.image.thumbnailUrl}
           alt={restaurant.name}
@@ -37,38 +122,7 @@ export function RestaurantCard({
           priority={imagePriority}
         />
       </Link>
-      <div className={styles.content}>
-        <header className={styles.header}>
-          <h2 className={styles.title}>
-            <Link
-              href={`/restaurants/${restaurant.id}`}
-              className={styles.titleLink}
-            >
-              {restaurant.name}
-            </Link>
-          </h2>
-          {distanceLabel ? (
-            <p className={styles.distance}>{distanceLabel}</p>
-          ) : null}
-        </header>
-        <div className={styles.details}>
-          <p className={styles.location}>{restaurant.location.address}</p>
-          <div className={styles.hours}>
-            <h3 className={styles.hoursTitle}>Opening times</h3>
-            <ul className={styles.hoursList}>
-              {restaurant.openingHours.map((entry) => (
-                <li
-                  key={`${entry.days}-${entry.hours}`}
-                  className={styles.hoursItem}
-                >
-                  <span className={styles.hoursDays}>{entry.days}</span>
-                  <span className={styles.hoursTime}>{entry.hours}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </div>
+      <RestaurantCardContent restaurant={restaurant} usePlainText={false} />
     </article>
   );
 }

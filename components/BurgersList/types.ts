@@ -8,6 +8,8 @@ export interface BurgersListProps {
 export interface BurgerCardProps {
   burger: Burger;
   imagePriority?: boolean;
+  /** Enables split keyboard focus: thumbnail link + details link. */
+  listMode?: boolean;
 }
 
 export interface BurgerScoresProps {

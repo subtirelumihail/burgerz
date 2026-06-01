@@ -24,7 +24,7 @@ export function BurgersList({ burgers, isLoading = false }: BurgersListProps) {
           items={burgers}
           keyExtractor={(burger) => burger.id}
           renderItem={(burger, index) => (
-            <BurgerCard burger={burger} imagePriority={index === 0} />
+            <BurgerCard burger={burger} imagePriority={index === 0} listMode />
           )}
           emptyMessage="No burgers match your search."
           ariaLabel="Burgers"

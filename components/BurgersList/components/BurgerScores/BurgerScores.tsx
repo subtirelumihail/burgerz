@@ -22,15 +22,24 @@ function formatScore(score: number, decimals: 0 | 1): string {
 
 export function BurgerScores({ scores, decimals = 1 }: BurgerScoresProps) {
   return (
-    <div className={styles.root}>
-      {SCORE_ITEMS.map(({ key, label, variant }) => (
-        <span key={key} className={cn(styles.pill, styles[variant])}>
-          <span className={styles.label}>{label}</span>
-          <span className={styles.score}>
-            {formatScore(scores[key], decimals)}
-          </span>
-        </span>
-      ))}
-    </div>
+    <ul className={styles.root} aria-label="Aspect scores">
+      {SCORE_ITEMS.map(({ key, label, variant }) => {
+        const formattedScore = formatScore(scores[key], decimals);
+        const pillLabel = `${label}, ${formattedScore} out of 5`;
+
+        return (
+          <li key={key} className={styles.item}>
+            <span className={styles.srOnly}>{pillLabel}</span>
+            <span
+              aria-hidden="true"
+              className={cn(styles.pill, styles[variant])}
+            >
+              <span className={styles.label}>{label}</span>
+              <span className={styles.score}>{formattedScore}</span>
+            </span>
+          </li>
+        );
+      })}
+    </ul>
   );
 }

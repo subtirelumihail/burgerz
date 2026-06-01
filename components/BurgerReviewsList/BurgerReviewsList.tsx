@@ -1,3 +1,4 @@
+import { List } from "@/components/basic/List/List";
 import { cn } from "@/lib/cn";
 
 import { UserReviewCard } from "./components/UserReviewCard/UserReviewCard";
@@ -22,19 +23,20 @@ export function BurgerReviewsList({
     >
       {showSkeleton ? <BurgerReviewsListSkeleton /> : null}
       {showList ? (
-        <ul
+        <List
           className={cn(styles.list, isLoading && styles.listLoading)}
-          aria-label="Reviews"
-        >
-          {reviews.map((review) => (
-            <li key={review.id}>
-              <UserReviewCard
-                review={review}
-                showReviewImage={showReviewImages}
-              />
-            </li>
-          ))}
-        </ul>
+          items={reviews}
+          keyExtractor={(review) => review.id}
+          renderItem={(review) => (
+            <UserReviewCard
+              review={review}
+              showReviewImage={showReviewImages}
+              listMode
+            />
+          )}
+          emptyMessage="No reviews match your search."
+          ariaLabel="Reviews"
+        />
       ) : null}
       {!isLoading && reviews.length === 0 ? (
         <p className={styles.empty}>No reviews match your search.</p>

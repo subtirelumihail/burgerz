@@ -11,6 +11,11 @@ describe("BurgerReviewsList", () => {
   it("renders reviews", () => {
     render(<BurgerReviewsList reviews={[mockReview]} />);
 
+    expect(
+      screen.getByLabelText(
+        /alex rivera, dec 1, 2025\. overall rating, 4 out of 5 stars\./i,
+      ),
+    ).toHaveAttribute("tabindex", "0");
     expect(screen.getByText("Alex Rivera")).toBeInTheDocument();
   });
 

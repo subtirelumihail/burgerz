@@ -26,9 +26,13 @@ test("burger detail page renders hero and reviews", async ({ page }) => {
     }),
   });
   await expect(hero.getByText("(128 reviews)")).toBeVisible();
-  await expect(hero.getByText("Taste")).toBeVisible();
-  await expect(hero.getByText("Texture")).toBeVisible();
-  await expect(hero.getByText("Visual presentation")).toBeVisible();
+  await expect(hero.getByText("Taste", { exact: true }).first()).toBeVisible();
+  await expect(
+    hero.getByText("Texture", { exact: true }).first(),
+  ).toBeVisible();
+  await expect(
+    hero.getByText("Visual presentation", { exact: true }).first(),
+  ).toBeVisible();
 
   await expect(
     page.getByRole("heading", { level: 2, name: /customer reviews/i }),

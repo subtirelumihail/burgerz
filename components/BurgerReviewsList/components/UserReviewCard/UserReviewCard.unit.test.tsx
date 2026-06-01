@@ -80,4 +80,36 @@ describe("UserReviewCard", () => {
       }),
     ).toBeInTheDocument();
   });
+
+  it("in list mode, tabs review details before the photo button", () => {
+    render(
+      <UserReviewCard
+        listMode
+        review={{
+          ...baseReview,
+          image: {
+            thumbnailUrl: "https://example.com/review-thumb.jpg",
+            fullUrl: "https://example.com/review-full.jpg",
+            width: 960,
+            height: 640,
+          },
+        }}
+      />,
+    );
+
+    const details = screen.getByLabelText(
+      /alex rivera, dec 1, 2025\. overall rating, 4 out of 5 stars\./i,
+    );
+    const photoButton = screen.getByRole("button", {
+      name: "View full size: Photo from Alex Rivera's review",
+    });
+
+    expect(details.compareDocumentPosition(photoButton)).toBe(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+    expect(details).toHaveAttribute("tabindex", "0");
+    expect(
+      screen.getByText("Perfect smash crust with juicy beef."),
+    ).toBeInTheDocument();
+  });
 });

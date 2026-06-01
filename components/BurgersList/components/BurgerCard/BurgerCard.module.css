@@ -12,6 +12,14 @@
   @apply outline-2 outline-offset-2 outline-focus-ring;
 }
 
+.contentLink {
+  @apply flex min-w-0 flex-1 rounded-md text-inherit no-underline;
+}
+
+.contentLink:focus-visible {
+  @apply outline-2 outline-offset-2 outline-focus-ring;
+}
+
 .imageWrap {
   @apply shrink-0;
 }
@@ -24,12 +32,20 @@
   @apply flex min-w-0 flex-1 flex-col gap-md;
 }
 
-.header {
+.listContent {
+  @apply gap-xs;
+}
+
+.contentLinkBody {
   @apply flex flex-col gap-md;
 }
 
+.header {
+  @apply flex flex-col gap-xs;
+}
+
 .title {
-  @apply font-display text-xl leading-tight;
+  @apply font-display text-xl leading-none;
 }
 
 .titleLink {

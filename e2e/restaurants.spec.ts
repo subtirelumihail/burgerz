@@ -13,14 +13,15 @@ function getRestaurantResultsRegion(page: Page) {
   return page.getByRole("region", { name: /restaurant results/i });
 }
 
+function getRestaurantListLink(page: Page, name: RegExp) {
+  return getRestaurantResultsRegion(page).getByRole("link", { name });
+}
+
 async function expectRestaurantListLoaded(page: Page) {
   await expect(getRestaurantResultsRegion(page)).toBeVisible();
-  await expect(
-    getRestaurantResultsRegion(page).getByRole("heading", {
-      level: 2,
-      name: /smash shack/i,
-    }),
-  ).toBeVisible({ timeout: 10000 });
+  await expect(getRestaurantListLink(page, /^smash shack\./i)).toBeVisible({
+    timeout: 10000,
+  });
 }
 
 test.describe("restaurants page", () => {
@@ -71,9 +72,10 @@ test.describe("restaurants page", () => {
   }) => {
     await page.goto(RESTAURANTS_PATH);
 
-    const restaurantLink = page
-      .getByRole("link", { name: /^smash shack$/i })
-      .first();
+    const restaurantLink = getRestaurantListLink(
+      page,
+      /^smash shack\./i,
+    ).first();
     await expect(restaurantLink).toBeVisible({ timeout: 10000 });
     await restaurantLink.click();
 
@@ -95,16 +97,10 @@ test.describe("restaurants page", () => {
 
     await expect(page).toHaveURL(RESTAURANTS_PATH);
     await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /coastal burger co/i,
-      }),
+      getRestaurantListLink(page, /^coastal burger co\./i),
     ).toBeVisible({ timeout: 10000 });
     await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /smash shack/i,
-      }),
+      getRestaurantListLink(page, /^smash shack\./i),
     ).not.toBeVisible();
   });
 
@@ -118,17 +114,11 @@ test.describe("restaurants page", () => {
       .fill("lipscani");
     await getRestaurantSearchButton(page).click();
 
+    await expect(getRestaurantListLink(page, /^smash shack\./i)).toBeVisible({
+      timeout: 10000,
+    });
     await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /smash shack/i,
-      }),
-    ).toBeVisible({ timeout: 10000 });
-    await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /coastal burger co/i,
-      }),
+      getRestaurantListLink(page, /^coastal burger co\./i),
     ).not.toBeVisible();
   });
 
@@ -143,16 +133,10 @@ test.describe("restaurants page", () => {
     await getRestaurantSearchButton(page).click();
 
     await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /coastal burger co/i,
-      }),
+      getRestaurantListLink(page, /^coastal burger co\./i),
     ).toBeVisible({ timeout: 10000 });
     await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /smash shack/i,
-      }),
+      getRestaurantListLink(page, /^smash shack\./i),
     ).not.toBeVisible();
 
     await page.getByRole("button", { name: /clear search/i }).click();
@@ -168,17 +152,11 @@ test.describe("restaurants page", () => {
 
     await page.getByRole("combobox", { name: "Sort by" }).selectOption("name");
 
+    await expect(getRestaurantListLink(page, /^smash shack\./i)).toBeVisible({
+      timeout: 10000,
+    });
     await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /smash shack/i,
-      }),
-    ).toBeVisible({ timeout: 10000 });
-    await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /coastal burger co/i,
-      }),
+      getRestaurantListLink(page, /^coastal burger co\./i),
     ).toBeVisible({ timeout: 10000 });
   });
 
@@ -190,10 +168,7 @@ test.describe("restaurants page", () => {
     await page.getByRole("combobox", { name: "Sort by" }).selectOption("name");
 
     await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /coastal burger co/i,
-      }),
+      getRestaurantListLink(page, /^coastal burger co\./i),
     ).toBeVisible({ timeout: 10000 });
     await expect(
       getRestaurantResultsRegion(page).getByText(/\d+ (m|km) away/),
@@ -210,16 +185,10 @@ test.describe("restaurants page", () => {
       .selectOption("name-desc");
 
     await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /urban grillhouse/i,
-      }),
+      getRestaurantListLink(page, /^urban grillhouse\./i),
     ).toBeVisible({ timeout: 10000 });
     await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /coastal burger co/i,
-      }),
+      getRestaurantListLink(page, /^coastal burger co\./i),
     ).not.toBeVisible();
   });
 
@@ -231,31 +200,19 @@ test.describe("restaurants page", () => {
     await page.getByRole("combobox", { name: "Sort by" }).selectOption("name");
 
     await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /coastal burger co/i,
-      }),
+      getRestaurantListLink(page, /^coastal burger co\./i),
     ).toBeVisible({ timeout: 10000 });
     await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /urban grillhouse/i,
-      }),
+      getRestaurantListLink(page, /^urban grillhouse\./i),
     ).not.toBeVisible();
 
     await page.getByRole("button", { name: /go to page 2/i }).click();
 
     await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /urban grillhouse/i,
-      }),
+      getRestaurantListLink(page, /^urban grillhouse\./i),
     ).toBeVisible({ timeout: 10000 });
     await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /coastal burger co/i,
-      }),
+      getRestaurantListLink(page, /^coastal burger co\./i),
     ).not.toBeVisible();
   });
 
@@ -288,10 +245,7 @@ test.describe("restaurants page without location access", () => {
       "name",
     );
     await expect(
-      getRestaurantResultsRegion(page).getByRole("heading", {
-        level: 2,
-        name: /coastal burger co/i,
-      }),
+      getRestaurantListLink(page, /^coastal burger co\./i),
     ).toBeVisible({ timeout: 10000 });
     await expect(page.getByRole("option", { name: "Near By" })).toBeDisabled();
   });

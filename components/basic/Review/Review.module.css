@@ -1,6 +1,14 @@
 @reference "../../../app/globals.css";
 
 .root {
+  @apply inline-flex;
+}
+
+.srOnly {
+  @apply sr-only;
+}
+
+.visual {
   @apply flex flex-wrap items-center gap-sm;
 }
 
