@@ -394,7 +394,7 @@ For production behind a reverse proxy, set `NEXT_PUBLIC_APP_URL` and `NEXT_PUBLI
 
 **Pull requests** (`.github/workflows/ci.yml`):
 
-1. Lint, format check, unit tests, production build
+1. Dependency audit (`npm audit --audit-level=high`), lint, format check, unit tests, production build
 2. Accessibility tests (pa11y with MSW)
 3. E2E tests (Playwright with MSW)
 4. Docker image build
