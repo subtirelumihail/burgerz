@@ -41,13 +41,7 @@ Set `NEXT_PUBLIC_API_URL` to your API origin (see [Environment variables](#envir
 | `PORT`                    | No       | Dev/production port (default `3000`).                                                                                 |
 | `VERCEL_URL`              | No       | Set automatically on Vercel; used by the API client on the server.                                                    |
 
-No `.env` file is committed. Create `.env.local` for local overrides:
-
-```bash
-# .env.local — example
-NEXT_PUBLIC_API_MOCKING=enabled
-NEXT_PUBLIC_API_URL=
-```
+Copy `.env.example` to `.env.local` for local overrides.
 
 ## npm scripts
 
