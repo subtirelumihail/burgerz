@@ -1,0 +1,15 @@
+---
+description: React hook composition, async patterns, and data-fetch conventions
+globs: hooks/**/*.ts
+alwaysApply: false
+---
+
+# React Hooks
+
+See [docs/agents/react-hooks.md](../../docs/agents/react-hooks.md).
+
+- `try`/`catch`/`finally` with `async`/`await` — no `.then()` chains
+- No `void` operator on promises — sync `load*` / `search` / `clearSearch` with inner `async function`
+- `useEffect` uses its own inner `async function` + `isCancelled`; components pass `onSearch={search}` directly
+
+Also read [AGENTS.md](../../AGENTS.md) for the full guide index.

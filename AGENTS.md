@@ -43,6 +43,7 @@ Read the guides that match the paths you are editing:
 | API mocking           | `mocks/`, services, local dev                    | [docs/agents/api-mocking.md](./docs/agents/api-mocking.md)                                 |
 | Global types          | `types/`, `hooks/`, `lib/`                       | [docs/agents/global-types.md](./docs/agents/global-types.md)                               |
 | Backend services      | `lib/services/`, `hooks/`                        | [docs/agents/backend-services.md](./docs/agents/backend-services.md)                       |
+| React hooks           | `hooks/use*.ts`                                  | [docs/agents/react-hooks.md](./docs/agents/react-hooks.md)                                 |
 | Hybrid rendering      | `**/*.{tsx,jsx}`                                 | [docs/agents/nextjs-hybrid-rendering.md](./docs/agents/nextjs-hybrid-rendering.md)         |
 | Component composition | `**/*.{tsx,jsx,css}`                             | [docs/agents/react-component-composition.md](./docs/agents/react-component-composition.md) |
 | Accessibility         | `**/*.{tsx,jsx}`                                 | [docs/agents/react-accessibility.md](./docs/agents/react-accessibility.md)                 |
@@ -59,7 +60,7 @@ Read the guides that match the paths you are editing:
 | Add a page route    | [nextjs-hybrid-rendering](./docs/agents/nextjs-hybrid-rendering.md), [e2e-testing](./docs/agents/e2e-testing.md)                                                                                                       |
 | Add a component     | [react-component-composition](./docs/agents/react-component-composition.md), [react-accessibility](./docs/agents/react-accessibility.md), [unit-testing](./docs/agents/unit-testing.md)                                |
 | Add API integration | [global-types](./docs/agents/global-types.md), [backend-services](./docs/agents/backend-services.md), [api-mocking](./docs/agents/api-mocking.md), [nextjs-hybrid-rendering](./docs/agents/nextjs-hybrid-rendering.md) |
-| Add a hook          | [backend-services](./docs/agents/backend-services.md), [global-types](./docs/agents/global-types.md), [unit-testing](./docs/agents/unit-testing.md)                                                                    |
+| Add a hook          | [react-hooks](./docs/agents/react-hooks.md), [backend-services](./docs/agents/backend-services.md), [global-types](./docs/agents/global-types.md), [unit-testing](./docs/agents/unit-testing.md)                       |
 
 ---
 

@@ -22,7 +22,7 @@ export function MswProvider({ children }: MswProviderProps) {
       setIsReady(true);
     }
 
-    void enableMocking();
+    enableMocking();
   }, []);
 
   if (!isReady) {

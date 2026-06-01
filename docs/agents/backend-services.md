@@ -69,29 +69,29 @@ export function useBurgers() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const loadBurgers = useCallback(async (q?: string) => {
-    setIsLoading(true);
-    setError(null);
+  const fetchBurgers = useCallback(async (q?: string, isCancelled = () => false) => {
     try {
       const response = await getBurgers({ q });
-      setBurgers(response.burgers);
+      if (!isCancelled()) setBurgers(response.burgers);
     } catch (err) {
-      setError(err instanceof Error ? err : new Error("Failed to load burgers"));
+      if (!isCancelled()) setError(toError(err));
     } finally {
-      setIsLoading(false);
+      if (!isCancelled()) setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    let cancelled = false;
-    getBurgers()
-      .then((response) => { if (!cancelled) setBurgers(response.burgers); })
-      .catch((err) => { if (!cancelled) setError(toError(err)); })
-      .finally(() => { if (!cancelled) setIsLoading(false); });
-    return () => { cancelled = true; };
-  }, []);
+    let isCancelled = false;
+    fetchBurgers(undefined, () => isCancelled);
+    return () => { isCancelled = true; };
+  }, [fetchBurgers]);
 
-  return { burgers, isLoading, error, search: () => void loadBurgers(query) };
+  const search = useCallback(() => {
+    setIsLoading(true);
+    fetchBurgers(query.trim() || undefined);
+  }, [fetchBurgers, query]);
+
+  return { burgers, isLoading, error, search };
 }
 ```
 
