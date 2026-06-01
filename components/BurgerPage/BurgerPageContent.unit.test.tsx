@@ -5,8 +5,8 @@ import { getBurger } from "@/lib/services/burger.service";
 import { getBurgerReviews } from "@/lib/services/review.service";
 import { mockImageAsset } from "@/test/mock-image";
 import type { Burger } from "@/types/burger";
-import type { BurgerUserReview } from "@/types/review";
 import { DEFAULT_REVIEWS_PAGE_SIZE } from "@/types/review";
+import { mockBurgerUserReview } from "@/test/mock-review";
 
 import { BurgerPageContent } from "./BurgerPageContent";
 
@@ -32,14 +32,7 @@ const mockBurger: Burger = {
   },
 };
 
-const mockReview: BurgerUserReview = {
-  id: "review-1",
-  burgerId: "burger-1",
-  authorName: "Alex Rivera",
-  text: "Perfect smash crust with juicy beef.",
-  score: 4.5,
-  createdAt: "2025-12-01T12:00:00.000Z",
-};
+const mockReview = mockBurgerUserReview;
 
 describe("BurgerPageContent", () => {
   beforeEach(() => {

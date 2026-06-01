@@ -1,19 +1,16 @@
 import { ImageThumbnail } from "@/components/basic/ImageThumbnail/ImageThumbnail";
 import { Review } from "@/components/basic/Review/Review";
+import { BurgerScores } from "@/components/BurgersList/components/BurgerScores/BurgerScores";
+import { formatReviewDate, toCategoryScores } from "@/lib/utils/reviews.util";
 
 import type { UserReviewCardProps } from "./types";
 
 import styles from "./UserReviewCard.module.css";
 
-function formatReviewDate(isoDate: string): string {
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(new Date(isoDate));
-}
-
-export function UserReviewCard({ review }: UserReviewCardProps) {
+export function UserReviewCard({
+  review,
+  showReviewImage = true,
+}: UserReviewCardProps) {
   return (
     <article className={styles.root}>
       <header className={styles.header}>
@@ -24,11 +21,31 @@ export function UserReviewCard({ review }: UserReviewCardProps) {
           </time>
         </div>
         <div className={styles.rating}>
-          <Review score={review.score} size="sm" />
+          <Review score={review.score} size="sm" label="Overall" />
         </div>
       </header>
-      <p className={styles.text}>{review.text}</p>
-      {review.image ? (
+
+      <section
+        className={styles.mainReview}
+        aria-labelledby={`${review.id}-overall`}
+      >
+        <h3 id={`${review.id}-overall`} className={styles.sectionHeading}>
+          Overall
+        </h3>
+        <p className={styles.text}>{review.text}</p>
+      </section>
+
+      <section
+        className={styles.aspects}
+        aria-labelledby={`${review.id}-aspects`}
+      >
+        <h3 id={`${review.id}-aspects`} className={styles.sectionHeading}>
+          Aspect scores
+        </h3>
+        <BurgerScores scores={toCategoryScores(review.aspects)} decimals={0} />
+      </section>
+
+      {showReviewImage && review.image ? (
         <ImageThumbnail
           image={review.image}
           alt={`Photo from ${review.authorName}'s review`}

@@ -42,11 +42,21 @@ function filterReviews(
 
   const normalizedQuery = query.toLowerCase();
 
-  return burgerReviews.filter(
-    (review) =>
+  return burgerReviews.filter((review) => {
+    const aspectTexts = [
+      review.aspects.taste.text,
+      review.aspects.texture.text,
+      review.aspects.visualPresentation.text,
+    ];
+
+    return (
       review.authorName.toLowerCase().includes(normalizedQuery) ||
-      review.text.toLowerCase().includes(normalizedQuery),
-  );
+      review.text.toLowerCase().includes(normalizedQuery) ||
+      aspectTexts.some((aspectText) =>
+        aspectText.toLowerCase().includes(normalizedQuery),
+      )
+    );
+  });
 }
 
 export function listBurgerReviews({

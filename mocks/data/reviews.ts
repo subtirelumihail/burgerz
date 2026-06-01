@@ -1,5 +1,9 @@
 import { createMockReviewImage } from "@/mocks/data/images";
-import type { BurgerUserReview } from "@/types/review";
+import type {
+  BurgerUserReview,
+  BurgerUserReviewAspects,
+  BurgerUserReviewRating,
+} from "@/types/review";
 
 const REVIEW_AUTHORS = [
   "Alex Rivera",
@@ -24,7 +28,7 @@ const REVIEW_AUTHORS = [
   "Kai Thompson",
 ];
 
-const REVIEW_TEXTS = [
+const MAIN_REVIEW_TEXTS = [
   "Perfect smash crust with juicy beef. Would order again without hesitation.",
   "Great flavor but the bun was a little soggy by the time it arrived.",
   "One of the best burgers in town. The cheese melt was flawless.",
@@ -47,14 +51,89 @@ const REVIEW_TEXTS = [
   "Will definitely come back on burger night.",
 ];
 
+const TASTE_REVIEW_TEXTS = [
+  "Beef flavor was rich and well seasoned without being heavy.",
+  "Sauce and cheese worked together nicely on every bite.",
+  "Seasoning was balanced; nothing tasted flat or overpowering.",
+  "Smoky notes came through clearly in the patty.",
+  "Pickles and sauce added a bright contrast to the beef.",
+  "A touch salty for me, but the core flavor was still strong.",
+  "Truffle accent was subtle and made the burger feel special.",
+  "Heat built slowly and stayed enjoyable through the meal.",
+  "Classic diner-style flavor that hit the comfort-food spot.",
+  "Fresh toppings kept each bite tasting clean and bright.",
+];
+
+const TEXTURE_REVIEW_TEXTS = [
+  "Patty had a crisp edge and a juicy center.",
+  "Bun held up well until the last few bites.",
+  "Cheese melt was smooth and not rubbery.",
+  "Lettuce and onion added a satisfying crunch.",
+  "Patty was tender but could have been a bit thicker.",
+  "Bun got soggy near the end, but the patty stayed solid.",
+  "Good bite contrast between soft bun and crisp patty.",
+  "Everything held together without falling apart.",
+  "A little greasy, but the texture still felt indulgent.",
+  "Firm crust on the patty with a soft interior.",
+];
+
+const VISUAL_REVIEW_TEXTS = [
+  "Stack was tall and colorful with clean layers.",
+  "Cheese draped over the patty looked great in photos.",
+  "Bun had a nice toast color and even grill marks.",
+  "Plating was simple but appetizing when it arrived.",
+  "A bit messy, but still looked like a proper burger.",
+  "Greens and sauce made the burger pop visually.",
+  "Melted cheese and glossy patty made it very photogenic.",
+  "Portion looked generous and well built.",
+  "Colors were muted but the structure was neat.",
+  "Classic presentation that matched the comfort-food vibe.",
+];
+
+function aspectScore(base: number, offset: number): BurgerUserReviewRating {
+  return Math.min(5, Math.max(1, base + offset)) as BurgerUserReviewRating;
+}
+
+function createAspects(index: number): BurgerUserReviewAspects {
+  const base = 3 + (index % 3);
+
+  return {
+    taste: {
+      text: TASTE_REVIEW_TEXTS[index % TASTE_REVIEW_TEXTS.length],
+      score: aspectScore(base, index % 2),
+    },
+    texture: {
+      text: TEXTURE_REVIEW_TEXTS[index % TEXTURE_REVIEW_TEXTS.length],
+      score: aspectScore(base, (index + 1) % 2),
+    },
+    visualPresentation: {
+      text: VISUAL_REVIEW_TEXTS[index % VISUAL_REVIEW_TEXTS.length],
+      score: aspectScore(base, (index + 2) % 2),
+    },
+  };
+}
+
+function averageRating(
+  aspects: BurgerUserReviewAspects,
+): BurgerUserReviewRating {
+  const mean =
+    (aspects.taste.score +
+      aspects.texture.score +
+      aspects.visualPresentation.score) /
+    3;
+
+  return Math.round(mean) as BurgerUserReviewRating;
+}
+
 function createReview(
   burgerId: string,
   index: number,
   withImage: boolean,
 ): BurgerUserReview {
   const authorName = REVIEW_AUTHORS[index % REVIEW_AUTHORS.length];
-  const text = REVIEW_TEXTS[index % REVIEW_TEXTS.length];
-  const score = 3 + (index % 3) * 0.5;
+  const text = MAIN_REVIEW_TEXTS[index % MAIN_REVIEW_TEXTS.length];
+  const aspects = createAspects(index);
+  const score = averageRating(aspects);
   const dayOffset = index * 3 + 1;
 
   return {
@@ -63,6 +142,7 @@ function createReview(
     authorName,
     text,
     score,
+    aspects,
     ...(withImage
       ? {
           image: createMockReviewImage(`${burgerId}-review-${index + 1}`),

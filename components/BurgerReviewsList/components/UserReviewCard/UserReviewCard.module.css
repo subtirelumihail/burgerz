@@ -20,12 +20,20 @@
   @apply flex items-center gap-sm;
 }
 
-.score {
-  @apply text-sm font-medium text-foreground;
+.sectionHeading {
+  @apply text-sm font-semibold uppercase tracking-wide text-muted;
+}
+
+.mainReview {
+  @apply flex flex-col gap-xs;
 }
 
 .text {
   @apply text-base leading-relaxed text-foreground;
+}
+
+.aspects {
+  @apply flex flex-col gap-sm;
 }
 
 .imageWrap {

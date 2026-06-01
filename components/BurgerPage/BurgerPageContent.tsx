@@ -58,7 +58,11 @@ export function BurgerPageContent({ burgerId }: BurgerPageContentProps) {
           }}
           isLoading={isReviewsLoading}
         />
-        <BurgerReviewsList reviews={reviews} isLoading={isReviewsLoading} />
+        <BurgerReviewsList
+          reviews={reviews}
+          isLoading={isReviewsLoading}
+          showReviewImages={!isBurgerLoading && burger !== null}
+        />
         <Pagination
           page={pagination.page}
           totalPages={pagination.totalPages}

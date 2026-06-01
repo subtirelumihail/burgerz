@@ -9,6 +9,7 @@ import styles from "./BurgerReviewsList.module.css";
 export function BurgerReviewsList({
   reviews,
   isLoading = false,
+  showReviewImages = true,
 }: BurgerReviewsListProps) {
   const showSkeleton = isLoading && reviews.length === 0;
   const showList = reviews.length > 0;
@@ -27,7 +28,10 @@ export function BurgerReviewsList({
         >
           {reviews.map((review) => (
             <li key={review.id}>
-              <UserReviewCard review={review} />
+              <UserReviewCard
+                review={review}
+                showReviewImage={showReviewImages}
+              />
             </li>
           ))}
         </ul>
