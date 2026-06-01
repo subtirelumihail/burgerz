@@ -7,7 +7,12 @@ import type { BurgersListProps } from "./types";
 
 import styles from "./BurgersList.module.css";
 
-export function BurgersList({ burgers, isLoading = false }: BurgersListProps) {
+export function BurgersList({
+  burgers,
+  isLoading = false,
+  returnTo,
+  showRestaurant = true,
+}: BurgersListProps) {
   const showSkeleton = isLoading && burgers.length === 0;
   const showList = burgers.length > 0;
 
@@ -24,7 +29,13 @@ export function BurgersList({ burgers, isLoading = false }: BurgersListProps) {
           items={burgers}
           keyExtractor={(burger) => burger.id}
           renderItem={(burger, index) => (
-            <BurgerCard burger={burger} imagePriority={index === 0} listMode />
+            <BurgerCard
+              burger={burger}
+              imagePriority={index === 0}
+              listMode
+              returnTo={returnTo}
+              showRestaurant={showRestaurant}
+            />
           )}
           emptyMessage="No burgers match your search."
           ariaLabel="Burgers"

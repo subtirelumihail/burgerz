@@ -22,6 +22,7 @@ export interface Burger {
 
 export interface GetBurgersParams {
   q?: string;
+  restaurantId?: string;
   page?: number;
   pageSize?: number;
 }

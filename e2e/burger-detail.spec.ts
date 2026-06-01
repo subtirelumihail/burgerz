@@ -54,6 +54,19 @@ test("burger detail page renders hero and reviews", async ({ page }) => {
   ).toBeVisible();
 });
 
+test("back link returns to restaurant when opened from restaurant page", async ({
+  page,
+}) => {
+  await page.goto("/burgers/burger-1?from=%2Frestaurants%2Frestaurant-1");
+
+  await page.getByRole("link", { name: /back to restaurant/i }).click();
+
+  await expect(page).toHaveURL("/restaurants/restaurant-1");
+  await expect(
+    page.getByRole("heading", { level: 1, name: /smash shack/i }),
+  ).toBeVisible();
+});
+
 test("back link returns to home search", async ({ page }) => {
   await page.goto(BURGER_DETAIL_PATH);
 

@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Review } from "@/components/basic/Review/Review";
+import { buildBurgerDetailPath } from "@/lib/burger-navigation";
 import { ThumbnailImage } from "@/components/basic/ThumbnailImage/ThumbnailImage";
 import {
   formatBurgerListItemLabel,
@@ -14,11 +15,13 @@ import styles from "./BurgerCard.module.css";
 
 function BurgerCardContent({
   burger,
+  burgerDetailPath,
   usePlainText,
   showRestaurant = true,
   embedded = false,
 }: {
   burger: BurgerCardProps["burger"];
+  burgerDetailPath: string;
   usePlainText: boolean;
   showRestaurant?: boolean;
   embedded?: boolean;
@@ -45,7 +48,7 @@ function BurgerCardContent({
           {usePlainText ? (
             <span className={styles.titleLink}>{title}</span>
           ) : (
-            <Link href={`/burgers/${burger.id}`} className={styles.titleLink}>
+            <Link href={burgerDetailPath} className={styles.titleLink}>
               {title}
             </Link>
           )}
@@ -69,8 +72,10 @@ export function BurgerCard({
   burger,
   imagePriority = false,
   listMode = false,
+  returnTo,
+  showRestaurant = true,
 }: BurgerCardProps) {
-  const href = `/burgers/${burger.id}`;
+  const href = buildBurgerDetailPath(burger.id, returnTo);
 
   if (listMode) {
     return (
@@ -91,12 +96,14 @@ export function BurgerCard({
           />
         </Link>
         <div className={`${styles.content} ${styles.listContent}`}>
-          <Link
-            href={`/restaurants/${burger.restaurant.id}`}
-            className={styles.restaurant}
-          >
-            {burger.restaurant.name}
-          </Link>
+          {showRestaurant ? (
+            <Link
+              href={`/restaurants/${burger.restaurant.id}`}
+              className={styles.restaurant}
+            >
+              {burger.restaurant.name}
+            </Link>
+          ) : null}
           <Link
             href={href}
             className={styles.contentLink}
@@ -105,6 +112,7 @@ export function BurgerCard({
             <div aria-hidden="true" className={styles.contentLinkBody}>
               <BurgerCardContent
                 burger={burger}
+                burgerDetailPath={href}
                 usePlainText
                 showRestaurant={false}
                 embedded
@@ -129,7 +137,12 @@ export function BurgerCard({
           priority={imagePriority}
         />
       </Link>
-      <BurgerCardContent burger={burger} usePlainText={false} />
+      <BurgerCardContent
+        burger={burger}
+        burgerDetailPath={href}
+        usePlainText={false}
+        showRestaurant={showRestaurant}
+      />
     </article>
   );
 }
