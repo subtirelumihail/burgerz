@@ -14,32 +14,32 @@ git clone <repo-url>
 cd burgerz
 nvm use
 npm install
-npm run dev:mock
+npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
 
-Use **`dev:mock`** for day-to-day development. The backend API is not required — MSW intercepts API calls and serves mock data. See [API mocking (MSW)](#api-mocking-msw) below.
+**`npm run dev`** is the default for local development. MSW intercepts API calls and serves mock data — no backend required. See [API mocking (MSW)](#api-mocking-msw) below.
 
-### Without mocks
+### With a real backend
 
-If you have a real API running, start the app without MSW:
+If you have a backend API running:
 
 ```bash
-npm run dev
+npm run dev:backend
 ```
 
-Set `NEXT_PUBLIC_API_URL` to your API origin (see [Environment variables](#environment-variables)).
+Set `NEXT_PUBLIC_API_URL` to your API origin in `.env.local` (see [Environment variables](#environment-variables)).
 
 ## Environment variables
 
-| Variable                  | Required | Description                                                                                                           |
-| ------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_API_MOCKING` | No       | Set to `enabled` to turn on MSW. Used by `dev:mock`, E2E, and accessibility tests.                                    |
-| `NEXT_PUBLIC_API_URL`     | No       | Base URL for API requests (e.g. `https://api.example.com`). Empty string means same-origin paths like `/api/burgers`. |
-| `NEXT_PUBLIC_APP_URL`     | No       | Public app URL for server-side `fetch` origin resolution. Falls back to `VERCEL_URL` or `http://localhost:3000`.      |
-| `PORT`                    | No       | Dev/production port (default `3000`).                                                                                 |
-| `VERCEL_URL`              | No       | Set automatically on Vercel; used by the API client on the server.                                                    |
+| Variable                  | Required | Description                                                                                                                    |
+| ------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `NEXT_PUBLIC_API_MOCKING` | No       | Set to `enabled` for MSW (default via `npm run dev`). `dev:backend` sets `disabled`. Also used by E2E and accessibility tests. |
+| `NEXT_PUBLIC_API_URL`     | No       | Base URL for API requests (e.g. `https://api.example.com`). Empty string means same-origin paths like `/api/burgers`.          |
+| `NEXT_PUBLIC_APP_URL`     | No       | Public app URL for server-side `fetch` origin resolution. Falls back to `VERCEL_URL` or `http://localhost:3000`.               |
+| `PORT`                    | No       | Dev/production port (default `3000`).                                                                                          |
+| `VERCEL_URL`              | No       | Set automatically on Vercel; used by the API client on the server.                                                             |
 
 Copy `.env.example` to `.env.local` for local overrides.
 
@@ -47,8 +47,8 @@ Copy `.env.example` to `.env.local` for local overrides.
 
 | Script         | Command                                                      | Description                                                                                     |
 | -------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
-| `dev`          | `next dev`                                                   | Start the dev server without MSW. Requires a real API or same-origin routes.                    |
-| `dev:mock`     | `NEXT_PUBLIC_API_MOCKING=enabled next dev`                   | Start the dev server with MSW. **Default for local development.**                               |
+| `dev`          | `NEXT_PUBLIC_API_MOCKING=enabled next dev`                   | Start the dev server with MSW. **Default for local development.**                               |
+| `dev:backend`  | `NEXT_PUBLIC_API_MOCKING=disabled next dev`                  | Start the dev server against a real API. Set `NEXT_PUBLIC_API_URL` in `.env.local`.             |
 | `build`        | `next build`                                                 | Production build (standalone output for Docker).                                                |
 | `start`        | `next start`                                                 | Serve the production build. Run `build` first.                                                  |
 | `lint`         | `eslint .`                                                   | Run ESLint across the project.                                                                  |
@@ -57,7 +57,7 @@ Copy `.env.example` to `.env.local` for local overrides.
 | `format:check` | `prettier --check .`                                         | Check formatting without writing (used in CI).                                                  |
 | `test`         | `vitest`                                                     | Run unit tests in watch mode.                                                                   |
 | `test:run`     | `vitest run`                                                 | Run unit tests once (used in CI and pre-push hook).                                             |
-| `test:e2e`     | `playwright test`                                            | Run Playwright E2E tests. Starts `dev:mock` automatically.                                      |
+| `test:e2e`     | `playwright test`                                            | Run Playwright E2E tests. Starts `dev` (with MSW) automatically.                                |
 | `test:e2e:ui`  | `playwright test --ui`                                       | Run E2E tests with the Playwright UI.                                                           |
 | `test:a11y`    | `NEXT_PUBLIC_API_MOCKING=enabled node scripts/run-pa11y.mjs` | Run pa11y accessibility checks against key routes. Starts a mock dev server if none is running. |
 | `prepare`      | `husky`                                                      | Installs Git hooks after `npm install`.                                                         |
@@ -75,8 +75,8 @@ Copy `.env.example` to `.env.local` for local overrides.
 
 MSW runs when `NEXT_PUBLIC_API_MOCKING=enabled`:
 
-- `npm run dev:mock`
-- Playwright E2E (`playwright.config.ts` starts `dev:mock`)
+- `npm run dev` (default)
+- Playwright E2E (`playwright.config.ts` starts `dev`)
 - Accessibility tests (`npm run test:a11y`)
 
 ### How it is wired
@@ -200,7 +200,7 @@ test("renders label", () => {
 
 ## E2E tests
 
-Playwright specs live in `e2e/` with a `.spec.ts` suffix. Every App Router page should have a matching spec. E2E runs against `dev:mock` automatically.
+Playwright specs live in `e2e/` with a `.spec.ts` suffix. Every App Router page should have a matching spec. E2E runs against `dev` (MSW) automatically.
 
 ```bash
 npm run test:e2e        # headless
@@ -223,7 +223,7 @@ npm run test:a11y
 
 The script (`scripts/run-pa11y.mjs`):
 
-1. Starts a mock dev server with MSW if none is running on port `3000` (or reuses an existing `dev:mock` server).
+1. Starts a dev server with MSW if none is running on port `3000` (or reuses an existing `npm run dev` server).
 2. Runs [pa11y-ci](https://github.com/pa11y/pa11y-ci) once against all routes with [axe](https://www.deque.com/axe/):
    - `/`
    - `/restaurants`
@@ -237,7 +237,7 @@ Shared pa11y settings live in `pa11y.json`. Route list lives in `pa11y-ci.config
 **Troubleshooting `test:a11y`:**
 
 - Port in use without mock data — stop the stale server or run `PORT=3010 npm run test:a11y`.
-- Server running without MSW — stop it and use `npm run dev:mock`, or let the script start its own server.
+- Server running without MSW (e.g. `dev:backend`) — stop it and use `npm run dev`, or let the script start its own server.
 - Puppeteer/Chrome missing locally — CI installs Chrome via `npx puppeteer browsers install chrome`.
 
 **ESLint** — `eslint-plugin-jsx-a11y` recommended rules run as **errors** on `.tsx`/`.jsx` files (via `eslint.config.mjs`). `eslint-config-next` still supplies the plugin and Next.js-specific checks such as `next/image` alt text. Run `npm run lint` to catch common JSX accessibility mistakes.
@@ -415,7 +415,7 @@ Manual deploy dispatch is available via GitHub Actions → Deploy → choose `st
 ## Contributing
 
 1. Create a feature branch from `main`.
-2. Use `npm run dev:mock` while developing.
+2. Use `npm run dev` while developing (or `npm run dev:backend` when integrating with a real API).
 3. Add or update unit tests for components, hooks, and services you change.
 4. Add or update E2E specs for pages you change.
 5. Run `npm run lint`, `npm run test:run`, `npm run test:a11y`, and `npm run test:e2e` before pushing.

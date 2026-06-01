@@ -98,7 +98,7 @@ function stopServer(server) {
 function assertServerProcessRunning(server) {
   if (server.exitCode !== null) {
     throw new Error(
-      `Mock dev server exited before becoming ready. Another Next.js dev server may already be running in this project. Stop it, then run "npm run test:a11y" again, or start the app with "npm run dev:mock".`,
+      `Mock dev server exited before becoming ready. Another Next.js dev server may already be running in this project. Stop it, then run "npm run test:a11y" again, or start the app with "npm run dev".`,
     );
   }
 }
@@ -164,7 +164,7 @@ async function ensureMockServer() {
     }
 
     throw new Error(
-      `Server at ${baseURL} is running without mock data. Stop it, then run "npm run test:a11y" or start the app with "npm run dev:mock".`,
+      `Server at ${baseURL} is running without mock data. Stop it, then run "npm run test:a11y" or start the app with "npm run dev".`,
     );
   }
 

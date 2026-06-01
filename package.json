@@ -7,8 +7,8 @@
     "npm": ">=10.9.0"
   },
   "scripts": {
-    "dev": "next dev",
-    "dev:mock": "NEXT_PUBLIC_API_MOCKING=enabled next dev",
+    "dev": "NEXT_PUBLIC_API_MOCKING=enabled next dev",
+    "dev:backend": "NEXT_PUBLIC_API_MOCKING=disabled next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",

@@ -41,6 +41,21 @@ describe("useGeolocation", () => {
     vi.restoreAllMocks();
   });
 
+  it("marks location as unavailable when geolocation is not supported", async () => {
+    Object.defineProperty(navigator, "geolocation", {
+      configurable: true,
+      value: undefined,
+    });
+
+    render(<TestHarness />);
+
+    await waitFor(() => {
+      expect(screen.getByText("Status: unavailable")).toBeInTheDocument();
+    });
+
+    expect(mockGetCurrentPosition).not.toHaveBeenCalled();
+  });
+
   it("requests location on mount", async () => {
     mockGetCurrentPosition.mockImplementation((success) => {
       success({

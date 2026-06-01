@@ -13,7 +13,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   reporter: process.env.CI ? "github" : "list",
   webServer: {
-    command: "npm run dev:mock",
+    command: "npm run dev",
     url: baseURL,
     timeout: 120 * 1000,
     reuseExistingServer: !process.env.CI,

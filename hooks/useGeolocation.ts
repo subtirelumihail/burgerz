@@ -27,7 +27,10 @@ const geolocationOptions: PositionOptions = {
 };
 
 function isGeolocationSupported(): boolean {
-  return typeof navigator !== "undefined" && "geolocation" in navigator;
+  return (
+    typeof navigator !== "undefined" &&
+    typeof navigator.geolocation?.getCurrentPosition === "function"
+  );
 }
 
 function readCurrentPosition(
@@ -61,9 +64,9 @@ function readCurrentPosition(
 
 export function useGeolocation(): UseGeolocationResult {
   const [coordinates, setCoordinates] = useState<GeoCoordinates | null>(null);
-  const [status, setStatus] = useState<GeolocationStatus>(() =>
-    isGeolocationSupported() ? "idle" : "unavailable",
-  );
+  // Always "idle" on first render so SSR and hydration match; unsupported
+  // browsers are updated in useEffect after mount.
+  const [status, setStatus] = useState<GeolocationStatus>("idle");
 
   const requestLocation = useCallback(() => {
     if (!isGeolocationSupported()) {
@@ -88,10 +91,6 @@ export function useGeolocation(): UseGeolocationResult {
   }, []);
 
   useEffect(() => {
-    if (!isGeolocationSupported()) {
-      return;
-    }
-
     let isCancelled = false;
 
     readCurrentPosition(
