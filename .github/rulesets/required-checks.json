@@ -1,0 +1,27 @@
+{
+  "name": "Require all CI checks",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "include": ["~DEFAULT_BRANCH"],
+      "exclude": []
+    }
+  },
+  "rules": [
+    {
+      "type": "required_status_checks",
+      "parameters": {
+        "strict_required_status_checks_policy": true,
+        "required_status_checks": [
+          { "context": "All CI checks passed" },
+          { "context": "Lint, format, test, and build" },
+          { "context": "Accessibility tests" },
+          { "context": "E2E tests" },
+          { "context": "Docker build" },
+          { "context": "Deploy - Not real" }
+        ]
+      }
+    }
+  ]
+}

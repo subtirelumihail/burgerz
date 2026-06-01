@@ -1,4 +1,10 @@
-import { expect, test } from "@playwright/test";
+import { expect, type Page, test } from "@playwright/test";
+
+function getBurgerSearchButton(page: Page) {
+  return page
+    .getByRole("region", { name: /search burgers/i })
+    .getByRole("button", { name: "Search", exact: true });
+}
 
 test("home page renders burger search and list", async ({ page }) => {
   await page.goto("/");
@@ -10,7 +16,7 @@ test("home page renders burger search and list", async ({ page }) => {
   await expect(
     page.getByRole("searchbox", { name: /search burgers/i }),
   ).toBeVisible();
-  await expect(page.getByRole("button", { name: /search/i })).toBeVisible();
+  await expect(getBurgerSearchButton(page)).toBeVisible();
   await expect(
     page.getByRole("region", { name: /burger results/i }),
   ).toBeVisible();
@@ -69,7 +75,7 @@ test("search filters burgers by query without reloading", async ({ page }) => {
   ).toBeVisible({ timeout: 10000 });
 
   await page.getByRole("searchbox", { name: /search burgers/i }).fill("garden");
-  await page.getByRole("button", { name: /search/i }).click();
+  await getBurgerSearchButton(page).click();
 
   await expect(page).toHaveURL("/");
   await expect(
@@ -90,7 +96,7 @@ test("clear search resets filtered results", async ({ page }) => {
   ).toBeVisible({ timeout: 10000 });
 
   await page.getByRole("searchbox", { name: /search burgers/i }).fill("garden");
-  await page.getByRole("button", { name: /search/i }).click();
+  await getBurgerSearchButton(page).click();
 
   await expect(
     page.getByRole("heading", { level: 2, name: /garden stack/i }),
@@ -105,11 +111,14 @@ test("clear search resets filtered results", async ({ page }) => {
     page.getByRole("searchbox", { name: /search burgers/i }),
   ).toHaveValue("");
   await expect(
+    page.getByRole("region", { name: /burger results/i }),
+  ).not.toHaveAttribute("aria-busy", "true", { timeout: 10000 });
+  await expect(
     page.getByRole("heading", { level: 2, name: /smash shack classic/i }),
   ).toBeVisible({ timeout: 10000 });
   await expect(
     page.getByRole("heading", { level: 2, name: /garden stack/i }),
-  ).not.toBeVisible();
+  ).toBeVisible({ timeout: 10000 });
 });
 
 test("pagination loads the next page of burgers", async ({ page }) => {
