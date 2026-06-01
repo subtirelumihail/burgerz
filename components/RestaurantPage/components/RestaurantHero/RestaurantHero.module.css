@@ -1,0 +1,66 @@
+@reference "../../../../app/globals.css";
+
+.root {
+  @apply flex flex-col gap-lg;
+}
+
+.primary {
+  @apply grid gap-md;
+  grid-template-columns: auto 1fr;
+  @apply sm:flex sm:items-start sm:gap-xl;
+}
+
+.imageWrap {
+  @apply size-28 shrink-0;
+  @apply max-sm:col-start-1 max-sm:row-start-1 max-sm:self-start;
+  @apply sm:size-40;
+}
+
+.image {
+  @apply size-full object-cover;
+}
+
+.details {
+  @apply flex min-w-0 flex-col gap-md;
+  @apply max-sm:contents sm:min-w-0 sm:flex-1;
+}
+
+.intro {
+  @apply flex min-w-0 flex-col gap-xs;
+  @apply max-sm:col-start-2 max-sm:row-start-1;
+}
+
+.title {
+  @apply font-display text-xl leading-tight text-foreground;
+  @apply sm:text-3xl;
+}
+
+.location {
+  @apply text-base text-foreground;
+}
+
+.meta {
+  @apply flex flex-col gap-md;
+  @apply max-sm:col-span-2 max-sm:row-start-2;
+}
+
+.hoursTitle {
+  @apply text-sm font-medium text-foreground;
+}
+
+.hoursList {
+  @apply m-0 flex list-none flex-col gap-xs p-0;
+}
+
+.hoursItem {
+  @apply flex flex-col gap-xs text-sm text-muted;
+  @apply sm:flex-row sm:gap-md;
+}
+
+.hoursDays {
+  @apply min-w-[6rem] font-medium text-foreground;
+}
+
+.hoursTime {
+  @apply text-muted;
+}

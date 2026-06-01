@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { RestaurantHero } from "@/components/RestaurantPage/components/RestaurantHero/RestaurantHero";
 import { getRestaurantById } from "@/mocks/data/restaurants";
 
 import styles from "./page.module.css";
@@ -15,8 +16,8 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
   if (!restaurant) {
     return (
       <div className={styles.root}>
-        <Link href="/" className={styles.back}>
-          Back to search
+        <Link href="/restaurants" className={styles.back}>
+          Back to restaurants
         </Link>
         <h1 className={styles.title}>Restaurant not found</h1>
       </div>
@@ -25,11 +26,10 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
 
   return (
     <div className={styles.root}>
-      <Link href="/" className={styles.back}>
-        Back to search
+      <Link href="/restaurants" className={styles.back}>
+        Back to restaurants
       </Link>
-      <h1 className={styles.title}>{restaurant.name}</h1>
-      <p className={styles.message}>Restaurant page coming soon.</p>
+      <RestaurantHero restaurant={restaurant} />
     </div>
   );
 }

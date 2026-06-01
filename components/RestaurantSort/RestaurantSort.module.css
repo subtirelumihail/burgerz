@@ -1,0 +1,34 @@
+@reference "../../app/globals.css";
+
+.root {
+  @apply flex flex-col gap-md;
+}
+
+.controls {
+  @apply flex flex-col gap-md sm:flex-row sm:items-end;
+}
+
+.field {
+  @apply flex min-w-0 flex-col gap-sm sm:w-auto;
+}
+
+.label {
+  @apply text-sm font-medium text-foreground;
+}
+
+.select {
+  @apply box-border h-12 min-w-[11rem] rounded-md border border-border bg-surface px-lg py-md text-sm text-foreground;
+  font-family: inherit;
+}
+
+.select:focus-visible {
+  @apply outline-2 outline-offset-2 outline-focus-ring;
+}
+
+.select:disabled {
+  @apply cursor-not-allowed opacity-60;
+}
+
+.select option:disabled {
+  @apply text-muted;
+}

@@ -15,7 +15,12 @@ const mockEnv = {
   NEXT_PUBLIC_API_MOCKING: "enabled",
 };
 
-const paths = ["/", "/burgers/burger-1", "/restaurants/restaurant-1"];
+const paths = [
+  "/",
+  "/restaurants",
+  "/burgers/burger-1",
+  "/restaurants/restaurant-1",
+];
 
 function log(message) {
   console.log(`[a11y] ${message}`);

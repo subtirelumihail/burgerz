@@ -6,7 +6,7 @@ import type {
 import { DEFAULT_BURGERS_PAGE_SIZE } from "@/types/burger";
 
 import { mockBurgers } from "@/mocks/data/burgers";
-import { getRestaurantById } from "@/mocks/data/restaurants";
+import { getRestaurantSummaryById } from "@/mocks/data/restaurants";
 
 const burgers: Burger[] = [...mockBurgers];
 
@@ -88,7 +88,7 @@ export function getBurgerById(id: string): Burger | null {
 }
 
 export function addBurger(body: CreateBurgerRequest): Burger {
-  const restaurant = getRestaurantById(body.restaurantId);
+  const restaurant = getRestaurantSummaryById(body.restaurantId);
 
   if (!restaurant) {
     throw new Error("Restaurant not found");

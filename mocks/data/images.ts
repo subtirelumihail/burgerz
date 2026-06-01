@@ -15,6 +15,11 @@ const DEFAULT_REVIEW_SIZES: MockImageSizes = {
   full: [960, 640],
 };
 
+const DEFAULT_RESTAURANT_SIZES: MockImageSizes = {
+  thumbnail: [160, 160],
+  full: [960, 640],
+};
+
 function buildImageAsset(seed: string, sizes: MockImageSizes): ImageAsset {
   return {
     thumbnailUrl: `https://picsum.photos/seed/${seed}/${sizes.thumbnail[0]}/${sizes.thumbnail[1]}`,
@@ -30,4 +35,8 @@ export function createMockBurgerImage(seed: string): ImageAsset {
 
 export function createMockReviewImage(seed: string): ImageAsset {
   return buildImageAsset(seed, DEFAULT_REVIEW_SIZES);
+}
+
+export function createMockRestaurantImage(seed: string): ImageAsset {
+  return buildImageAsset(seed, DEFAULT_RESTAURANT_SIZES);
 }

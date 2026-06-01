@@ -1,0 +1,74 @@
+import Link from "next/link";
+
+import { ThumbnailImage } from "@/components/basic/ThumbnailImage/ThumbnailImage";
+
+import type { RestaurantCardProps } from "../../types";
+
+import styles from "./RestaurantCard.module.css";
+
+function formatDistance(distanceKm?: number): string | null {
+  if (distanceKm === undefined) {
+    return null;
+  }
+
+  if (distanceKm < 1) {
+    return `${Math.round(distanceKm * 1000)} m away`;
+  }
+
+  return `${distanceKm.toFixed(1)} km away`;
+}
+
+export function RestaurantCard({
+  restaurant,
+  imagePriority = false,
+}: RestaurantCardProps) {
+  const distanceLabel = formatDistance(restaurant.distanceKm);
+
+  return (
+    <article className={styles.root}>
+      <Link href={`/restaurants/${restaurant.id}`} className={styles.imageLink}>
+        <ThumbnailImage
+          src={restaurant.image.thumbnailUrl}
+          alt={restaurant.name}
+          width={96}
+          height={96}
+          className={styles.imageWrap}
+          imageClassName={styles.image}
+          priority={imagePriority}
+        />
+      </Link>
+      <div className={styles.content}>
+        <header className={styles.header}>
+          <h2 className={styles.title}>
+            <Link
+              href={`/restaurants/${restaurant.id}`}
+              className={styles.titleLink}
+            >
+              {restaurant.name}
+            </Link>
+          </h2>
+          {distanceLabel ? (
+            <p className={styles.distance}>{distanceLabel}</p>
+          ) : null}
+        </header>
+        <div className={styles.details}>
+          <p className={styles.location}>{restaurant.location.address}</p>
+          <div className={styles.hours}>
+            <h3 className={styles.hoursTitle}>Opening times</h3>
+            <ul className={styles.hoursList}>
+              {restaurant.openingHours.map((entry) => (
+                <li
+                  key={`${entry.days}-${entry.hours}`}
+                  className={styles.hoursItem}
+                >
+                  <span className={styles.hoursDays}>{entry.days}</span>
+                  <span className={styles.hoursTime}>{entry.hours}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+}
