@@ -1,18 +1,11 @@
 @reference "../../../../app/globals.css";
 
 .root {
-  @apply flex flex-col;
-}
-
-.primary {
-  @apply grid gap-md;
-  grid-template-columns: auto 1fr;
-  @apply sm:flex sm:items-start sm:gap-xl;
+  @apply flex items-start gap-md sm:gap-xl;
 }
 
 .imageWrap {
   @apply size-28 shrink-0;
-  @apply max-sm:col-start-1 max-sm:row-start-1 max-sm:self-start;
   @apply sm:size-40;
 }
 
@@ -20,14 +13,12 @@
   @apply size-full object-cover;
 }
 
-.details {
-  @apply flex min-w-0 flex-col gap-md;
-  @apply max-sm:contents sm:min-w-0 sm:flex-1;
+.content {
+  @apply flex min-w-0 flex-1 flex-col;
 }
 
 .intro {
   @apply flex min-w-0 flex-col gap-xs;
-  @apply max-sm:col-start-2 max-sm:row-start-1;
 }
 
 .title {
@@ -45,9 +36,4 @@
 
 .restaurant:focus-visible {
   @apply rounded-sm outline-2 outline-offset-2 outline-focus-ring;
-}
-
-.metrics {
-  @apply flex flex-col gap-md;
-  @apply max-sm:col-span-2 max-sm:row-start-2;
 }

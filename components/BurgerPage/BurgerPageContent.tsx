@@ -6,6 +6,7 @@ import { ReviewSearch } from "@/components/ReviewSearch/ReviewSearch";
 import { useBurger } from "@/hooks/useBurger";
 import { useBurgerReviews } from "@/hooks/useBurgerReviews";
 
+import { AddReviewLink } from "./components/AddReviewLink/AddReviewLink";
 import { BurgerHero } from "./components/BurgerHero/BurgerHero";
 import { BurgerHeroSkeleton } from "./components/BurgerHeroSkeleton/BurgerHeroSkeleton";
 import type { BurgerPageContentProps } from "./types";
@@ -46,7 +47,12 @@ export function BurgerPageContent({ burgerId }: BurgerPageContentProps) {
         </p>
       ) : null}
       <section className={styles.reviewsSection} aria-label="Reviews">
-        <h2 className={styles.reviewsHeading}>Customer reviews</h2>
+        <div className={styles.reviewsHeader}>
+          <h2 className={styles.reviewsHeading}>Customer reviews</h2>
+          {!isBurgerLoading && burger ? (
+            <AddReviewLink burgerId={burgerId} />
+          ) : null}
+        </div>
         <ReviewSearch
           query={query}
           onQueryChange={setQuery}

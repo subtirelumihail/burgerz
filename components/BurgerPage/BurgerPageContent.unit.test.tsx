@@ -61,6 +61,10 @@ describe("BurgerPageContent", () => {
     expect(
       screen.getByRole("heading", { level: 2, name: "Customer reviews" }),
     ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Add Review" })).toHaveAttribute(
+      "href",
+      "/burgers/burger-1/add-review",
+    );
   });
 
   it("shows not found when burger does not exist", async () => {

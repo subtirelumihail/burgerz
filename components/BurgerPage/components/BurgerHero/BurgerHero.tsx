@@ -11,27 +11,34 @@ import styles from "./BurgerHero.module.css";
 export function BurgerHero({ burger }: BurgerHeroProps) {
   return (
     <header className={styles.root}>
-      <ImageThumbnail
-        image={burger.image}
-        alt={burger.title}
-        width={160}
-        height={160}
-        className={styles.imageWrap}
-        imageClassName={styles.image}
-        priority
-        sizes="160px"
-      />
-      <div className={styles.content}>
-        <h1 className={styles.title}>{burger.title}</h1>
-        <Link
-          href={`/restaurants/${burger.restaurant.id}`}
-          className={styles.restaurant}
-        >
-          {burger.restaurant.name}
-        </Link>
-        <div className={styles.review}>
-          <Review score={burger.reviewScore} reviewCount={burger.reviewCount} />
-          <BurgerScores scores={burger.scores} />
+      <div className={styles.primary}>
+        <ImageThumbnail
+          image={burger.image}
+          alt={burger.title}
+          width={160}
+          height={160}
+          className={styles.imageWrap}
+          imageClassName={styles.image}
+          priority
+          sizes="(max-width: 640px) 112px, 160px"
+        />
+        <div className={styles.details}>
+          <div className={styles.intro}>
+            <h1 className={styles.title}>{burger.title}</h1>
+            <Link
+              href={`/restaurants/${burger.restaurant.id}`}
+              className={styles.restaurant}
+            >
+              {burger.restaurant.name}
+            </Link>
+          </div>
+          <div className={styles.metrics}>
+            <Review
+              score={burger.reviewScore}
+              reviewCount={burger.reviewCount}
+            />
+            <BurgerScores scores={burger.scores} />
+          </div>
         </div>
       </div>
     </header>

@@ -1,5 +1,7 @@
 import { apiClient } from "@/lib/api/client";
 import type {
+  CreateBurgerReviewRequest,
+  CreateBurgerReviewResponse,
   GetBurgerReviewsParams,
   GetBurgerReviewsResponse,
 } from "@/types/review";
@@ -36,4 +38,11 @@ export async function getBurgerReviews(
   return apiClient.get<GetBurgerReviewsResponse>(
     buildBurgerReviewsPath(burgerId, params),
   );
+}
+
+export async function createBurgerReview(
+  burgerId: string,
+  body: CreateBurgerReviewRequest,
+): Promise<CreateBurgerReviewResponse> {
+  return apiClient.post(`/api/burgers/${burgerId}/reviews`, body);
 }

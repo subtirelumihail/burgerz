@@ -1,0 +1,19 @@
+@reference "../../../../app/globals.css";
+
+.root {
+  @apply w-full sm:w-auto sm:shrink-0;
+}
+
+.link {
+  @apply box-border min-h-[48px] w-full justify-center;
+  @apply no-underline border-accent bg-surface-raised text-accent;
+  @apply sm:w-auto sm:min-w-[11rem];
+}
+
+.link:hover {
+  @apply bg-accent text-accent-foreground;
+}
+
+.link:focus-visible {
+  @apply outline-2 outline-offset-2 outline-focus-ring;
+}
