@@ -1,0 +1,17 @@
+@reference "../../../app/globals.css";
+
+.root {
+  @apply border-b border-border bg-surface-raised;
+}
+
+.inner {
+  @apply flex items-center justify-between py-lg;
+}
+
+.brand {
+  @apply font-display text-[1.75rem] leading-none tracking-[0.02em] text-foreground no-underline;
+}
+
+.brand:focus-visible {
+  @apply rounded-sm;
+}

@@ -1,0 +1,5 @@
+@reference "../../../app/globals.css";
+
+.root {
+  @apply mx-auto w-full max-w-[var(--container-max)] px-[var(--container-padding)];
+}

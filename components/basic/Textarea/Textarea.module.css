@@ -1,0 +1,38 @@
+@reference "../../../app/globals.css";
+
+.field {
+  @apply flex flex-col gap-sm;
+}
+
+.label {
+  @apply text-sm font-semibold text-foreground;
+}
+
+.textarea {
+  @apply min-h-28 w-full resize-y rounded-md border border-border bg-surface-raised px-lg py-md text-base leading-normal text-foreground;
+  @apply transition-[border-color] duration-[180ms] ease-out-expo;
+}
+
+.textarea::placeholder {
+  @apply text-muted;
+}
+
+.textarea:hover:not(:disabled) {
+  @apply border-[oklch(0.78_0.03_var(--hue-neutral))];
+}
+
+.textarea:focus {
+  @apply border-accent outline-none;
+}
+
+.textarea[aria-invalid="true"] {
+  @apply border-[oklch(0.55_0.2_25)];
+}
+
+.hint {
+  @apply text-[0.8125rem] text-muted;
+}
+
+.error {
+  @apply text-[0.8125rem] text-[oklch(0.48_0.18_25)];
+}

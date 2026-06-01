@@ -1,0 +1,17 @@
+@reference "../../../app/globals.css";
+
+.root {
+  @apply mt-auto border-t border-border bg-surface-raised;
+}
+
+.inner {
+  @apply py-xl;
+}
+
+.text {
+  @apply max-w-[65ch] text-sm text-muted;
+}
+
+.heart {
+  @apply text-accent;
+}

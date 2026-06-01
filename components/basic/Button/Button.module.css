@@ -1,0 +1,48 @@
+@reference "../../../app/globals.css";
+
+.root {
+  @apply inline-flex items-center justify-center gap-2;
+  @apply font-body text-[0.9375rem] font-semibold leading-[1.2];
+  @apply rounded-md border border-transparent px-xl py-md cursor-pointer;
+  @apply transition-[background-color,color,border-color,opacity] duration-[180ms] ease-out-expo;
+}
+
+.root:disabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
+.icon {
+  @apply size-[1.125rem] shrink-0;
+}
+
+.primary {
+  @apply bg-accent text-accent-foreground;
+}
+
+.primary:hover:not(:disabled) {
+  @apply bg-accent-hover;
+}
+
+.secondary {
+  @apply border-border bg-secondary text-foreground;
+}
+
+.secondary:hover:not(:disabled) {
+  @apply bg-secondary-hover;
+}
+
+.link {
+  @apply bg-transparent px-sm text-accent underline underline-offset-[0.2em];
+}
+
+.link:hover:not(:disabled) {
+  @apply text-accent-hover;
+}
+
+.ghost {
+  @apply border-transparent bg-transparent text-foreground;
+}
+
+.ghost:hover:not(:disabled) {
+  @apply bg-secondary;
+}

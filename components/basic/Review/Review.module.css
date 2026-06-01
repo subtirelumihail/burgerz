@@ -1,0 +1,29 @@
+@reference "../../../app/globals.css";
+
+.root {
+  @apply flex flex-wrap items-center gap-sm;
+}
+
+.label {
+  @apply text-sm font-medium text-foreground;
+}
+
+.stars {
+  @apply inline-flex items-center gap-xs text-accent;
+}
+
+.starsSm {
+  @apply text-sm;
+}
+
+.starsMd {
+  @apply text-base;
+}
+
+.score {
+  @apply font-semibold text-foreground;
+}
+
+.count {
+  @apply text-sm text-muted;
+}

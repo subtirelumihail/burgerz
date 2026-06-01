@@ -1,0 +1,54 @@
+@reference "../../../app/globals.css";
+
+.field {
+  @apply flex flex-col gap-sm;
+}
+
+.label {
+  @apply text-sm font-semibold text-foreground;
+}
+
+.dropzone {
+  @apply flex cursor-pointer flex-col items-center gap-md rounded-lg border border-dashed border-border bg-secondary p-2xl;
+  @apply transition-[border-color,background-color] duration-[180ms] ease-out-expo;
+}
+
+.dropzone:hover {
+  @apply border-accent bg-[oklch(0.96_0.02_var(--hue-neutral))];
+}
+
+.dropzone:focus-within {
+  @apply border-accent;
+}
+
+.input {
+  @apply sr-only;
+}
+
+.wrapper {
+  @apply relative;
+}
+
+.prompt {
+  @apply text-center text-[0.9375rem] text-muted;
+}
+
+.promptAccent {
+  @apply font-semibold text-accent;
+}
+
+.preview {
+  @apply aspect-[4/3] max-w-64 w-full rounded-md border border-border object-cover;
+}
+
+.actions {
+  @apply flex flex-wrap justify-center gap-md;
+}
+
+.hint {
+  @apply text-[0.8125rem] text-muted;
+}
+
+.error {
+  @apply text-[0.8125rem] text-[oklch(0.48_0.18_25)];
+}

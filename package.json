@@ -15,6 +15,7 @@
     "test:run": "vitest run",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
+    "test:a11y": "node scripts/run-pa11y.mjs",
     "prepare": "husky"
   },
   "dependencies": {
@@ -41,6 +42,7 @@
     "jsdom": "^29.1.1",
     "lint-staged": "^16.4.0",
     "msw": "^2.14.6",
+    "pa11y": "^9.1.1",
     "prettier": "^3.8.3",
     "tailwindcss": "^4",
     "typescript": "^5",

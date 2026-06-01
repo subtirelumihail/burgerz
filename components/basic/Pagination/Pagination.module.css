@@ -1,0 +1,31 @@
+@reference "../../../app/globals.css";
+
+.root {
+  @apply flex flex-wrap items-center justify-center gap-sm;
+}
+
+.pageButton {
+  @apply inline-flex min-w-[2.5rem] items-center justify-center rounded-md border border-border;
+  @apply bg-surface-raised px-md py-sm font-body text-sm font-semibold text-foreground;
+  @apply transition-[background-color,color,border-color,opacity] duration-[180ms] ease-out-expo;
+}
+
+.pageButton:hover:not(:disabled) {
+  @apply bg-secondary;
+}
+
+.pageButton:disabled {
+  @apply cursor-not-allowed opacity-50;
+}
+
+.pageButtonActive {
+  @apply border-accent bg-accent text-accent-foreground;
+}
+
+.pageButtonActive:hover:not(:disabled) {
+  @apply bg-accent-hover;
+}
+
+.ellipsis {
+  @apply px-sm font-body text-sm text-muted;
+}
