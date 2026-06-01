@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 import { Container } from "@/components/layout/Container/Container";
@@ -13,6 +14,14 @@ export function SiteHeader({ className }: SiteHeaderProps) {
       <Container>
         <div className={styles.inner}>
           <Link href="/" className={styles.brand}>
+            <Image
+              src="/logo-burgerz.png"
+              alt=""
+              width={40}
+              height={36}
+              className={styles.logo}
+              priority
+            />
             Burgerz
           </Link>
           <SiteHeaderNav />
