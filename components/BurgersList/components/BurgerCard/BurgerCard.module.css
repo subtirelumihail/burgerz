@@ -13,7 +13,7 @@
 }
 
 .imageWrap {
-  @apply relative size-24 overflow-hidden rounded-md;
+  @apply shrink-0;
 }
 
 .image {

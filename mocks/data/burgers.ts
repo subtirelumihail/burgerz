@@ -1,3 +1,4 @@
+import { createMockBurgerImage } from "@/mocks/data/images";
 import type { Burger } from "@/types/burger";
 
 export const mockBurgers: Burger[] = [
@@ -5,7 +6,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-1",
     title: "Smash Shack Classic",
     restaurant: { id: "restaurant-1", name: "Smash Shack" },
-    imageUrl: "https://picsum.photos/seed/smash-shack/160/160",
+    image: createMockBurgerImage("smash-shack"),
     reviewCount: 128,
     reviewScore: 4.6,
     scores: {
@@ -18,7 +19,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-2",
     title: "Midnight Melt",
     restaurant: { id: "restaurant-2", name: "Midnight Melt Bar" },
-    imageUrl: "https://picsum.photos/seed/midnight-melt/160/160",
+    image: createMockBurgerImage("midnight-melt"),
     reviewCount: 94,
     reviewScore: 4.2,
     scores: {
@@ -31,7 +32,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-3",
     title: "Garden Stack",
     restaurant: { id: "restaurant-3", name: "Green Bite Co." },
-    imageUrl: "https://picsum.photos/seed/garden-stack/160/160",
+    image: createMockBurgerImage("garden-stack"),
     reviewCount: 67,
     reviewScore: 3.9,
     scores: {
@@ -44,7 +45,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-4",
     title: "Firehouse Double",
     restaurant: { id: "restaurant-4", name: "Firehouse Burgers" },
-    imageUrl: "https://picsum.photos/seed/firehouse-double/160/160",
+    image: createMockBurgerImage("firehouse-double"),
     reviewCount: 211,
     reviewScore: 4.8,
     scores: {
@@ -57,7 +58,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-5",
     title: "Truffle Royale",
     restaurant: { id: "restaurant-5", name: "The Bun Stop" },
-    imageUrl: "https://picsum.photos/seed/truffle-royale/160/160",
+    image: createMockBurgerImage("truffle-royale"),
     reviewCount: 156,
     reviewScore: 4.7,
     scores: {
@@ -70,7 +71,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-6",
     title: "Blue Cheese Blaze",
     restaurant: { id: "restaurant-4", name: "Firehouse Burgers" },
-    imageUrl: "https://picsum.photos/seed/blue-cheese-blaze/160/160",
+    image: createMockBurgerImage("blue-cheese-blaze"),
     reviewCount: 88,
     reviewScore: 4.3,
     scores: {
@@ -83,7 +84,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-7",
     title: "Patty Palace Original",
     restaurant: { id: "restaurant-6", name: "Patty Palace" },
-    imageUrl: "https://picsum.photos/seed/patty-palace-original/160/160",
+    image: createMockBurgerImage("patty-palace-original"),
     reviewCount: 302,
     reviewScore: 4.5,
     scores: {
@@ -96,7 +97,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-8",
     title: "Urban Smokehouse",
     restaurant: { id: "restaurant-7", name: "Urban Grillhouse" },
-    imageUrl: "https://picsum.photos/seed/urban-smokehouse/160/160",
+    image: createMockBurgerImage("urban-smokehouse"),
     reviewCount: 119,
     reviewScore: 4.4,
     scores: {
@@ -109,7 +110,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-9",
     title: "Coastal Catch Burger",
     restaurant: { id: "restaurant-8", name: "Coastal Burger Co." },
-    imageUrl: "https://picsum.photos/seed/coastal-catch/160/160",
+    image: createMockBurgerImage("coastal-catch"),
     reviewCount: 73,
     reviewScore: 4.1,
     scores: {
@@ -122,7 +123,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-10",
     title: "Green Goddess Veggie",
     restaurant: { id: "restaurant-3", name: "Green Bite Co." },
-    imageUrl: "https://picsum.photos/seed/green-goddess/160/160",
+    image: createMockBurgerImage("green-goddess"),
     reviewCount: 54,
     reviewScore: 4.0,
     scores: {
@@ -135,7 +136,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-11",
     title: "Midnight Bacon Jam",
     restaurant: { id: "restaurant-2", name: "Midnight Melt Bar" },
-    imageUrl: "https://picsum.photos/seed/midnight-bacon-jam/160/160",
+    image: createMockBurgerImage("midnight-bacon-jam"),
     reviewCount: 142,
     reviewScore: 4.6,
     scores: {
@@ -148,7 +149,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-12",
     title: "Bun Stop Slider Trio",
     restaurant: { id: "restaurant-5", name: "The Bun Stop" },
-    imageUrl: "https://picsum.photos/seed/bun-stop-sliders/160/160",
+    image: createMockBurgerImage("bun-stop-sliders"),
     reviewCount: 98,
     reviewScore: 4.2,
     scores: {
@@ -161,7 +162,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-13",
     title: "Grillhouse Wagyu",
     restaurant: { id: "restaurant-7", name: "Urban Grillhouse" },
-    imageUrl: "https://picsum.photos/seed/grillhouse-wagyu/160/160",
+    image: createMockBurgerImage("grillhouse-wagyu"),
     reviewCount: 187,
     reviewScore: 4.9,
     scores: {
@@ -174,7 +175,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-14",
     title: "Spicy Inferno",
     restaurant: { id: "restaurant-4", name: "Firehouse Burgers" },
-    imageUrl: "https://picsum.photos/seed/spicy-inferno/160/160",
+    image: createMockBurgerImage("spicy-inferno"),
     reviewCount: 165,
     reviewScore: 4.5,
     scores: {
@@ -187,7 +188,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-15",
     title: "Classic Smash Jr.",
     restaurant: { id: "restaurant-1", name: "Smash Shack" },
-    imageUrl: "https://picsum.photos/seed/smash-jr/160/160",
+    image: createMockBurgerImage("smash-jr"),
     reviewCount: 89,
     reviewScore: 4.3,
     scores: {
@@ -200,7 +201,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-16",
     title: "Patty Palace BBQ",
     restaurant: { id: "restaurant-6", name: "Patty Palace" },
-    imageUrl: "https://picsum.photos/seed/patty-palace-bbq/160/160",
+    image: createMockBurgerImage("patty-palace-bbq"),
     reviewCount: 134,
     reviewScore: 4.4,
     scores: {
@@ -213,7 +214,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-17",
     title: "Sea Salt Sunset",
     restaurant: { id: "restaurant-8", name: "Coastal Burger Co." },
-    imageUrl: "https://picsum.photos/seed/sea-salt-sunset/160/160",
+    image: createMockBurgerImage("sea-salt-sunset"),
     reviewCount: 61,
     reviewScore: 3.8,
     scores: {
@@ -226,7 +227,7 @@ export const mockBurgers: Burger[] = [
     id: "burger-18",
     title: "Urban Mushroom Swiss",
     restaurant: { id: "restaurant-7", name: "Urban Grillhouse" },
-    imageUrl: "https://picsum.photos/seed/mushroom-swiss/160/160",
+    image: createMockBurgerImage("mushroom-swiss"),
     reviewCount: 77,
     reviewScore: 4.0,
     scores: {

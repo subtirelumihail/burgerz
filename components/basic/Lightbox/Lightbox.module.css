@@ -1,0 +1,45 @@
+@reference "../../../app/globals.css";
+
+.overlay {
+  @apply fixed inset-0 z-50;
+}
+
+.backdrop {
+  @apply absolute inset-0 z-0 cursor-default border-0 bg-foreground/70 p-0;
+}
+
+.closeButton {
+  @apply absolute z-20 flex size-11 items-center justify-center rounded-md border-0 bg-surface-raised text-2xl leading-none text-foreground;
+  @apply transition-[background-color] duration-[180ms] ease-out-expo;
+  top: var(--container-padding);
+  right: var(--container-padding);
+}
+
+.closeButton:hover {
+  @apply bg-secondary;
+}
+
+.closeButton:focus-visible {
+  @apply outline-2 outline-offset-2 outline-focus-ring;
+}
+
+.imageWrap {
+  @apply absolute inset-0 z-10 box-border flex min-h-0 min-w-0 items-center justify-center;
+  padding: calc(var(--container-padding) + 3rem) var(--container-padding)
+    var(--container-padding);
+}
+
+.imageFrame {
+  @apply h-auto w-full max-h-full;
+  max-width: var(--image-max-width);
+  max-height: min(100%, var(--image-max-height));
+  aspect-ratio: var(--image-aspect-ratio);
+}
+
+.imageFrame > span {
+  @apply block h-full w-full;
+}
+
+.image {
+  @apply block h-full w-full object-contain;
+}

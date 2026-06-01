@@ -98,7 +98,7 @@ export function addBurger(body: CreateBurgerRequest): Burger {
     id: createBurgerId(),
     title: body.title,
     restaurant,
-    imageUrl: body.imageUrl,
+    image: body.image,
     reviewCount: 0,
     reviewScore: 0,
     scores: body.scores,
