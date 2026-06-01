@@ -15,7 +15,7 @@
     "test:run": "vitest run",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:a11y": "node scripts/run-pa11y.mjs",
+    "test:a11y": "NEXT_PUBLIC_API_MOCKING=enabled node scripts/run-pa11y.mjs",
     "prepare": "husky"
   },
   "dependencies": {

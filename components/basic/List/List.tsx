@@ -21,8 +21,8 @@ export function List<T>({
 
   return (
     <ul className={cn(styles.root, className)} aria-label={ariaLabel}>
-      {items.map((item) => {
-        const content = renderItem(item);
+      {items.map((item, index) => {
+        const content = renderItem(item, index);
 
         if (!getItemHref) {
           return (

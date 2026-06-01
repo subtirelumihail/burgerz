@@ -32,11 +32,11 @@
 }
 
 .link {
-  @apply bg-transparent px-sm text-accent underline underline-offset-[0.2em];
+  @apply bg-transparent px-sm text-link underline underline-offset-[0.2em];
 }
 
 .link:hover:not(:disabled) {
-  @apply text-accent-hover;
+  @apply text-link-hover;
 }
 
 .ghost {

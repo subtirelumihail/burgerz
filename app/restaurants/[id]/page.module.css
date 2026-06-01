@@ -1,0 +1,25 @@
+@reference "../../globals.css";
+
+.root {
+  @apply flex flex-col gap-xl;
+}
+
+.back {
+  @apply text-sm font-medium text-link no-underline;
+}
+
+.back:hover {
+  @apply text-link-hover underline;
+}
+
+.back:focus-visible {
+  @apply rounded-sm outline-2 outline-offset-2 outline-focus-ring;
+}
+
+.title {
+  @apply font-display text-3xl leading-tight text-foreground;
+}
+
+.message {
+  @apply text-muted;
+}

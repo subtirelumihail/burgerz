@@ -1,0 +1,9 @@
+@reference "./globals.css";
+
+.root {
+  @apply flex flex-col gap-xl;
+}
+
+.title {
+  @apply font-display text-xl leading-tight text-foreground;
+}

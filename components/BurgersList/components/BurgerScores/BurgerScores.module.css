@@ -1,0 +1,42 @@
+@reference "../../../../app/globals.css";
+
+.root {
+  @apply flex flex-wrap gap-sm;
+}
+
+.pill {
+  @apply inline-flex items-center gap-sm rounded-full px-md py-xs text-sm;
+  @apply border border-transparent;
+}
+
+.label {
+  @apply font-semibold;
+}
+
+.score {
+  @apply font-semibold text-foreground;
+}
+
+.taste {
+  @apply bg-[oklch(0.95_0.045_32)];
+}
+
+.taste .label {
+  color: oklch(0.48 0.17 32);
+}
+
+.texture {
+  @apply bg-[oklch(0.95_0.04_145)];
+}
+
+.texture .label {
+  color: oklch(0.42 0.12 145);
+}
+
+.visualPresentation {
+  @apply bg-[oklch(0.95_0.04_285)];
+}
+
+.visualPresentation .label {
+  color: oklch(0.46 0.14 285);
+}
