@@ -39,6 +39,9 @@ export function UserReviewCard({
         className={styles.aspects}
         aria-labelledby={`${review.id}-aspects`}
       >
+        <h3 id={`${review.id}-aspects`} className={styles.sectionHeading}>
+          Aspect scores
+        </h3>
         <BurgerScores scores={toCategoryScores(review.aspects)} decimals={0} />
       </section>
 
