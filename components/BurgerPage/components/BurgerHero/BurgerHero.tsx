@@ -33,6 +33,7 @@ export function BurgerHero({ burger }: BurgerHeroProps) {
             {burger.restaurant.name}
           </Link>
           <div
+            role="group"
             tabIndex={0}
             aria-labelledby={summaryId}
             className={styles.summaryFocus}

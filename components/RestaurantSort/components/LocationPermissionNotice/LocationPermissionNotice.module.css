@@ -1,7 +1,11 @@
 @reference "../../../../app/globals.css";
 
 .root {
-  @apply flex items-start gap-md rounded-lg border border-border bg-surface-raised px-lg py-md;
+  @apply flex items-start gap-md rounded-lg border border-border bg-surface-raised px-lg py-md outline-none;
+}
+
+.root:focus-visible {
+  @apply outline-2 outline-offset-2 outline-focus-ring;
 }
 
 .icon {

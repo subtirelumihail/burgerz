@@ -23,6 +23,7 @@ interface UseRestaurantsResult {
   error: Error | null;
   needsLocationAccess: boolean;
   isLocationPending: boolean;
+  locationStatus: ReturnType<typeof useGeolocation>["status"];
   enableLocation: () => void;
 }
 
@@ -221,6 +222,7 @@ export function useRestaurants(): UseRestaurantsResult {
     error,
     needsLocationAccess,
     isLocationPending,
+    locationStatus: geolocationStatus,
     enableLocation,
   };
 }

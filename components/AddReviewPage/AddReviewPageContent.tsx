@@ -2,9 +2,8 @@
 
 import { useBurger } from "@/hooks/useBurger";
 
+import { BurgerHero } from "@/components/BurgerPage/components/BurgerHero/BurgerHero";
 import { BurgerHeroSkeleton } from "@/components/BurgerPage/components/BurgerHeroSkeleton/BurgerHeroSkeleton";
-
-import { AddReviewBurgerSummary } from "./components/AddReviewBurgerSummary/AddReviewBurgerSummary";
 import { AddReviewForm } from "./components/AddReviewForm/AddReviewForm";
 import type { AddReviewPageContentProps } from "./types";
 
@@ -20,7 +19,7 @@ export function AddReviewPageContent({ burgerId }: AddReviewPageContentProps) {
   return (
     <div className={styles.root}>
       {isLoading ? <BurgerHeroSkeleton /> : null}
-      {!isLoading && burger ? <AddReviewBurgerSummary burger={burger} /> : null}
+      {!isLoading && burger ? <BurgerHero burger={burger} /> : null}
       {error ? (
         <p className={styles.error} role="alert">
           {error.message}

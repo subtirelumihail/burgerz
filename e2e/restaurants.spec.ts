@@ -1,5 +1,10 @@
 import { expect, type Page, test } from "@playwright/test";
 
+import {
+  getLocationNoticeAction,
+  getLocationNoticeGroup,
+} from "./helpers/location-notice";
+
 const RESTAURANTS_PATH = "/restaurants";
 const BUCHAREST_GEO = { latitude: 44.437, longitude: 26.097 };
 
@@ -231,16 +236,17 @@ test.describe("restaurants page", () => {
 });
 
 test.describe("restaurants page without location access", () => {
-  test("shows enable location notice and falls back to name sort", async ({
+  test("shows location notice and falls back to name sort", async ({
     page,
     context,
   }) => {
     await context.clearPermissions();
     await page.goto(RESTAURANTS_PATH);
 
-    await expect(
-      page.getByRole("button", { name: "Enable location" }),
-    ).toBeVisible({ timeout: 10000 });
+    const notice = getLocationNoticeGroup(page);
+    await expect(notice).toBeVisible({ timeout: 10000 });
+    await expect(notice).toHaveAttribute("tabindex", "0");
+    await expect(getLocationNoticeAction(page)).toBeVisible();
     await expect(page.getByRole("combobox", { name: "Sort by" })).toHaveValue(
       "name",
     );
@@ -248,5 +254,19 @@ test.describe("restaurants page without location access", () => {
       getRestaurantListLink(page, /^coastal burger co\./i),
     ).toBeVisible({ timeout: 10000 });
     await expect(page.getByRole("option", { name: "Near By" })).toBeDisabled();
+  });
+
+  test("shows chrome settings guidance when location is blocked", async ({
+    page,
+    context,
+  }) => {
+    await context.clearPermissions();
+    await page.goto(RESTAURANTS_PATH);
+
+    await expect(getLocationNoticeGroup(page)).toContainText(
+      /enable it in chrome/i,
+      { timeout: 10000 },
+    );
+    await expect(getLocationNoticeAction(page)).toHaveText(/try again/i);
   });
 });

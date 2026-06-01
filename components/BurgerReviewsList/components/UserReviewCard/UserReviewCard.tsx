@@ -63,6 +63,7 @@ export function UserReviewCard({
     return (
       <article className={styles.root}>
         <div
+          role="group"
           tabIndex={0}
           aria-labelledby={summaryId}
           className={styles.contentFocus}

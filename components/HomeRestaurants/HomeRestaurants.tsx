@@ -23,6 +23,7 @@ export function HomeRestaurants() {
     error,
     needsLocationAccess,
     isLocationPending,
+    locationStatus,
     enableLocation,
   } = useRestaurants();
 
@@ -43,6 +44,7 @@ export function HomeRestaurants() {
         sort={sort}
         onSortChange={setSort}
         needsLocationAccess={needsLocationAccess}
+        locationStatus={locationStatus}
         isLocationPending={isLocationPending}
         onEnableLocation={enableLocation}
         isLoading={isLoading}
