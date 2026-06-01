@@ -6,36 +6,34 @@ afterEach(() => {
   cleanup();
 });
 
+const NEXT_IMAGE_PROPS = new Set([
+  "priority",
+  "fill",
+  "placeholder",
+  "blurDataURL",
+  "loader",
+  "quality",
+  "unoptimized",
+  "onLoadingComplete",
+  "overrideSrc",
+]);
+
 vi.mock("next/image", () => ({
   default: ({
     src,
     alt,
-    priority: _priority,
-    fill: _fill,
-    placeholder: _placeholder,
-    blurDataURL: _blurDataURL,
-    loader: _loader,
-    quality: _quality,
-    unoptimized: _unoptimized,
-    onLoadingComplete: _onLoadingComplete,
-    overrideSrc: _overrideSrc,
     ...props
   }: {
     src: string;
     alt: string;
-    priority?: boolean;
-    fill?: boolean;
-    placeholder?: string;
-    blurDataURL?: string;
-    loader?: unknown;
-    quality?: number;
-    unoptimized?: boolean;
-    onLoadingComplete?: unknown;
-    overrideSrc?: string;
     [key: string]: unknown;
   }) => {
+    const imgProps = Object.fromEntries(
+      Object.entries(props).filter(([key]) => !NEXT_IMAGE_PROPS.has(key)),
+    );
+
     // eslint-disable-next-line @next/next/no-img-element
-    return <img src={src} alt={alt} {...props} />;
+    return <img src={src} alt={alt} {...imgProps} />;
   },
 }));
 
