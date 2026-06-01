@@ -1,0 +1,26 @@
+@reference "../../app/globals.css";
+
+.root {
+  @apply flex flex-col gap-lg;
+}
+
+.form {
+  @apply flex flex-col gap-md sm:flex-row sm:items-end;
+}
+
+.field {
+  @apply min-w-0 flex-1;
+}
+
+.control,
+.button {
+  @apply box-border h-12;
+}
+
+.actions {
+  @apply flex w-full flex-col gap-md sm:w-auto sm:flex-row;
+}
+
+.button {
+  @apply w-full shrink-0 sm:w-auto;
+}

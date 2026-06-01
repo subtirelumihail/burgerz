@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { getBurgers } from "@/lib/services/burger.service";
+import { mockImageAsset } from "@/test/mock-image";
 import type { Burger } from "@/types/burger";
 import { DEFAULT_BURGERS_PAGE_SIZE } from "@/types/burger";
 
@@ -16,7 +17,7 @@ const mockBurger: Burger = {
   id: "burger-1",
   title: "Smash Shack Classic",
   restaurant: { id: "restaurant-1", name: "Smash Shack" },
-  imageUrl: "https://example.com/burger.jpg",
+  image: mockImageAsset,
   reviewCount: 10,
   reviewScore: 4.5,
   scores: {

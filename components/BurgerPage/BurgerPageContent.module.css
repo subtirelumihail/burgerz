@@ -1,0 +1,25 @@
+@reference "../../app/globals.css";
+
+.root {
+  @apply flex flex-col gap-2xl;
+}
+
+.error {
+  @apply text-base text-accent;
+}
+
+.notFound {
+  @apply font-display text-2xl text-foreground;
+}
+
+.reviewsSection {
+  @apply flex flex-col gap-xl;
+}
+
+.reviewsHeading {
+  @apply font-display text-2xl text-foreground;
+}
+
+.pagination {
+  @apply mt-md;
+}

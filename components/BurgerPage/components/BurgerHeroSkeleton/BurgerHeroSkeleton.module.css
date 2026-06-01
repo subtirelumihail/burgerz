@@ -1,0 +1,29 @@
+@reference "../../../../app/globals.css";
+
+.root {
+  @apply flex items-start gap-md sm:gap-xl;
+}
+
+.image {
+  @apply size-40 shrink-0 animate-pulse rounded-md bg-secondary;
+}
+
+.content {
+  @apply flex min-w-0 flex-1 flex-col gap-md;
+}
+
+.line {
+  @apply h-8 animate-pulse rounded-sm bg-secondary;
+}
+
+.lineShort {
+  @apply w-3/4;
+}
+
+.lineMedium {
+  @apply h-4 w-1/2;
+}
+
+.block {
+  @apply h-12 animate-pulse rounded-sm bg-secondary;
+}

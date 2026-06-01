@@ -1,0 +1,9 @@
+@reference "../../../app/globals.css";
+
+.trigger {
+  @apply cursor-pointer overflow-hidden rounded-md border-0 bg-transparent p-0;
+}
+
+.trigger:focus-visible {
+  @apply outline-2 outline-offset-2 outline-focus-ring;
+}

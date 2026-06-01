@@ -1,0 +1,17 @@
+@reference "../../app/globals.css";
+
+.root {
+  @apply flex flex-col gap-md;
+}
+
+.list {
+  @apply flex flex-col gap-md;
+}
+
+.listLoading {
+  @apply opacity-60;
+}
+
+.empty {
+  @apply text-base text-muted;
+}

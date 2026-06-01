@@ -1,4 +1,5 @@
 import type { PaginationMeta } from "@/types/api";
+import type { ImageAsset } from "@/types/image";
 import type { RestaurantSummary } from "@/types/restaurant";
 
 export const DEFAULT_BURGERS_PAGE_SIZE = 6;
@@ -13,7 +14,7 @@ export interface Burger {
   id: string;
   title: string;
   restaurant: RestaurantSummary;
-  imageUrl: string;
+  image: ImageAsset;
   reviewCount: number;
   reviewScore: number;
   scores: BurgerScores;
@@ -33,7 +34,7 @@ export interface GetBurgersResponse {
 export interface CreateBurgerRequest {
   title: string;
   restaurantId: string;
-  imageUrl: string;
+  image: ImageAsset;
   scores: BurgerScores;
 }
 

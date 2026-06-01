@@ -1,0 +1,37 @@
+@reference "../../../../app/globals.css";
+
+.root {
+  @apply flex flex-col gap-md rounded-lg border border-border bg-surface-raised p-md;
+}
+
+.header {
+  @apply flex flex-col gap-sm sm:flex-row sm:items-center sm:justify-between;
+}
+
+.author {
+  @apply text-base font-semibold text-foreground;
+}
+
+.date {
+  @apply text-sm text-muted;
+}
+
+.rating {
+  @apply flex items-center gap-sm;
+}
+
+.score {
+  @apply text-sm font-medium text-foreground;
+}
+
+.text {
+  @apply text-base leading-relaxed text-foreground;
+}
+
+.imageWrap {
+  @apply w-48 max-w-full shrink-0;
+}
+
+.image {
+  @apply size-full object-cover;
+}

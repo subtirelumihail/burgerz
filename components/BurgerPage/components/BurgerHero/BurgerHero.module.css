@@ -1,0 +1,37 @@
+@reference "../../../../app/globals.css";
+
+.root {
+  @apply flex items-start gap-md sm:gap-xl;
+}
+
+.imageWrap {
+  @apply shrink-0;
+}
+
+.image {
+  @apply size-40 object-cover;
+}
+
+.content {
+  @apply flex min-w-0 flex-1 flex-col gap-md;
+}
+
+.title {
+  @apply font-display text-3xl leading-tight text-foreground;
+}
+
+.restaurant {
+  @apply text-base font-medium text-link no-underline;
+}
+
+.restaurant:hover {
+  @apply text-link-hover underline;
+}
+
+.restaurant:focus-visible {
+  @apply rounded-sm outline-2 outline-offset-2 outline-focus-ring;
+}
+
+.review {
+  @apply flex flex-col gap-md;
+}

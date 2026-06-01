@@ -1,7 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 
 import { Review } from "@/components/basic/Review/Review";
+import { ThumbnailImage } from "@/components/basic/ThumbnailImage/ThumbnailImage";
 
 import { BurgerScores } from "../BurgerScores/BurgerScores";
 import type { BurgerCardProps } from "./types";
@@ -11,21 +11,16 @@ import styles from "./BurgerCard.module.css";
 export function BurgerCard({ burger, imagePriority = false }: BurgerCardProps) {
   return (
     <article className={styles.root}>
-      <Link
-        href={`/burgers/${burger.id}`}
-        className={styles.imageLink}
-        aria-label={`View ${burger.title}`}
-      >
-        <div className={styles.imageWrap}>
-          <Image
-            src={burger.imageUrl}
-            alt=""
-            width={96}
-            height={96}
-            className={styles.image}
-            priority={imagePriority}
-          />
-        </div>
+      <Link href={`/burgers/${burger.id}`} className={styles.imageLink}>
+        <ThumbnailImage
+          src={burger.image.thumbnailUrl}
+          alt={burger.title}
+          width={96}
+          height={96}
+          className={styles.imageWrap}
+          imageClassName={styles.image}
+          priority={imagePriority}
+        />
       </Link>
       <div className={styles.content}>
         <header className={styles.header}>
