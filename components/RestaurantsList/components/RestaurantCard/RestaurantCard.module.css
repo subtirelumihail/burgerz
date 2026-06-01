@@ -12,6 +12,14 @@
   @apply outline-2 outline-offset-2 outline-focus-ring;
 }
 
+.contentLink {
+  @apply flex min-w-0 flex-1 rounded-md text-inherit no-underline;
+}
+
+.contentLink:focus-visible {
+  @apply outline-2 outline-offset-2 outline-focus-ring;
+}
+
 .imageWrap {
   @apply shrink-0;
 }

@@ -36,6 +36,18 @@
   @apply flex flex-col gap-sm;
 }
 
+.contentFocus {
+  @apply flex flex-col gap-md rounded-md outline-none;
+}
+
+.contentFocus:focus-visible {
+  @apply outline-2 outline-offset-2 outline-focus-ring;
+}
+
+.srOnly {
+  @apply sr-only;
+}
+
 .imageWrap {
   @apply aspect-[4/3] w-48 max-w-full shrink-0;
 }

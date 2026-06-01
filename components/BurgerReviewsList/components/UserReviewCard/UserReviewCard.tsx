@@ -1,18 +1,20 @@
 import { ImageThumbnail } from "@/components/basic/ImageThumbnail/ImageThumbnail";
 import { Review } from "@/components/basic/Review/Review";
 import { BurgerScores } from "@/components/BurgersList/components/BurgerScores/BurgerScores";
+import { formatReviewListItemLabel } from "@/lib/a11y/list-item-labels";
 import { formatReviewDate, toCategoryScores } from "@/lib/utils/reviews.util";
 
 import type { UserReviewCardProps } from "./types";
 
 import styles from "./UserReviewCard.module.css";
 
-export function UserReviewCard({
+function ReviewCardContent({
   review,
-  showReviewImage = true,
-}: UserReviewCardProps) {
+}: {
+  review: UserReviewCardProps["review"];
+}) {
   return (
-    <article className={styles.root}>
+    <>
       <header className={styles.header}>
         <div>
           <p className={styles.author}>{review.authorName}</p>
@@ -44,10 +46,53 @@ export function UserReviewCard({
         </h3>
         <BurgerScores scores={toCategoryScores(review.aspects)} decimals={0} />
       </section>
+    </>
+  );
+}
 
-      {showReviewImage && review.image ? (
+export function UserReviewCard({
+  review,
+  showReviewImage = true,
+  listMode = false,
+}: UserReviewCardProps) {
+  const hasReviewImage = showReviewImage && review.image;
+
+  if (listMode) {
+    const summaryId = `${review.id}-summary`;
+
+    return (
+      <article className={styles.root}>
+        <div
+          tabIndex={0}
+          aria-labelledby={summaryId}
+          className={styles.contentFocus}
+        >
+          <p id={summaryId} className={styles.srOnly}>
+            {formatReviewListItemLabel(review, { includePhotoNote: false })}
+          </p>
+          <ReviewCardContent review={review} />
+        </div>
+        {hasReviewImage ? (
+          <ImageThumbnail
+            image={review.image!}
+            alt={`Photo from ${review.authorName}'s review`}
+            width={200}
+            height={150}
+            className={styles.imageWrap}
+            imageClassName={styles.image}
+            sizes="200px"
+          />
+        ) : null}
+      </article>
+    );
+  }
+
+  return (
+    <article className={styles.root}>
+      <ReviewCardContent review={review} />
+      {hasReviewImage ? (
         <ImageThumbnail
-          image={review.image}
+          image={review.image!}
           alt={`Photo from ${review.authorName}'s review`}
           width={200}
           height={150}

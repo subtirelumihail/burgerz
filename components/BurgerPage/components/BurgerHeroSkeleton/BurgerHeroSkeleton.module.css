@@ -17,13 +17,9 @@
 }
 
 .details {
-  @apply flex min-w-0 flex-col gap-md;
-  @apply max-sm:contents sm:min-w-0 sm:flex-1;
-}
-
-.intro {
-  @apply flex flex-col gap-xs;
+  @apply flex min-w-0 flex-col gap-xs;
   @apply max-sm:col-start-2 max-sm:row-start-1;
+  @apply sm:min-w-0 sm:flex-1;
 }
 
 .line {
@@ -38,9 +34,8 @@
   @apply h-4 w-1/2;
 }
 
-.metrics {
+.summary {
   @apply flex flex-col gap-md;
-  @apply max-sm:col-span-2 max-sm:row-start-2;
 }
 
 .block {

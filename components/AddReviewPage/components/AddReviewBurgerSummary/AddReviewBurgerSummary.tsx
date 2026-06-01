@@ -23,13 +23,13 @@ export function AddReviewBurgerSummary({
       />
       <div className={styles.content}>
         <div className={styles.intro}>
-          <h1 className={styles.title}>{burger.title}</h1>
           <Link
             href={`/restaurants/${burger.restaurant.id}`}
             className={styles.restaurant}
           >
             {burger.restaurant.name}
           </Link>
+          <h1 className={styles.title}>{burger.title}</h1>
         </div>
       </div>
     </header>

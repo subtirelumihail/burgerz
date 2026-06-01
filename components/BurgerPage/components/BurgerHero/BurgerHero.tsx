@@ -3,12 +3,15 @@ import Link from "next/link";
 import { ImageThumbnail } from "@/components/basic/ImageThumbnail/ImageThumbnail";
 import { Review } from "@/components/basic/Review/Review";
 import { BurgerScores } from "@/components/BurgersList/components/BurgerScores/BurgerScores";
+import { formatBurgerSummaryLabel } from "@/lib/a11y/list-item-labels";
 
 import type { BurgerHeroProps } from "./types";
 
 import styles from "./BurgerHero.module.css";
 
 export function BurgerHero({ burger }: BurgerHeroProps) {
+  const summaryId = `${burger.id}-summary`;
+
   return (
     <header className={styles.root}>
       <div className={styles.primary}>
@@ -23,21 +26,28 @@ export function BurgerHero({ burger }: BurgerHeroProps) {
           sizes="(max-width: 640px) 112px, 160px"
         />
         <div className={styles.details}>
-          <div className={styles.intro}>
+          <Link
+            href={`/restaurants/${burger.restaurant.id}`}
+            className={styles.restaurant}
+          >
+            {burger.restaurant.name}
+          </Link>
+          <div
+            tabIndex={0}
+            aria-labelledby={summaryId}
+            className={styles.summaryFocus}
+          >
+            <p id={summaryId} className={styles.srOnly}>
+              {formatBurgerSummaryLabel(burger)}
+            </p>
             <h1 className={styles.title}>{burger.title}</h1>
-            <Link
-              href={`/restaurants/${burger.restaurant.id}`}
-              className={styles.restaurant}
-            >
-              {burger.restaurant.name}
-            </Link>
-          </div>
-          <div className={styles.metrics}>
-            <Review
-              score={burger.reviewScore}
-              reviewCount={burger.reviewCount}
-            />
-            <BurgerScores scores={burger.scores} />
+            <div className={styles.metrics}>
+              <Review
+                score={burger.reviewScore}
+                reviewCount={burger.reviewCount}
+              />
+              <BurgerScores scores={burger.scores} />
+            </div>
           </div>
         </div>
       </div>

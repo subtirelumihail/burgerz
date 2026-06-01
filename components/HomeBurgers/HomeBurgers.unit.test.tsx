@@ -47,7 +47,9 @@ describe("HomeBurgers", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("heading", { level: 2, name: /smash shack classic/i }),
+        screen.getByRole("link", {
+          name: /smash shack classic, from smash shack\./i,
+        }),
       ).toBeInTheDocument();
     });
 
@@ -75,7 +77,9 @@ describe("HomeBurgers", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("heading", { level: 2, name: /smash shack classic/i }),
+        screen.getByRole("link", {
+          name: /smash shack classic, from smash shack\./i,
+        }),
       ).toBeInTheDocument();
     });
 
@@ -108,7 +112,9 @@ describe("HomeBurgers", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("heading", { level: 2, name: /smash shack classic/i }),
+        screen.getByRole("link", {
+          name: /smash shack classic, from smash shack\./i,
+        }),
       ).toBeInTheDocument();
     });
 

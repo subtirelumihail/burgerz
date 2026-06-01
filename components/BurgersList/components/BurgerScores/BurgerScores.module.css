@@ -1,7 +1,15 @@
 @reference "../../../../app/globals.css";
 
 .root {
-  @apply flex flex-wrap gap-sm;
+  @apply m-0 flex list-none flex-wrap gap-sm p-0;
+}
+
+.item {
+  @apply inline-flex;
+}
+
+.srOnly {
+  @apply sr-only;
 }
 
 .pill {

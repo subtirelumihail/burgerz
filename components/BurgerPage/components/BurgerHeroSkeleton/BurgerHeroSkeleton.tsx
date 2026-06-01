@@ -6,11 +6,9 @@ export function BurgerHeroSkeleton() {
       <div className={styles.primary}>
         <div className={styles.image} />
         <div className={styles.details}>
-          <div className={styles.intro}>
+          <div className={`${styles.line} ${styles.lineMedium}`} />
+          <div className={styles.summary}>
             <div className={`${styles.line} ${styles.lineShort}`} />
-            <div className={`${styles.line} ${styles.lineMedium}`} />
-          </div>
-          <div className={styles.metrics}>
             <div className={`${styles.line} ${styles.lineMedium}`} />
             <div className={styles.block} />
           </div>

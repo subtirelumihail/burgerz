@@ -22,7 +22,7 @@
 }
 
 .title {
-  @apply font-display text-xl leading-tight text-foreground;
+  @apply font-display text-xl leading-none text-foreground;
   @apply sm:text-3xl;
 }
 

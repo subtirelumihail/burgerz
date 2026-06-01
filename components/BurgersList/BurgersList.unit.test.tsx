@@ -33,10 +33,15 @@ describe("BurgersList", () => {
     render(<BurgersList burgers={[mockBurger]} />);
 
     expect(
-      screen.getByRole("heading", { level: 2, name: /smash shack classic/i }),
-    ).toBeInTheDocument();
+      screen.getByRole("link", { name: "View photo of Smash Shack Classic" }),
+    ).toHaveAttribute("href", "/burgers/burger-1");
     expect(
-      screen.getByRole("link", { name: /^smash shack$/i }),
+      screen.getByRole("link", {
+        name: /smash shack classic, from smash shack\. 4\.5 out of 5 stars based on 10 reviews\. aspect scores:/i,
+      }),
+    ).toHaveAttribute("href", "/burgers/burger-1");
+    expect(
+      screen.getByText(/smash shack classic/i, { hidden: true }),
     ).toBeInTheDocument();
   });
 

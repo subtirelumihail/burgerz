@@ -52,7 +52,9 @@ describe("HomeRestaurants", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByRole("heading", { level: 2, name: "Smash Shack" }),
+        screen.getByRole("link", {
+          name: /smash shack\./i,
+        }),
       ).toBeInTheDocument();
     });
 

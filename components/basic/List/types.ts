@@ -4,8 +4,6 @@ export interface ListProps<T> {
   items: T[];
   keyExtractor: (item: T) => string;
   renderItem: (item: T, index: number) => ReactNode;
-  getItemHref?: (item: T) => string;
-  getItemLabel?: (item: T) => string;
   emptyMessage?: string;
   className?: string;
   ariaLabel?: string;

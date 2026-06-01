@@ -30,6 +30,7 @@ export function RestaurantsList({
             <RestaurantCard
               restaurant={restaurant}
               imagePriority={index === 0}
+              listMode
             />
           )}
           emptyMessage="No restaurants match your search."

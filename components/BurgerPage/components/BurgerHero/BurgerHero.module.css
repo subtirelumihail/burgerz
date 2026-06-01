@@ -21,17 +21,13 @@
 }
 
 .details {
-  @apply flex min-w-0 flex-col gap-md;
-  @apply max-sm:contents sm:min-w-0 sm:flex-1;
-}
-
-.intro {
   @apply flex min-w-0 flex-col gap-xs;
   @apply max-sm:col-start-2 max-sm:row-start-1;
+  @apply sm:min-w-0 sm:flex-1;
 }
 
 .title {
-  @apply font-display text-xl leading-tight text-foreground;
+  @apply font-display text-xl leading-none text-foreground;
   @apply sm:text-3xl;
 }
 
@@ -47,7 +43,18 @@
   @apply rounded-sm outline-2 outline-offset-2 outline-focus-ring;
 }
 
+.summaryFocus {
+  @apply flex min-w-0 flex-col gap-md rounded-md outline-none;
+}
+
+.summaryFocus:focus-visible {
+  @apply outline-2 outline-offset-2 outline-focus-ring;
+}
+
+.srOnly {
+  @apply sr-only;
+}
+
 .metrics {
   @apply flex flex-col gap-md;
-  @apply max-sm:col-span-2 max-sm:row-start-2;
 }

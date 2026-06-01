@@ -57,6 +57,15 @@ describe("BurgerPageContent", () => {
       );
     });
 
+    expect(screen.getByRole("link", { name: "Smash Shack" })).toHaveAttribute(
+      "href",
+      "/restaurants/restaurant-1",
+    );
+    expect(
+      screen.getByLabelText(
+        "Smash Shack Classic. 4.5 out of 5 stars based on 10 reviews. Aspect scores: Taste, 4.5 out of 5. Texture, 4.5 out of 5. Visual presentation, 4.5 out of 5.",
+      ),
+    ).toHaveAttribute("tabindex", "0");
     expect(screen.getByText("Alex Rivera")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", { level: 2, name: "Customer reviews" }),

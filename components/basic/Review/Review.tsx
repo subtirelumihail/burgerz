@@ -45,28 +45,33 @@ export function Review({
   size = "md",
 }: ReviewProps) {
   const formattedScore = formatScore(score);
-  const ariaLabel =
+  const starRatingLabel = `${formattedScore} out of ${MAX_STARS} stars`;
+  const ratingWithCountLabel =
     reviewCount !== undefined
-      ? `${formattedScore} out of ${MAX_STARS} stars based on ${reviewCount} reviews`
-      : `${formattedScore} out of ${MAX_STARS} stars`;
+      ? `${starRatingLabel} based on ${reviewCount} reviews`
+      : starRatingLabel;
+  const screenReaderLabel = label
+    ? `${label} rating, ${starRatingLabel}`
+    : ratingWithCountLabel;
 
   return (
     <div className={styles.root}>
-      {label ? <span className={styles.label}>{label}</span> : null}
-      <div
-        className={cn(
-          styles.stars,
-          size === "sm" ? styles.starsSm : styles.starsMd,
-        )}
-        role="img"
-        aria-label={ariaLabel}
-      >
-        {renderStars(score)}
+      <span className={styles.srOnly}>{screenReaderLabel}</span>
+      <div aria-hidden="true" className={styles.visual}>
+        {label ? <span className={styles.label}>{label}</span> : null}
+        <div
+          className={cn(
+            styles.stars,
+            size === "sm" ? styles.starsSm : styles.starsMd,
+          )}
+        >
+          {renderStars(score)}
+        </div>
+        <span className={styles.score}>{formattedScore}</span>
+        {reviewCount !== undefined ? (
+          <span className={styles.count}>({reviewCount} reviews)</span>
+        ) : null}
       </div>
-      <span className={styles.score}>{formattedScore}</span>
-      {reviewCount !== undefined ? (
-        <span className={styles.count}>({reviewCount} reviews)</span>
-      ) : null}
     </div>
   );
 }
