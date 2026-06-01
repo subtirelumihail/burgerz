@@ -20,23 +20,68 @@ const DEFAULT_RESTAURANT_SIZES: MockImageSizes = {
   full: [960, 640],
 };
 
-function buildImageAsset(seed: string, sizes: MockImageSizes): ImageAsset {
+function seedToLock(seed: string): number {
+  let hash = 0;
+
+  for (let index = 0; index < seed.length; index++) {
+    hash = (hash * 31 + seed.charCodeAt(index)) >>> 0;
+  }
+
+  return hash || 1;
+}
+
+function buildLoremFlickrUrl(
+  keyword: string,
+  lockSeed: string,
+  width: number,
+  height: number,
+): string {
+  const lock = seedToLock(lockSeed);
+
+  return `https://loremflickr.com/${width}/${height}/${keyword}?lock=${lock}`;
+}
+
+function buildLoremFlickrImageAsset(
+  keyword: string,
+  lockSeed: string,
+  sizes: MockImageSizes,
+): ImageAsset {
+  const [thumbnailWidth, thumbnailHeight] = sizes.thumbnail;
+  const [fullWidth, fullHeight] = sizes.full;
+
   return {
-    thumbnailUrl: `https://picsum.photos/seed/${seed}/${sizes.thumbnail[0]}/${sizes.thumbnail[1]}`,
-    fullUrl: `https://picsum.photos/seed/${seed}/${sizes.full[0]}/${sizes.full[1]}`,
-    width: sizes.full[0],
-    height: sizes.full[1],
+    thumbnailUrl: buildLoremFlickrUrl(
+      keyword,
+      lockSeed,
+      thumbnailWidth,
+      thumbnailHeight,
+    ),
+    fullUrl: buildLoremFlickrUrl(keyword, lockSeed, fullWidth, fullHeight),
+    width: fullWidth,
+    height: fullHeight,
   };
 }
 
 export function createMockBurgerImage(seed: string): ImageAsset {
-  return buildImageAsset(seed, DEFAULT_BURGER_SIZES);
+  return buildLoremFlickrImageAsset(
+    "burger",
+    `${seed}burger`,
+    DEFAULT_BURGER_SIZES,
+  );
 }
 
 export function createMockReviewImage(seed: string): ImageAsset {
-  return buildImageAsset(seed, DEFAULT_REVIEW_SIZES);
+  return buildLoremFlickrImageAsset(
+    "burger",
+    `${seed}burger`,
+    DEFAULT_REVIEW_SIZES,
+  );
 }
 
 export function createMockRestaurantImage(seed: string): ImageAsset {
-  return buildImageAsset(seed, DEFAULT_RESTAURANT_SIZES);
+  return buildLoremFlickrImageAsset(
+    "restaurant",
+    `${seed}restaurant`,
+    DEFAULT_RESTAURANT_SIZES,
+  );
 }
