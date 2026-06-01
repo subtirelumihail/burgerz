@@ -14,6 +14,10 @@ function buildBurgersPath(params?: GetBurgersParams): string {
     searchParams.set("q", params.q);
   }
 
+  if (params?.restaurantId) {
+    searchParams.set("restaurantId", params.restaurantId);
+  }
+
   if (params?.page) {
     searchParams.set("page", String(params.page));
   }

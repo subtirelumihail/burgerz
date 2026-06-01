@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { RestaurantBurgers } from "@/components/RestaurantBurgers/RestaurantBurgers";
 import { RestaurantHero } from "@/components/RestaurantPage/components/RestaurantHero/RestaurantHero";
 import { getRestaurantById } from "@/mocks/data/restaurants";
 
@@ -30,6 +31,7 @@ export default async function RestaurantPage({ params }: RestaurantPageProps) {
         Back to restaurants
       </Link>
       <RestaurantHero restaurant={restaurant} />
+      <RestaurantBurgers restaurantId={restaurant.id} />
     </div>
   );
 }

@@ -1,0 +1,17 @@
+@reference "../../app/globals.css";
+
+.root {
+  @apply flex flex-col gap-xl;
+}
+
+.heading {
+  @apply font-display text-2xl leading-tight text-foreground;
+}
+
+.error {
+  @apply rounded-lg border border-border bg-surface-raised px-xl py-lg text-sm text-foreground;
+}
+
+.pagination {
+  @apply mt-xl;
+}

@@ -50,6 +50,31 @@ describe("BurgerCard", () => {
         name: /smash shack classic, from smash shack\. 4\.5 out of 5 stars based on 10 reviews\. aspect scores:/i,
       }),
     ).toHaveAttribute("href", "/burgers/burger-1");
+  });
+
+  it("appends return path to burger detail links", () => {
+    render(
+      <BurgerCard
+        burger={mockBurger}
+        listMode
+        returnTo="/restaurants/restaurant-1"
+      />,
+    );
+
+    expect(
+      screen.getByRole("link", { name: "View photo of Smash Shack Classic" }),
+    ).toHaveAttribute(
+      "href",
+      "/burgers/burger-1?from=%2Frestaurants%2Frestaurant-1",
+    );
+  });
+
+  it("hides restaurant link when showRestaurant is false", () => {
+    render(<BurgerCard burger={mockBurger} listMode showRestaurant={false} />);
+
+    expect(
+      screen.queryByRole("link", { name: "Smash Shack" }),
+    ).not.toBeInTheDocument();
     expect(
       screen.getByText(/smash shack classic/i, { hidden: true }),
     ).toBeInTheDocument();

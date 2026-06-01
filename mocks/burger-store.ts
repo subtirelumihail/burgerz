@@ -12,6 +12,7 @@ const burgers: Burger[] = [...mockBurgers];
 
 interface ListBurgersOptions {
   query?: string | null;
+  restaurantId?: string | null;
   page?: number;
   pageSize?: number;
 }
@@ -20,14 +21,25 @@ function createBurgerId(): string {
   return `burger-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
-function filterBurgers(query?: string | null): Burger[] {
+function filterBurgers(
+  query?: string | null,
+  restaurantId?: string | null,
+): Burger[] {
+  let filtered = burgers;
+
+  if (restaurantId) {
+    filtered = filtered.filter(
+      (burger) => burger.restaurant.id === restaurantId,
+    );
+  }
+
   if (!query) {
-    return burgers;
+    return filtered;
   }
 
   const normalizedQuery = query.toLowerCase();
 
-  return burgers.filter(
+  return filtered.filter(
     (burger) =>
       burger.title.toLowerCase().includes(normalizedQuery) ||
       burger.restaurant.name.toLowerCase().includes(normalizedQuery),
@@ -50,10 +62,11 @@ function parsePositiveInteger(value: string | null, fallback: number): number {
 
 export function listBurgers({
   query = null,
+  restaurantId = null,
   page = 1,
   pageSize = DEFAULT_BURGERS_PAGE_SIZE,
 }: ListBurgersOptions = {}): GetBurgersResponse {
-  const filtered = filterBurgers(query);
+  const filtered = filterBurgers(query, restaurantId);
   const total = filtered.length;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const safePage = Math.min(Math.max(page, 1), totalPages);
@@ -75,6 +88,7 @@ export function parseListBurgersParams(
 ): ListBurgersOptions {
   return {
     query: searchParams.get("q"),
+    restaurantId: searchParams.get("restaurantId"),
     page: parsePositiveInteger(searchParams.get("page"), 1),
     pageSize: parsePositiveInteger(
       searchParams.get("pageSize"),

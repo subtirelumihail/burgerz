@@ -3,6 +3,9 @@ import type { Burger } from "@/types/burger";
 export interface BurgersListProps {
   burgers: Burger[];
   isLoading?: boolean;
+  /** Appends a safe `from` query param on burger detail links. */
+  returnTo?: string;
+  showRestaurant?: boolean;
 }
 
 export interface BurgerCardProps {
@@ -10,6 +13,8 @@ export interface BurgerCardProps {
   imagePriority?: boolean;
   /** Enables split keyboard focus: thumbnail link + details link. */
   listMode?: boolean;
+  returnTo?: string;
+  showRestaurant?: boolean;
 }
 
 export interface BurgerScoresProps {
