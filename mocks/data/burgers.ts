@@ -236,4 +236,43 @@ export const mockBurgers: Burger[] = [
       visualPresentation: 3.9,
     },
   },
+  {
+    id: "burger-19",
+    title: "First Day Special",
+    restaurant: { id: "restaurant-1", name: "Smash Shack" },
+    image: createMockBurgerImage("first-day-special"),
+    reviewCount: 0,
+    reviewScore: 0,
+    scores: {
+      taste: 0,
+      texture: 0,
+      visualPresentation: 0,
+    },
+  },
+  {
+    id: "burger-20",
+    title: "Newcomer Classic",
+    restaurant: { id: "restaurant-8", name: "Coastal Burger Co." },
+    image: createMockBurgerImage("newcomer-classic"),
+    reviewCount: 0,
+    reviewScore: 0,
+    scores: {
+      taste: 0,
+      texture: 0,
+      visualPresentation: 0,
+    },
+  },
+  {
+    id: "burger-21",
+    title: "Preview Patty",
+    restaurant: { id: "restaurant-6", name: "Patty Palace" },
+    image: createMockBurgerImage("preview-patty"),
+    reviewCount: 0,
+    reviewScore: 0,
+    scores: {
+      taste: 0,
+      texture: 0,
+      visualPresentation: 0,
+    },
+  },
 ];

@@ -30,6 +30,7 @@ export function RestaurantSort({
   sort,
   onSortChange,
   needsLocationAccess,
+  locationStatus,
   isLocationPending = false,
   onEnableLocation,
   isLoading = false,
@@ -68,6 +69,7 @@ export function RestaurantSort({
       </div>
       {needsLocationAccess ? (
         <LocationPermissionNotice
+          locationStatus={locationStatus}
           onEnableLocation={onEnableLocation}
           isRequesting={isLocationPending}
         />

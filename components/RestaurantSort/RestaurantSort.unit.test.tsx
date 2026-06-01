@@ -14,6 +14,7 @@ describe("RestaurantSort", () => {
         sort="nearby"
         onSortChange={onSortChange}
         needsLocationAccess={false}
+        locationStatus="granted"
         onEnableLocation={vi.fn()}
       />,
     );
@@ -35,6 +36,7 @@ describe("RestaurantSort", () => {
         sort="nearby"
         onSortChange={onSortChange}
         needsLocationAccess={false}
+        locationStatus="granted"
         onEnableLocation={vi.fn()}
       />,
     );
@@ -53,15 +55,16 @@ describe("RestaurantSort", () => {
         sort="nearby"
         onSortChange={vi.fn()}
         needsLocationAccess
+        locationStatus="idle"
         onEnableLocation={vi.fn()}
       />,
     );
 
     expect(
-      screen.getByRole("status", {
-        name: undefined,
+      screen.getByRole("group", {
+        name: /location access is needed to sort restaurants by distance/i,
       }),
-    ).toHaveTextContent(/location access is needed/i);
+    ).toHaveAttribute("tabindex", "0");
     expect(screen.getByRole("option", { name: "Near By" })).toBeDisabled();
     expect(screen.getByRole("combobox", { name: "Sort by" })).toHaveValue(
       "name",
@@ -77,6 +80,7 @@ describe("RestaurantSort", () => {
         sort="nearby"
         onSortChange={vi.fn()}
         needsLocationAccess
+        locationStatus="idle"
         onEnableLocation={onEnableLocation}
       />,
     );

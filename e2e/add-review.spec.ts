@@ -1,5 +1,12 @@
 import { expect, type Page, test } from "@playwright/test";
 
+import { getBurgerHero } from "./helpers/burger-hero";
+import {
+  getReviewAuthor,
+  getReviewsRegion,
+  getVisibleReviewText,
+} from "./helpers/reviews";
+
 const BURGER_DETAIL_PATH = "/burgers/burger-1";
 const ADD_REVIEW_PATH = "/burgers/burger-1/add-review";
 
@@ -17,6 +24,13 @@ test("add review page renders burger summary and form", async ({ page }) => {
   await expect(
     page.getByRole("link", { name: /^smash shack$/i }),
   ).toHaveAttribute("href", "/restaurants/restaurant-1");
+
+  const hero = getBurgerHero(page, /smash shack classic/i);
+  await expect(hero.getByText("(128 reviews)")).toBeVisible();
+  await expect(hero.getByText("Taste", { exact: true }).first()).toBeVisible();
+  await expect(
+    hero.getByText("Visual presentation", { exact: true }).first(),
+  ).toBeVisible();
 
   await expect(
     page.getByRole("heading", { level: 2, name: /add your review/i }),
@@ -108,13 +122,11 @@ test("submitting a valid review returns to burger detail and shows the review", 
     page.getByRole("heading", { level: 1, name: /smash shack classic/i }),
   ).toBeVisible({ timeout: 10000 });
 
-  const reviewsRegion = page.getByRole("region", {
-    name: /customer reviews/i,
-  });
-  await expect(reviewsRegion.getByText(reviewAuthor)).toBeVisible({
+  const reviewsRegion = getReviewsRegion(page);
+  await expect(getReviewAuthor(reviewsRegion, reviewAuthor)).toBeVisible({
     timeout: 10000,
   });
-  await expect(reviewsRegion.getByText(reviewText)).toBeVisible();
+  await expect(getVisibleReviewText(reviewsRegion, reviewText)).toBeVisible();
 });
 
 test("unknown burger shows not found message", async ({ page }) => {
