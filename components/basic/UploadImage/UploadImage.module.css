@@ -37,6 +37,10 @@
   @apply font-semibold text-link;
 }
 
+.limits {
+  @apply text-center text-[0.8125rem] text-muted;
+}
+
 .preview {
   @apply aspect-[4/3] max-w-64 w-full rounded-md border border-border object-cover;
 }

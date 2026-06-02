@@ -6,6 +6,11 @@ import { FiImage, FiTrash2 } from "react-icons/fi";
 
 import { Button } from "@/components/basic/Button/Button";
 import { cn } from "@/lib/cn";
+import {
+  getUploadImageSizeHint,
+  MAX_UPLOAD_IMAGE_SIZE_BYTES,
+  validateUploadImageFile,
+} from "@/lib/upload-image";
 
 import styles from "./UploadImage.module.css";
 import type { UploadImageProps } from "./types";
@@ -15,6 +20,7 @@ export function UploadImage({
   onImageChange,
   error,
   hint,
+  maxSizeBytes = MAX_UPLOAD_IMAGE_SIZE_BYTES,
   id: idProp,
   accept = "image/*",
   initialPreviewUrl = null,
@@ -30,7 +36,11 @@ export function UploadImage({
   const [previewUrl, setPreviewUrl] = useState<string | null>(
     initialPreviewUrl,
   );
-  const hasError = Boolean(error);
+  const [validationError, setValidationError] = useState<string | null>(null);
+  const displayError = error ?? validationError ?? undefined;
+  const hasError = Boolean(displayError);
+  const sizeHint = getUploadImageSizeHint(maxSizeBytes);
+  const displayHint = hint ? `${hint} ${sizeHint}` : sizeHint;
 
   useEffect(() => {
     return () => {
@@ -40,17 +50,37 @@ export function UploadImage({
     };
   }, [previewUrl]);
 
-  function handleFileChange(file: File | null) {
-    if (previewUrl?.startsWith("blob:")) {
-      URL.revokeObjectURL(previewUrl);
+  function clearInputValue() {
+    if (inputRef.current) {
+      inputRef.current.value = "";
     }
+  }
 
+  function handleFileChange(file: File | null) {
     if (!file) {
+      if (previewUrl?.startsWith("blob:")) {
+        URL.revokeObjectURL(previewUrl);
+      }
+
+      setValidationError(null);
       setPreviewUrl(null);
       onImageChange?.(null, null);
       return;
     }
 
+    const validation = validateUploadImageFile(file, { maxSizeBytes });
+
+    if (!validation.valid) {
+      setValidationError(validation.message);
+      clearInputValue();
+      return;
+    }
+
+    if (previewUrl?.startsWith("blob:")) {
+      URL.revokeObjectURL(previewUrl);
+    }
+
+    setValidationError(null);
     const nextPreview = URL.createObjectURL(file);
     setPreviewUrl(nextPreview);
     onImageChange?.(file, nextPreview);
@@ -62,9 +92,7 @@ export function UploadImage({
   }
 
   function handleClear() {
-    if (inputRef.current) {
-      inputRef.current.value = "";
-    }
+    clearInputValue();
     handleFileChange(null);
   }
 
@@ -72,10 +100,7 @@ export function UploadImage({
     inputRef.current?.click();
   }
 
-  const describedBy = [
-    hasError ? errorId : null,
-    hint && !hasError ? hintId : null,
-  ]
+  const describedBy = [hasError ? errorId : null, !hasError ? hintId : null]
     .filter(Boolean)
     .join(" ");
 
@@ -133,17 +158,18 @@ export function UploadImage({
               <span className={styles.promptAccent}>Choose an image</span> or
               drag and drop
             </p>
+            <p className={styles.limits}>{sizeHint}</p>
           </label>
         )}
       </div>
-      {hint && !hasError ? (
+      {!hasError ? (
         <p id={hintId} className={styles.hint}>
-          {hint}
+          {displayHint}
         </p>
       ) : null}
       {hasError ? (
         <p id={errorId} className={styles.error} role="alert">
-          {error}
+          {displayError}
         </p>
       ) : null}
     </div>

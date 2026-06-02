@@ -8,5 +8,7 @@ export interface UploadImageProps extends Omit<
   onImageChange?: (file: File | null, previewUrl: string | null) => void;
   error?: string;
   hint?: string;
+  /** Maximum file size in bytes. Defaults to 5 MB. */
+  maxSizeBytes?: number;
   initialPreviewUrl?: string | null;
 }
