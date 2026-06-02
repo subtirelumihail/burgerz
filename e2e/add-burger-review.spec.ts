@@ -8,14 +8,16 @@ import {
 } from "./helpers/reviews";
 
 const BURGER_DETAIL_PATH = "/burgers/burger-1";
-const ADD_REVIEW_PATH = "/burgers/burger-1/add-review";
+const ADD_BURGER_REVIEW_PATH = "/burgers/burger-1/add-review";
 
-function getAddReviewForm(page: Page) {
+function getAddBurgerReviewForm(page: Page) {
   return page.getByRole("form", { name: /add burger review/i });
 }
 
-test("add review page renders burger summary and form", async ({ page }) => {
-  await page.goto(ADD_REVIEW_PATH);
+test("add burger review page renders burger summary and form", async ({
+  page,
+}) => {
+  await page.goto(ADD_BURGER_REVIEW_PATH);
 
   await expect(
     page.getByRole("heading", { level: 1, name: /smash shack classic/i }),
@@ -36,7 +38,7 @@ test("add review page renders burger summary and form", async ({ page }) => {
     page.getByRole("heading", { level: 2, name: /add your review/i }),
   ).toBeVisible();
 
-  const form = getAddReviewForm(page);
+  const form = getAddBurgerReviewForm(page);
   await expect(page.getByRole("textbox", { name: /your name/i })).toBeVisible();
   await expect(
     page.getByRole("textbox", { name: /description/i }),
@@ -48,21 +50,21 @@ test("add review page renders burger summary and form", async ({ page }) => {
   await expect(form.getByRole("button", { name: /cancel/i })).toBeVisible();
 });
 
-test("burger detail add review link opens add review page", async ({
+test("burger detail add review link opens add burger review page", async ({
   page,
 }) => {
   await page.goto(BURGER_DETAIL_PATH);
 
   await page.getByRole("link", { name: /add review/i }).click();
 
-  await expect(page).toHaveURL(ADD_REVIEW_PATH);
+  await expect(page).toHaveURL(ADD_BURGER_REVIEW_PATH);
   await expect(
     page.getByRole("heading", { level: 2, name: /add your review/i }),
   ).toBeVisible({ timeout: 10000 });
 });
 
 test("back link returns to burger detail", async ({ page }) => {
-  await page.goto(ADD_REVIEW_PATH);
+  await page.goto(ADD_BURGER_REVIEW_PATH);
 
   await page.getByRole("link", { name: /back to burger/i }).click();
 
@@ -73,10 +75,10 @@ test("back link returns to burger detail", async ({ page }) => {
 });
 
 test("cancel returns to burger detail", async ({ page }) => {
-  await page.goto(ADD_REVIEW_PATH);
+  await page.goto(ADD_BURGER_REVIEW_PATH);
 
-  await expect(getAddReviewForm(page)).toBeVisible({ timeout: 10000 });
-  await getAddReviewForm(page)
+  await expect(getAddBurgerReviewForm(page)).toBeVisible({ timeout: 10000 });
+  await getAddBurgerReviewForm(page)
     .getByRole("button", { name: /cancel/i })
     .click();
 
@@ -89,24 +91,24 @@ test("cancel returns to burger detail", async ({ page }) => {
 test("submit without required fields shows validation errors", async ({
   page,
 }) => {
-  await page.goto(ADD_REVIEW_PATH);
+  await page.goto(ADD_BURGER_REVIEW_PATH);
 
-  const form = getAddReviewForm(page);
+  const form = getAddBurgerReviewForm(page);
   await expect(form).toBeVisible({ timeout: 10000 });
 
   await form.getByRole("button", { name: /submit review/i }).click();
 
   await expect(form.getByText("Your name is required.")).toBeVisible();
   await expect(form.getByText("Description is required.")).toBeVisible();
-  await expect(page).toHaveURL(ADD_REVIEW_PATH);
+  await expect(page).toHaveURL(ADD_BURGER_REVIEW_PATH);
 });
 
 test("submitting a valid review returns to burger detail and shows the review", async ({
   page,
 }) => {
-  await page.goto(ADD_REVIEW_PATH);
+  await page.goto(ADD_BURGER_REVIEW_PATH);
 
-  const form = getAddReviewForm(page);
+  const form = getAddBurgerReviewForm(page);
   await expect(form).toBeVisible({ timeout: 10000 });
 
   const reviewAuthor = "Playwright Tester";

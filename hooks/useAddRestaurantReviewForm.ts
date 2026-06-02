@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEventHandler } from "react";
 import { useForm, type Control, type UseFormRegister } from "react-hook-form";
 
-import { addReviewFormSchema } from "@/components/AddReviewPage/components/AddReviewForm/add-review-form.schema";
-import type { AddReviewFormValues } from "@/components/AddReviewPage/components/AddReviewForm/add-review-form.schema";
-import type { AddReviewFormErrors } from "@/components/AddReviewPage/components/AddReviewForm/types";
+import { addReviewFormSchema } from "@/components/AddBurgerReviewPage/components/AddBurgerReviewForm/add-review-form.schema";
+import type { AddReviewFormValues } from "@/components/AddBurgerReviewPage/components/AddBurgerReviewForm/add-review-form.schema";
+import type { AddRestaurantReviewFormErrors } from "@/components/AddRestaurantReviewPage/components/AddRestaurantReviewForm/types";
 import { createMockReviewImage } from "@/mocks/data/images";
 import { createRestaurantReview } from "@/lib/services/review.service";
 import type { BurgerUserReviewRating } from "@/types/review";
@@ -31,7 +31,7 @@ function createReviewImageId(restaurantId: string): string {
 interface UseAddRestaurantReviewFormResult {
   register: UseFormRegister<AddReviewFormValues>;
   control: Control<AddReviewFormValues>;
-  errors: AddReviewFormErrors;
+  errors: AddRestaurantReviewFormErrors;
   isSubmitting: boolean;
   onSubmit: FormEventHandler<HTMLFormElement>;
   setImageFile: (file: File | null) => void;

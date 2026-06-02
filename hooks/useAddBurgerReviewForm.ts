@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEventHandler } from "react";
 import { useForm, type Control, type UseFormRegister } from "react-hook-form";
 
-import { addReviewFormSchema } from "@/components/AddReviewPage/components/AddReviewForm/add-review-form.schema";
-import type { AddReviewFormValues } from "@/components/AddReviewPage/components/AddReviewForm/add-review-form.schema";
-import type { AddReviewFormErrors } from "@/components/AddReviewPage/components/AddReviewForm/types";
+import { addReviewFormSchema } from "@/components/AddBurgerReviewPage/components/AddBurgerReviewForm/add-review-form.schema";
+import type { AddReviewFormValues } from "@/components/AddBurgerReviewPage/components/AddBurgerReviewForm/add-review-form.schema";
+import type { AddBurgerReviewFormErrors } from "@/components/AddBurgerReviewPage/components/AddBurgerReviewForm/types";
 import { createMockReviewImage } from "@/mocks/data/images";
 import { createBurgerReview } from "@/lib/services/review.service";
 import type { BurgerUserReviewRating } from "@/types/review";
@@ -28,17 +28,19 @@ function createReviewImageId(burgerId: string): string {
   return `${burgerId}-review-${Date.now()}`;
 }
 
-interface UseAddReviewFormResult {
+interface UseAddBurgerReviewFormResult {
   register: UseFormRegister<AddReviewFormValues>;
   control: Control<AddReviewFormValues>;
-  errors: AddReviewFormErrors;
+  errors: AddBurgerReviewFormErrors;
   isSubmitting: boolean;
   onSubmit: FormEventHandler<HTMLFormElement>;
   setImageFile: (file: File | null) => void;
   handleCancel: () => void;
 }
 
-export function useAddReviewForm(burgerId: string): UseAddReviewFormResult {
+export function useAddBurgerReviewForm(
+  burgerId: string,
+): UseAddBurgerReviewFormResult {
   const router = useRouter();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [submitError, setSubmitError] = useState<string | undefined>();

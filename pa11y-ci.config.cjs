@@ -9,6 +9,7 @@ const paths = [
   "/burgers/burger-1",
   "/burgers/burger-1/add-review",
   "/restaurants/restaurant-1",
+  "/restaurants/restaurant-1/add-review",
 ];
 
 /** @type {import('pa11y-ci').Config} */

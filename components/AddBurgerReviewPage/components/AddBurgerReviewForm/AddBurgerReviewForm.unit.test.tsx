@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createBurgerReview } from "@/lib/services/review.service";
 
-import { AddReviewForm } from "./AddReviewForm";
+import { AddBurgerReviewForm } from "./AddBurgerReviewForm";
 
 const mockPush = vi.fn();
 
@@ -18,7 +18,7 @@ vi.mock("@/lib/services/review.service", () => ({
   createBurgerReview: vi.fn(),
 }));
 
-describe("AddReviewForm", () => {
+describe("AddBurgerReviewForm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(createBurgerReview).mockResolvedValue({
@@ -40,7 +40,7 @@ describe("AddReviewForm", () => {
   });
 
   it("renders all form fields and actions", () => {
-    render(<AddReviewForm burgerId="burger-1" />);
+    render(<AddBurgerReviewForm burgerId="burger-1" />);
 
     expect(
       screen.getByRole("form", { name: "Add burger review" }),
@@ -59,7 +59,7 @@ describe("AddReviewForm", () => {
   it("submits the form when required fields are filled", async () => {
     const user = userEvent.setup();
 
-    render(<AddReviewForm burgerId="burger-1" />);
+    render(<AddBurgerReviewForm burgerId="burger-1" />);
 
     await user.type(screen.getByLabelText("Your name"), "Alex");
     await user.type(screen.getByLabelText("Description"), "Great burger");
@@ -80,7 +80,7 @@ describe("AddReviewForm", () => {
   it("navigates back to the burger page on cancel", async () => {
     const user = userEvent.setup();
 
-    render(<AddReviewForm burgerId="burger-1" />);
+    render(<AddBurgerReviewForm burgerId="burger-1" />);
 
     await user.click(screen.getByRole("button", { name: "Cancel" }));
 

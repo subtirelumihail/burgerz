@@ -1,19 +1,21 @@
 import { BackLink } from "@/components/basic/BackLink/BackLink";
-import { AddReviewPageContent } from "@/components/AddReviewPage/AddReviewPageContent";
+import { AddBurgerReviewPageContent } from "@/components/AddBurgerReviewPage/AddBurgerReviewPageContent";
 
 import styles from "./page.module.css";
 
-interface AddReviewPageProps {
+interface AddBurgerReviewPageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function AddReviewPage({ params }: AddReviewPageProps) {
+export default async function AddBurgerReviewPage({
+  params,
+}: AddBurgerReviewPageProps) {
   const { id } = await params;
 
   return (
     <div className={styles.root}>
       <BackLink href={`/burgers/${id}`}>Back to burger</BackLink>
-      <AddReviewPageContent burgerId={id} />
+      <AddBurgerReviewPageContent burgerId={id} />
     </div>
   );
 }

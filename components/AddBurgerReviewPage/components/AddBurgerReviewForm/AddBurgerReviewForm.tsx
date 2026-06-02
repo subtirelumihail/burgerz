@@ -6,14 +6,14 @@ import { Button } from "@/components/basic/Button/Button";
 import { Input } from "@/components/basic/Input/Input";
 import { Textarea } from "@/components/basic/Textarea/Textarea";
 import { UploadImage } from "@/components/basic/UploadImage/UploadImage";
-import { useAddReviewForm } from "@/hooks/useAddReviewForm";
+import { useAddBurgerReviewForm } from "@/hooks/useAddBurgerReviewForm";
 
 import { RatingSlider } from "./components/RatingSlider/RatingSlider";
-import type { AddReviewFormProps } from "./types";
+import type { AddBurgerReviewFormProps } from "./types";
 
-import styles from "./AddReviewForm.module.css";
+import styles from "./AddBurgerReviewForm.module.css";
 
-export function AddReviewForm({ burgerId }: AddReviewFormProps) {
+export function AddBurgerReviewForm({ burgerId }: AddBurgerReviewFormProps) {
   const {
     register,
     control,
@@ -22,7 +22,7 @@ export function AddReviewForm({ burgerId }: AddReviewFormProps) {
     onSubmit,
     setImageFile,
     handleCancel,
-  } = useAddReviewForm(burgerId);
+  } = useAddBurgerReviewForm(burgerId);
 
   return (
     <form

@@ -6,7 +6,7 @@ import { Button } from "@/components/basic/Button/Button";
 import { Input } from "@/components/basic/Input/Input";
 import { Textarea } from "@/components/basic/Textarea/Textarea";
 import { UploadImage } from "@/components/basic/UploadImage/UploadImage";
-import { RatingSlider } from "@/components/AddReviewPage/components/AddReviewForm/components/RatingSlider/RatingSlider";
+import { RatingSlider } from "@/components/AddBurgerReviewPage/components/AddBurgerReviewForm/components/RatingSlider/RatingSlider";
 import { useAddRestaurantReviewForm } from "@/hooks/useAddRestaurantReviewForm";
 
 import type { AddRestaurantReviewFormProps } from "./types";
