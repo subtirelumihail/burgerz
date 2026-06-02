@@ -7,8 +7,8 @@
     "npm": ">=10.9.0"
   },
   "scripts": {
-    "dev": "NEXT_PUBLIC_API_MOCKING=enabled next dev",
-    "dev:backend": "NEXT_PUBLIC_API_MOCKING=disabled next dev",
+    "dev": "next dev",
+    "dev:backend": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
@@ -20,7 +20,7 @@
     "test:run": "vitest run",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:a11y": "NEXT_PUBLIC_API_MOCKING=enabled node scripts/run-pa11y.mjs",
+    "test:a11y": "node scripts/run-pa11y.mjs",
     "prepare": "husky"
   },
   "dependencies": {
@@ -50,18 +50,12 @@
     "husky": "9.1.7",
     "jsdom": "29.1.1",
     "lint-staged": "16.4.0",
-    "msw": "2.14.6",
     "pa11y": "9.1.1",
     "pa11y-ci": "4.1.1",
     "prettier": "3.8.3",
     "tailwindcss": "4.3.0",
     "typescript": "5.9.3",
     "vitest": "4.1.7"
-  },
-  "msw": {
-    "workerDirectory": [
-      "public"
-    ]
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}": [

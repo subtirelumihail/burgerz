@@ -9,10 +9,9 @@ const pa11yCiConfigPath = path.join(projectRoot, "pa11y-ci.config.cjs");
 const PORT = process.env.PORT || 3000;
 const baseURL = `http://localhost:${PORT}`;
 const FETCH_TIMEOUT_MS = 5_000;
-const mockEnv = {
+const devEnv = {
   ...process.env,
   PORT: String(PORT),
-  NEXT_PUBLIC_API_MOCKING: "enabled",
 };
 
 function log(message) {
@@ -48,7 +47,7 @@ function runPa11yCi() {
     const child = spawn("npx", ["pa11y-ci", "--config", pa11yCiConfigPath], {
       cwd: projectRoot,
       stdio: "inherit",
-      env: mockEnv,
+      env: devEnv,
     });
 
     child.on("error", reject);
@@ -84,7 +83,7 @@ function sleep(ms) {
 function startServer() {
   return spawn("npx", ["next", "dev", "--port", String(PORT)], {
     cwd: projectRoot,
-    env: mockEnv,
+    env: devEnv,
     stdio: "inherit",
   });
 }
@@ -140,7 +139,7 @@ async function waitForMockData(url, server, maxAttempts = 60) {
   }
 
   throw new Error(
-    `Mock data was not available at ${url}. Ensure NEXT_PUBLIC_API_MOCKING=enabled and MSW is running.`,
+    `Mock data was not available at ${url}. Start the app with "npm run dev" or let this script start a dev server.`,
   );
 }
 

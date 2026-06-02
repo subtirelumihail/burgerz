@@ -6,7 +6,6 @@ import { SiteHeader } from "@/components/layout/SiteHeader/SiteHeader";
 import { Container } from "@/components/layout/Container/Container";
 
 import "./globals.css";
-import { MswWrapper } from "./msw-wrapper";
 
 const chango = Chango({
   variable: "--font-chango",
@@ -45,13 +44,11 @@ export default function RootLayout({
       className={`${chango.variable} ${hindMadurai.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
-        <MswWrapper>
-          <SiteHeader />
-          <main className="flex-1 py-8">
-            <Container>{children}</Container>
-          </main>
-          <SiteFooter />
-        </MswWrapper>
+        <SiteHeader />
+        <main className="flex-1 py-8">
+          <Container>{children}</Container>
+        </main>
+        <SiteFooter />
       </body>
     </html>
   );

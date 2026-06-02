@@ -27,7 +27,7 @@ Services talk to the backend. **All API calls are triggered from the UI** — ho
 - **Named async functions** — `getOrder`, `createOrder`; no classes, no singletons
 - **Typed I/O** — import request/response interfaces from `@/types/*` (see [Global Types](./global-types.md)), not inline in the service file
 - **Throw on failure** — return data on success; let hooks/components decide how to show errors
-- **Same paths as MSW** — service URLs must match handlers in `mocks/handlers/`
+- **Same paths as API routes** — service URLs must match handlers in `app/api/`
 
 ```typescript
 // lib/services/burger.service.ts

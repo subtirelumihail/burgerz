@@ -2,7 +2,7 @@
 
 **Applies when editing:** `types/`, `hooks/`, `lib/`
 
-Domain and API shapes live in `types/` at the project root. Hooks, services, and MSW handlers import from here — not from component folders.
+Domain and API shapes live in `types/` at the project root. Hooks, services, and API route handlers import from here — not from component folders.
 
 ## Folder Layout
 

@@ -1,6 +1,6 @@
 # Burgerz
 
-A Next.js app for browsing smash burgers, restaurants, and reviews. Built with the App Router, React 19, TypeScript, Tailwind CSS, and MSW for local API mocking.
+A Next.js app for browsing smash burgers, restaurants, and reviews. Built with the App Router, React 19, TypeScript, and Tailwind CSS. Local development uses same-origin Next.js API route handlers backed by in-memory mock stores — no separate backend required.
 
 ## Prerequisites
 
@@ -19,7 +19,7 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-**`npm run dev`** is the default for local development. MSW intercepts API calls and serves mock data — no backend required. See [API mocking (MSW)](#api-mocking-msw) below.
+**`npm run dev`** is the default for local development. Same-origin API routes in `app/api/` serve mock data — no backend required. See [Mock API](#mock-api) below.
 
 ### With a real backend
 
@@ -33,115 +33,97 @@ Set `NEXT_PUBLIC_API_URL` to your API origin in `.env.local` (see [Environment v
 
 ## Environment variables
 
-| Variable                  | Required | Description                                                                                                                    |
-| ------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `NEXT_PUBLIC_API_MOCKING` | No       | Set to `enabled` for MSW (default via `npm run dev`). `dev:backend` sets `disabled`. Also used by E2E and accessibility tests. |
-| `NEXT_PUBLIC_API_URL`     | No       | Base URL for API requests (e.g. `https://api.example.com`). Empty string means same-origin paths like `/api/burgers`.          |
-| `NEXT_PUBLIC_APP_URL`     | No       | Public app URL for server-side `fetch` origin resolution. Falls back to `VERCEL_URL` or `http://localhost:3000`.               |
-| `PORT`                    | No       | Dev/production port (default `3000`).                                                                                          |
-| `VERCEL_URL`              | No       | Set automatically on Vercel; used by the API client on the server.                                                             |
+| Variable              | Required | Description                                                                                                           |
+| --------------------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_API_URL` | No       | Base URL for API requests (e.g. `https://api.example.com`). Empty string means same-origin paths like `/api/burgers`. |
+| `NEXT_PUBLIC_APP_URL` | No       | Public app URL for server-side `fetch` origin resolution. Falls back to `VERCEL_URL` or `http://localhost:3000`.      |
+| `PORT`                | No       | Dev/production port (default `3000`).                                                                                 |
+| `VERCEL_URL`          | No       | Set automatically on Vercel; used by the API client on the server.                                                    |
 
 Copy `.env.example` to `.env.local` for local overrides.
 
 ## npm scripts
 
-| Script         | Command                                                      | Description                                                                                     |
-| -------------- | ------------------------------------------------------------ | ----------------------------------------------------------------------------------------------- |
-| `dev`          | `NEXT_PUBLIC_API_MOCKING=enabled next dev`                   | Start the dev server with MSW. **Default for local development.**                               |
-| `dev:backend`  | `NEXT_PUBLIC_API_MOCKING=disabled next dev`                  | Start the dev server against a real API. Set `NEXT_PUBLIC_API_URL` in `.env.local`.             |
-| `build`        | `next build`                                                 | Production build (standalone output for Docker).                                                |
-| `start`        | `next start`                                                 | Serve the production build. Run `build` first.                                                  |
-| `lint`         | `eslint .`                                                   | Run ESLint across the project.                                                                  |
-| `lint:fix`     | `eslint . --fix`                                             | Auto-fix ESLint issues where possible.                                                          |
-| `format`       | `prettier --write .`                                         | Format all supported files with Prettier.                                                       |
-| `format:check` | `prettier --check .`                                         | Check formatting without writing (used in CI).                                                  |
-| `test`         | `vitest`                                                     | Run unit tests in watch mode.                                                                   |
-| `test:run`     | `vitest run`                                                 | Run unit tests once (used in CI and pre-push hook).                                             |
-| `test:e2e`     | `playwright test`                                            | Run Playwright E2E tests. Starts `dev` (with MSW) automatically.                                |
-| `test:e2e:ui`  | `playwright test --ui`                                       | Run E2E tests with the Playwright UI.                                                           |
-| `test:a11y`    | `NEXT_PUBLIC_API_MOCKING=enabled node scripts/run-pa11y.mjs` | Run pa11y accessibility checks against key routes. Starts a mock dev server if none is running. |
-| `prepare`      | `husky`                                                      | Installs Git hooks after `npm install`.                                                         |
+| Script         | Command                      | Description                                                                                |
+| -------------- | ---------------------------- | ------------------------------------------------------------------------------------------ |
+| `dev`          | `next dev`                   | Start the dev server with mock API routes. **Default for local development.**              |
+| `dev:backend`  | `next dev`                   | Start the dev server against a real API. Set `NEXT_PUBLIC_API_URL` in `.env.local`.        |
+| `build`        | `next build`                 | Production build (standalone output for Docker).                                           |
+| `start`        | `next start`                 | Serve the production build. Run `build` first.                                             |
+| `lint`         | `eslint .`                   | Run ESLint across the project.                                                             |
+| `lint:fix`     | `eslint . --fix`             | Auto-fix ESLint issues where possible.                                                     |
+| `format`       | `prettier --write .`         | Format all supported files with Prettier.                                                  |
+| `format:check` | `prettier --check .`         | Check formatting without writing (used in CI).                                             |
+| `test`         | `vitest`                     | Run unit tests in watch mode.                                                              |
+| `test:run`     | `vitest run`                 | Run unit tests once (used in CI and pre-push hook).                                        |
+| `test:e2e`     | `playwright test`            | Run Playwright E2E tests. Starts `dev` automatically.                                      |
+| `test:e2e:ui`  | `playwright test --ui`       | Run E2E tests with the Playwright UI.                                                      |
+| `test:a11y`    | `node scripts/run-pa11y.mjs` | Run pa11y accessibility checks against key routes. Starts a dev server if none is running. |
+| `prepare`      | `husky`                      | Installs Git hooks after `npm install`.                                                    |
 
 ### Git hooks
 
 - **pre-commit** — runs `lint-staged` (ESLint + Prettier on staged files)
 - **pre-push** — runs `npm run lint` and `npm run test:run`
 
-## API mocking (MSW)
+## Mock API
 
-[MSW](https://mswjs.io/) (Mock Service Worker) intercepts `fetch` calls from app code — in the browser, in React Server Components, and during server rendering. It does **not** intercept arbitrary inbound HTTP to Next.js route handlers.
+By default, API requests go to same-origin paths like `/api/burgers`. Next.js route handlers in `app/api/` read and write in-memory mock stores in `mocks/`.
 
-### When MSW is active
+### When mock routes are used
 
-MSW runs when `NEXT_PUBLIC_API_MOCKING=enabled`:
-
-- `npm run dev` (default)
+- `npm run dev` (default) — `NEXT_PUBLIC_API_URL` unset
 - Playwright E2E (`playwright.config.ts` starts `dev`)
 - Accessibility tests (`npm run test:a11y`)
+- Production — unless `NEXT_PUBLIC_API_URL` points to an external API
 
 ### How it is wired
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  NEXT_PUBLIC_API_MOCKING=enabled                            │
+│  lib/services/*.ts → lib/api/client.ts → fetch              │
 ├─────────────────────────────────────────────────────────────┤
-│  Server (RSC / SSR)                                         │
-│    instrumentation.ts → mocks/server.ts (msw/node)          │
+│  NEXT_PUBLIC_API_URL unset (default)                      │
+│    → /api/burgers, /api/restaurants, …                      │
+│    → app/api/* route handlers                               │
+│    → mocks/data/ + mocks/*-store.ts                         │
 │                                                             │
-│  Browser (client components)                              │
-│    app/layout.tsx → MswWrapper → MswProvider               │
-│      → mocks/browser.ts (msw/browser)                       │
-│      → public/mockServiceWorker.js                          │
+│  NEXT_PUBLIC_API_URL set (dev:backend / production)         │
+│    → external API origin + path                             │
 └─────────────────────────────────────────────────────────────┘
-                              │
-                              ▼
-                    mocks/handlers/  (shared handlers)
-                              │
-                              ▼
-                    mocks/data/ + *-store.ts  (in-memory state)
 ```
 
-1. **`instrumentation.ts`** — on the Node.js runtime, imports `mocks/server.ts` and calls `server.listen()`.
-2. **`components/msw-provider.tsx`** — client-side; dynamically imports `mocks/browser.ts` and starts the service worker before rendering children.
-3. **`app/msw-wrapper.tsx`** — wraps the app in `MswProvider` only when mocking is enabled.
-4. **`mocks/handlers/`** — shared request handlers (used by both server and browser).
-5. **`mocks/data/`** and **`*-store.ts`** — seed data and in-memory stores that handlers read/write.
-
-Unhandled requests are passed through (`onUnhandledRequest: "bypass"`), so Next.js assets and third-party requests are unaffected.
+1. **`lib/api/client.ts`** — resolves request URLs from `NEXT_PUBLIC_API_URL` or the current origin.
+2. **`app/api/*`** — route handlers for burgers, restaurants, and reviews.
+3. **`mocks/data/`** and **`mocks/*-store.ts`** — seed data and in-memory state that handlers read/write.
 
 ### Adding or changing mock APIs
 
 1. Add seed data in `mocks/data/` if needed.
 2. Add store logic in `mocks/*-store.ts` for mutable state (e.g. creating reviews).
-3. Define handlers in `mocks/handlers/<resource>.ts` using `http.get`, `http.post`, etc.
-4. Export them from `mocks/handlers/index.ts`.
+3. Add or update a route handler in `app/api/<resource>/route.ts`.
+4. Keep service paths in `lib/services/*.ts` aligned with the route paths.
 
-Example handler pattern:
+Example route handler:
 
 ```typescript
-import { http, HttpResponse } from "msw";
 import { getBurgerById } from "@/mocks/burger-store";
 
-export const burgerHandlers = [
-  http.get("/api/burgers/:id", ({ params }) => {
-    const burger = getBurgerById(params.id as string);
-    if (!burger) return new HttpResponse(null, { status: 404 });
-    return HttpResponse.json(burger);
-  }),
-];
+interface BurgerRouteParams {
+  params: Promise<{ id: string }>;
+}
+
+export async function GET(_request: Request, { params }: BurgerRouteParams) {
+  const { id } = await params;
+  const burger = getBurgerById(id);
+
+  if (!burger) {
+    return new Response(null, { status: 404 });
+  }
+
+  return Response.json(burger);
+}
 ```
-
-App code calls the API through `lib/api/client.ts`, which resolves URLs from `NEXT_PUBLIC_API_URL` or the current origin. MSW matches those same paths.
-
-### Regenerating the service worker
-
-If you upgrade MSW or change the worker directory, regenerate the worker file:
-
-```bash
-npx msw init public/
-```
-
-The worker lives at `public/mockServiceWorker.js` (configured in `package.json` under `"msw.workerDirectory"`).
 
 ## Unit tests
 
@@ -200,7 +182,7 @@ test("renders label", () => {
 
 ## E2E tests
 
-Playwright specs live in `e2e/` with a `.spec.ts` suffix. Every App Router page should have a matching spec. E2E runs against `dev` (MSW) automatically.
+Playwright specs live in `e2e/` with a `.spec.ts` suffix. Every App Router page should have a matching spec. E2E runs against `dev` automatically.
 
 ```bash
 npm run test:e2e        # headless
@@ -223,7 +205,7 @@ npm run test:a11y
 
 The script (`scripts/run-pa11y.mjs`):
 
-1. Starts a dev server with MSW if none is running on port `3000` (or reuses an existing `npm run dev` server).
+1. Starts a dev server if none is running on port `3000` (or reuses an existing `npm run dev` server).
 2. Runs [pa11y-ci](https://github.com/pa11y/pa11y-ci) once against all routes with [axe](https://www.deque.com/axe/):
    - `/`
    - `/restaurants`
@@ -238,7 +220,7 @@ Shared pa11y settings live in `pa11y.json`. Route list lives in `pa11y-ci.config
 **Troubleshooting `test:a11y`:**
 
 - Port in use without mock data — stop the stale server or run `PORT=3010 npm run test:a11y`.
-- Server running without MSW (e.g. `dev:backend`) — stop it and use `npm run dev`, or let the script start its own server.
+- Server running without mock API data (e.g. `dev:backend` with an empty or misconfigured API) — stop it and use `npm run dev`, or let the script start its own server.
 - Puppeteer/Chrome missing locally — CI installs Chrome via `npx puppeteer browsers install chrome`.
 
 **ESLint** — `eslint-plugin-jsx-a11y` recommended rules run as **errors** on `.tsx`/`.jsx` files (via `eslint.config.mjs`). `eslint-config-next` still supplies the plugin and Next.js-specific checks such as `next/image` alt text. Run `npm run lint` to catch common JSX accessibility mistakes.
@@ -359,17 +341,17 @@ Design tokens live in `app/globals.css` (`@theme`). Responsive styles belong in 
 ## Project structure
 
 ```
-app/                  App Router pages and layouts
+app/                  App Router pages, layouts, and API route handlers
 components/           React components (one folder per component)
 hooks/                Shared custom hooks
 lib/
   api/                fetch client
   services/           API service layer
-mocks/                MSW handlers, stores, and seed data
+mocks/                Mock stores and seed data
 e2e/                  Playwright specs
 types/                Shared domain TypeScript types
 scripts/              CI/deploy helper scripts
-public/               Static assets + MSW service worker
+public/               Static assets
 ```
 
 ## Deployment
@@ -392,8 +374,8 @@ For production behind a reverse proxy, set `NEXT_PUBLIC_APP_URL` and `NEXT_PUBLI
 **Pull requests** (`.github/workflows/ci.yml`):
 
 1. Dependency audit (`npm audit --audit-level=high`), lint, format check, unit tests, production build
-2. Accessibility tests (pa11y with MSW)
-3. E2E tests (Playwright with MSW)
+2. Accessibility tests (pa11y with mock API routes)
+3. E2E tests (Playwright with mock API routes)
 4. Docker image build
 5. Mock deploy preview (dry run)
 
@@ -408,7 +390,7 @@ Manual deploy dispatch is available via GitHub Actions → Deploy → choose `st
 
 ### Production checklist
 
-- [ ] Set `NEXT_PUBLIC_API_URL` to the production API (disable MSW — do not set `NEXT_PUBLIC_API_MOCKING=enabled`)
+- [ ] Set `NEXT_PUBLIC_API_URL` to the production API and remove or replace mock `app/api/*` routes when switching to a real backend
 - [ ] Set `NEXT_PUBLIC_APP_URL` to the public site URL
 - [ ] Build with `npm run build` or the Dockerfile
 - [ ] Run `npm run test:run` and `npm run test:e2e` before release
