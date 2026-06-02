@@ -1,0 +1,64 @@
+@reference "../../../app/globals.css";
+
+.root {
+  @apply bg-secondary;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .root {
+    @apply animate-pulse;
+  }
+}
+
+.line {
+  @apply rounded-sm;
+}
+
+.lineHeightSm {
+  @apply h-4;
+}
+
+.lineHeightLg {
+  @apply h-7;
+}
+
+.lineWidthThird {
+  @apply w-1/3;
+}
+
+.lineWidthHalf {
+  @apply w-1/2;
+}
+
+.lineWidthTwoThirds {
+  @apply w-2/3;
+}
+
+.lineWidthThreeQuarters {
+  @apply w-3/4;
+}
+
+.block {
+  @apply rounded-sm;
+}
+
+.blockHeightSm {
+  @apply h-12;
+}
+
+.blockHeightMd {
+  @apply h-16;
+}
+
+.imageSizeSm {
+  @apply size-24 shrink-0 rounded-md;
+}
+
+.imageSizeMd {
+  @apply size-28 shrink-0 rounded-md;
+  @apply sm:size-40;
+}
+
+.imageSizeFluid {
+  @apply aspect-[4/3] w-full rounded-md;
+}

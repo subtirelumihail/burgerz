@@ -11,9 +11,7 @@
 }
 
 .image {
-  @apply size-28 shrink-0 animate-pulse rounded-md bg-secondary;
   @apply max-sm:col-start-1 max-sm:row-start-1 max-sm:self-start;
-  @apply sm:size-40;
 }
 
 .details {
@@ -22,22 +20,6 @@
   @apply sm:min-w-0 sm:flex-1;
 }
 
-.line {
-  @apply animate-pulse rounded-sm bg-secondary;
-}
-
-.lineShort {
-  @apply h-7 w-3/4;
-}
-
-.lineMedium {
-  @apply h-4 w-1/2;
-}
-
 .summary {
   @apply flex flex-col gap-md;
-}
-
-.block {
-  @apply h-12 animate-pulse rounded-sm bg-secondary;
 }
