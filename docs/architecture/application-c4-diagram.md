@@ -21,7 +21,7 @@ C4Container
         ContainerDb_Ext(mockStores, "Mock Data Stores", "mocks/*-store.ts", "In-memory seed and state.")
     }
 
-    Container_Boundary(backend, "Backend API Service (when available)") {
+    Container_Boundary(backend, "Backend API Service") {
         Container(apiService, "REST API", "HTTP service", "Exposes burgers, restaurants, and reviews.")
         ContainerDb(database, "Database", "SQL database", "Persistent burger, restaurant, and review data.")
     }
@@ -35,10 +35,10 @@ C4Container
     Rel_D(services, apiClient, "Delegates transport")
 
     Rel_R(apiRoutes, mockStores, "Reads and writes")
-    Rel_D(apiClient, apiRoutes, "Same-origin when NEXT_PUBLIC_API_URL is unset")
+    Rel_D(apiClient, apiRoutes, "Used as Mock API when NEXT_PUBLIC_API_URL is unset")
 
     Rel_R(apiService, database, "")
-    Rel_D(apiRoutes, apiService, "")
+    Rel_D(apiClient, apiService, "")
 
     UpdateRelStyle(clientUI, hooks, $offsetX="-15")
     UpdateRelStyle(services, apiClient, $offsetX="-15")
