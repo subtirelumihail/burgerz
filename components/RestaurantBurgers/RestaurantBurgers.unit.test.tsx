@@ -54,7 +54,7 @@ describe("RestaurantBurgers", () => {
     });
 
     expect(
-      screen.getByRole("heading", { level: 2, name: /burgers/i }),
+      screen.getByRole("region", { name: /burgers menu/i }),
     ).toBeInTheDocument();
     expect(
       screen.queryByRole("link", { name: "Smash Shack" }),

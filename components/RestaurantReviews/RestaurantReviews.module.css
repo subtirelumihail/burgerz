@@ -1,0 +1,22 @@
+@reference "../../app/globals.css";
+
+.root {
+  @apply flex flex-col gap-xl;
+}
+
+.header {
+  @apply flex flex-col gap-md;
+  @apply sm:flex-row sm:items-center sm:justify-between;
+}
+
+.heading {
+  @apply font-display text-2xl text-foreground;
+}
+
+.error {
+  @apply text-base text-accent;
+}
+
+.pagination {
+  @apply mt-md;
+}

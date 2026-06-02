@@ -43,9 +43,23 @@ test("restaurant detail page renders aggregated ratings in hero", async ({
   await expect(
     hero.getByText("Visual presentation", { exact: true }).first(),
   ).toBeVisible();
+});
+
+test("restaurant detail page shows reviews tab by default", async ({
+  page,
+}) => {
+  await page.goto(RESTAURANT_DETAIL_PATH);
+
+  await expect(page.getByRole("tab", { name: /reviews/i })).toHaveAttribute(
+    "aria-selected",
+    "true",
+  );
+
   await expect(
     page.getByRole("heading", { level: 2, name: /customer reviews/i }),
-  ).not.toBeVisible();
+  ).toBeVisible({ timeout: 10000 });
+
+  await expect(page.getByRole("link", { name: /add review/i })).toBeVisible();
 });
 
 test("restaurant detail page lists burgers for the restaurant", async ({
@@ -53,16 +67,14 @@ test("restaurant detail page lists burgers for the restaurant", async ({
 }) => {
   await page.goto(RESTAURANT_DETAIL_PATH);
 
-  await expect(
-    page.getByRole("heading", { level: 2, name: /burgers/i }),
-  ).toBeVisible({ timeout: 10000 });
+  await page.getByRole("tab", { name: /burgers menu/i }).click();
 
   const burgersRegion = page.getByRole("region", { name: /burger results/i });
   await expect(
     burgersRegion.getByRole("link", {
       name: /smash shack classic, from smash shack/i,
     }),
-  ).toBeVisible();
+  ).toBeVisible({ timeout: 10000 });
   await expect(
     burgersRegion.getByRole("link", { name: /^smash shack$/i }),
   ).not.toBeVisible();
@@ -70,6 +82,8 @@ test("restaurant detail page lists burgers for the restaurant", async ({
 
 test("burger link opens detail with back to restaurant", async ({ page }) => {
   await page.goto(RESTAURANT_DETAIL_PATH);
+
+  await page.getByRole("tab", { name: /burgers menu/i }).click();
 
   const burgersRegion = page.getByRole("region", { name: /burger results/i });
   await burgersRegion

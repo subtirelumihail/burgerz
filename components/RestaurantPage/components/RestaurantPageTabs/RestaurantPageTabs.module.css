@@ -1,0 +1,31 @@
+@reference "../../../../app/globals.css";
+
+.root {
+  @apply flex flex-col gap-xl;
+}
+
+.tabList {
+  @apply flex flex-wrap gap-sm;
+  @apply border-b border-border;
+}
+
+.tab {
+  @apply relative -mb-px px-lg py-md;
+  @apply font-medium text-muted;
+  @apply border-b-2 border-transparent;
+  @apply transition-[color,border-color] duration-[180ms] ease-out-expo;
+  @apply hover:text-foreground;
+  @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+}
+
+.tabActive {
+  @apply border-accent text-foreground;
+}
+
+.panel {
+  @apply flex flex-col;
+}
+
+.panelHidden {
+  @apply hidden;
+}

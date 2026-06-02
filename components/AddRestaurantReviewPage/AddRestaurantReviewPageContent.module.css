@@ -1,0 +1,21 @@
+@reference "../../app/globals.css";
+
+.root {
+  @apply flex flex-col gap-2xl;
+}
+
+.error {
+  @apply text-base text-accent;
+}
+
+.notFound {
+  @apply font-display text-2xl text-foreground;
+}
+
+.formSection {
+  @apply flex flex-col gap-xl;
+}
+
+.formHeading {
+  @apply font-display text-2xl text-foreground;
+}
