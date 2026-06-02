@@ -27,10 +27,9 @@ export function RestaurantsList({
           className={cn(styles.list, isLoading && styles.listLoading)}
           items={restaurants}
           keyExtractor={(restaurant) => restaurant.id}
-          renderItem={(restaurant, index) => (
+          renderItem={(restaurant) => (
             <RestaurantCard
               restaurant={restaurant}
-              imagePriority={index === 0}
               listMode
               showDistance={showDistance}
             />

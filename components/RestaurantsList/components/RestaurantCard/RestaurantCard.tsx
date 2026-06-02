@@ -87,7 +87,6 @@ function RestaurantCardContent({
 
 export function RestaurantCard({
   restaurant,
-  imagePriority = false,
   listMode = false,
   showDistance = false,
 }: RestaurantCardProps) {
@@ -108,7 +107,6 @@ export function RestaurantCard({
             height={96}
             className={styles.imageWrap}
             imageClassName={styles.image}
-            priority={imagePriority}
           />
         </Link>
         <Link
@@ -140,7 +138,6 @@ export function RestaurantCard({
           height={96}
           className={styles.imageWrap}
           imageClassName={styles.image}
-          priority={imagePriority}
         />
       </Link>
       <RestaurantCardContent

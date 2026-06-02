@@ -28,10 +28,9 @@ export function BurgersList({
           className={cn(styles.list, isLoading && styles.listLoading)}
           items={burgers}
           keyExtractor={(burger) => burger.id}
-          renderItem={(burger, index) => (
+          renderItem={(burger) => (
             <BurgerCard
               burger={burger}
-              imagePriority={index === 0}
               listMode
               returnTo={returnTo}
               showRestaurant={showRestaurant}

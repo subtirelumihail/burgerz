@@ -70,7 +70,6 @@ function BurgerCardContent({
 
 export function BurgerCard({
   burger,
-  imagePriority = false,
   listMode = false,
   returnTo,
   showRestaurant = true,
@@ -92,7 +91,6 @@ export function BurgerCard({
             height={96}
             className={styles.imageWrap}
             imageClassName={styles.image}
-            priority={imagePriority}
           />
         </Link>
         <div className={`${styles.content} ${styles.listContent}`}>
@@ -134,7 +132,6 @@ export function BurgerCard({
           height={96}
           className={styles.imageWrap}
           imageClassName={styles.image}
-          priority={imagePriority}
         />
       </Link>
       <BurgerCardContent
