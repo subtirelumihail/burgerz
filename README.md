@@ -161,7 +161,7 @@ Colocate tests next to the source file. Use the `.unit.test.ts(x)` suffix:
 
 ```
 components/Button/Button.tsx           →  components/Button/Button.unit.test.tsx
-hooks/useAddReviewForm.ts              →  hooks/useAddReviewForm.unit.test.ts
+hooks/useAddBurgerReviewForm.ts        →  hooks/useAddBurgerReviewForm.unit.test.ts
 lib/services/burger.service.ts         →  lib/services/burger.service.unit.test.ts
 ```
 
@@ -230,6 +230,7 @@ The script (`scripts/run-pa11y.mjs`):
    - `/burgers/burger-1`
    - `/burgers/burger-1/add-review`
    - `/restaurants/restaurant-1`
+   - `/restaurants/restaurant-1/add-review`
 3. Fails on **error**-level issues only (`pa11y.json` — standard: `WCAG2AA`).
 
 Shared pa11y settings live in `pa11y.json`. Route list lives in `pa11y-ci.config.cjs` — add new paths there when you ship pages that should be covered.

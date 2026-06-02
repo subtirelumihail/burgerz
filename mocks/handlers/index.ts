@@ -2,6 +2,7 @@ import { http, HttpResponse } from "msw";
 
 import { burgerHandlers } from "./burgers";
 import { restaurantHandlers } from "./restaurants";
+import { restaurantReviewHandlers } from "./restaurant-reviews";
 import { reviewHandlers } from "./reviews";
 
 export const handlers = [
@@ -11,4 +12,5 @@ export const handlers = [
   ...burgerHandlers,
   ...restaurantHandlers,
   ...reviewHandlers,
+  ...restaurantReviewHandlers,
 ];

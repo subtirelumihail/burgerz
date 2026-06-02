@@ -55,3 +55,27 @@ export interface CreateBurgerReviewRequest {
 }
 
 export type CreateBurgerReviewResponse = BurgerUserReview;
+
+export interface RestaurantUserReview extends UserReviewContent {
+  restaurantId: string;
+}
+
+export interface GetRestaurantReviewsParams {
+  q?: string;
+  page?: number;
+  pageSize?: number;
+}
+
+export interface GetRestaurantReviewsResponse {
+  reviews: RestaurantUserReview[];
+  pagination: PaginationMeta;
+}
+
+export interface CreateRestaurantReviewRequest {
+  authorName: string;
+  text: string;
+  aspects: CreateBurgerReviewAspectScores;
+  image?: ImageAsset;
+}
+
+export type CreateRestaurantReviewResponse = RestaurantUserReview;

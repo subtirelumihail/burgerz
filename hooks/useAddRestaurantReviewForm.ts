@@ -5,11 +5,11 @@ import { useRouter } from "next/navigation";
 import { useState, type FormEventHandler } from "react";
 import { useForm, type Control, type UseFormRegister } from "react-hook-form";
 
-import { addReviewFormSchema } from "@/components/AddReviewPage/components/AddReviewForm/add-review-form.schema";
-import type { AddReviewFormValues } from "@/components/AddReviewPage/components/AddReviewForm/add-review-form.schema";
-import type { AddReviewFormErrors } from "@/components/AddReviewPage/components/AddReviewForm/types";
+import { addReviewFormSchema } from "@/components/AddBurgerReviewPage/components/AddBurgerReviewForm/add-review-form.schema";
+import type { AddReviewFormValues } from "@/components/AddBurgerReviewPage/components/AddBurgerReviewForm/add-review-form.schema";
+import type { AddRestaurantReviewFormErrors } from "@/components/AddRestaurantReviewPage/components/AddRestaurantReviewForm/types";
 import { createMockReviewImage } from "@/mocks/data/images";
-import { createBurgerReview } from "@/lib/services/review.service";
+import { createRestaurantReview } from "@/lib/services/review.service";
 import type { BurgerUserReviewRating } from "@/types/review";
 
 const DEFAULT_RATING = 3 as BurgerUserReviewRating;
@@ -24,21 +24,23 @@ const DEFAULT_VALUES: AddReviewFormValues = {
   },
 };
 
-function createReviewImageId(burgerId: string): string {
-  return `${burgerId}-review-${Date.now()}`;
+function createReviewImageId(restaurantId: string): string {
+  return `${restaurantId}-review-${Date.now()}`;
 }
 
-interface UseAddReviewFormResult {
+interface UseAddRestaurantReviewFormResult {
   register: UseFormRegister<AddReviewFormValues>;
   control: Control<AddReviewFormValues>;
-  errors: AddReviewFormErrors;
+  errors: AddRestaurantReviewFormErrors;
   isSubmitting: boolean;
   onSubmit: FormEventHandler<HTMLFormElement>;
   setImageFile: (file: File | null) => void;
   handleCancel: () => void;
 }
 
-export function useAddReviewForm(burgerId: string): UseAddReviewFormResult {
+export function useAddRestaurantReviewForm(
+  restaurantId: string,
+): UseAddRestaurantReviewFormResult {
   const router = useRouter();
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [submitError, setSubmitError] = useState<string | undefined>();
@@ -57,18 +59,18 @@ export function useAddReviewForm(burgerId: string): UseAddReviewFormResult {
     setSubmitError(undefined);
 
     try {
-      await createBurgerReview(burgerId, {
+      await createRestaurantReview(restaurantId, {
         authorName: values.authorName,
         text: values.text,
         aspects: values.aspects,
         ...(imageFile
           ? {
-              image: createMockReviewImage(createReviewImageId(burgerId)),
+              image: createMockReviewImage(createReviewImageId(restaurantId)),
             }
           : {}),
       });
 
-      router.push(`/burgers/${burgerId}`);
+      router.push(`/restaurants/${restaurantId}`);
     } catch {
       setSubmitError(
         "Something went wrong while saving your review. Please try again.",
@@ -88,7 +90,7 @@ export function useAddReviewForm(burgerId: string): UseAddReviewFormResult {
     onSubmit,
     setImageFile,
     handleCancel: () => {
-      router.push(`/burgers/${burgerId}`);
+      router.push(`/restaurants/${restaurantId}`);
     },
   };
 }

@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createBurgerReview } from "@/lib/services/review.service";
 
-import { useAddReviewForm } from "./useAddReviewForm";
+import { useAddBurgerReviewForm } from "./useAddBurgerReviewForm";
 
 const mockPush = vi.fn();
 
@@ -20,7 +20,7 @@ vi.mock("@/lib/services/review.service", () => ({
 
 function TestHarness({ burgerId }: { burgerId: string }) {
   const { register, onSubmit, errors, isSubmitting, handleCancel } =
-    useAddReviewForm(burgerId);
+    useAddBurgerReviewForm(burgerId);
 
   return (
     <div>
@@ -40,7 +40,7 @@ function TestHarness({ burgerId }: { burgerId: string }) {
   );
 }
 
-describe("useAddReviewForm", () => {
+describe("useAddBurgerReviewForm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(createBurgerReview).mockResolvedValue({

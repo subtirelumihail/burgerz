@@ -5,7 +5,7 @@ import { getBurger } from "@/lib/services/burger.service";
 import { mockImageAsset } from "@/test/mock-image";
 import type { Burger } from "@/types/burger";
 
-import { AddReviewPageContent } from "./AddReviewPageContent";
+import { AddBurgerReviewPageContent } from "./AddBurgerReviewPageContent";
 
 vi.mock("@/lib/services/burger.service", () => ({
   getBurger: vi.fn(),
@@ -25,13 +25,13 @@ const mockBurger: Burger = {
   },
 };
 
-describe("AddReviewPageContent", () => {
+describe("AddBurgerReviewPageContent", () => {
   beforeEach(() => {
     vi.mocked(getBurger).mockResolvedValue(mockBurger);
   });
 
   it("renders the same burger header and voice-over navigation as the burger page", async () => {
-    render(<AddReviewPageContent burgerId="burger-1" />);
+    render(<AddBurgerReviewPageContent burgerId="burger-1" />);
 
     await waitFor(() => {
       expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
@@ -59,7 +59,7 @@ describe("AddReviewPageContent", () => {
   it("shows not found when burger does not exist", async () => {
     vi.mocked(getBurger).mockResolvedValue(null);
 
-    render(<AddReviewPageContent burgerId="missing" />);
+    render(<AddBurgerReviewPageContent burgerId="missing" />);
 
     await waitFor(() => {
       expect(screen.getByText("Burger not found")).toBeInTheDocument();

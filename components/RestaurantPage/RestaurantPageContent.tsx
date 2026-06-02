@@ -1,6 +1,6 @@
 "use client";
 
-import { RestaurantBurgers } from "@/components/RestaurantBurgers/RestaurantBurgers";
+import { RestaurantPageTabs } from "./components/RestaurantPageTabs/RestaurantPageTabs";
 import { useRestaurant } from "@/hooks/useRestaurant";
 
 import { RestaurantHero } from "./components/RestaurantHero/RestaurantHero";
@@ -28,7 +28,7 @@ export function RestaurantPageContent({
         </p>
       ) : null}
       {!isLoading && restaurant ? (
-        <RestaurantBurgers restaurantId={restaurant.id} />
+        <RestaurantPageTabs restaurantId={restaurant.id} />
       ) : null}
     </div>
   );

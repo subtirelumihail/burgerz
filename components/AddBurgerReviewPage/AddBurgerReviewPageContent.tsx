@@ -4,12 +4,14 @@ import { useBurger } from "@/hooks/useBurger";
 
 import { BurgerHero } from "@/components/BurgerPage/components/BurgerHero/BurgerHero";
 import { BurgerHeroSkeleton } from "@/components/BurgerPage/components/BurgerHeroSkeleton/BurgerHeroSkeleton";
-import { AddReviewForm } from "./components/AddReviewForm/AddReviewForm";
-import type { AddReviewPageContentProps } from "./types";
+import { AddBurgerReviewForm } from "./components/AddBurgerReviewForm/AddBurgerReviewForm";
+import type { AddBurgerReviewPageContentProps } from "./types";
 
-import styles from "./AddReviewPageContent.module.css";
+import styles from "./AddBurgerReviewPageContent.module.css";
 
-export function AddReviewPageContent({ burgerId }: AddReviewPageContentProps) {
+export function AddBurgerReviewPageContent({
+  burgerId,
+}: AddBurgerReviewPageContentProps) {
   const { burger, isLoading, error } = useBurger(burgerId);
 
   if (!isLoading && !burger && !error) {
@@ -28,12 +30,12 @@ export function AddReviewPageContent({ burgerId }: AddReviewPageContentProps) {
       {!isLoading && burger ? (
         <section
           className={styles.formSection}
-          aria-labelledby="add-review-heading"
+          aria-labelledby="add-burger-review-heading"
         >
-          <h2 id="add-review-heading" className={styles.formHeading}>
+          <h2 id="add-burger-review-heading" className={styles.formHeading}>
             Add your review
           </h2>
-          <AddReviewForm burgerId={burgerId} />
+          <AddBurgerReviewForm burgerId={burgerId} />
         </section>
       ) : null}
     </div>

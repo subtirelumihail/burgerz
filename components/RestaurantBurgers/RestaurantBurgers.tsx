@@ -24,13 +24,7 @@ export function RestaurantBurgers({ restaurantId }: RestaurantBurgersProps) {
   } = useRestaurantBurgers(restaurantId);
 
   return (
-    <section
-      className={styles.root}
-      aria-labelledby="restaurant-burgers-heading"
-    >
-      <h2 id="restaurant-burgers-heading" className={styles.heading}>
-        Burgers
-      </h2>
+    <section className={styles.root} aria-label="Burgers menu">
       <BurgerSearch
         query={query}
         onQueryChange={setQuery}
