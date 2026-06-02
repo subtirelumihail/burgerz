@@ -18,6 +18,22 @@ export { Tab, Tabs } from "./Tabs/Tabs";
 export type { TabItem, TabProps, TabsProps } from "./Tabs/types";
 export { Review } from "./Review/Review";
 export type { ReviewProps } from "./Review/types";
+export {
+  Skeleton,
+  SkeletonBlock,
+  SkeletonImage,
+  SkeletonLine,
+} from "./Skeleton/Skeleton";
+export type {
+  SkeletonBlockHeight,
+  SkeletonBlockProps,
+  SkeletonImageProps,
+  SkeletonImageSize,
+  SkeletonLineHeight,
+  SkeletonLineProps,
+  SkeletonLineWidth,
+  SkeletonProps,
+} from "./Skeleton/types";
 export { Textarea } from "./Textarea/Textarea";
 export type { TextareaProps } from "./Textarea/types";
 export { UploadImage } from "./UploadImage/UploadImage";
