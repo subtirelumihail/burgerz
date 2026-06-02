@@ -1,8 +1,6 @@
 import { ApiError, apiClient } from "@/lib/api/client";
 import type {
   Burger,
-  CreateBurgerRequest,
-  CreateBurgerResponse,
   GetBurgersParams,
   GetBurgersResponse,
 } from "@/types/burger";
@@ -35,12 +33,6 @@ export async function getBurgers(
   params?: GetBurgersParams,
 ): Promise<GetBurgersResponse> {
   return apiClient.get<GetBurgersResponse>(buildBurgersPath(params));
-}
-
-export async function createBurger(
-  body: CreateBurgerRequest,
-): Promise<CreateBurgerResponse> {
-  return apiClient.post<CreateBurgerResponse>("/api/burgers", body);
 }
 
 export async function getBurger(id: string): Promise<Burger | null> {

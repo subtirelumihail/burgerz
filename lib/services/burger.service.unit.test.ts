@@ -2,12 +2,11 @@ import { describe, expect, it, vi } from "vitest";
 
 import { apiClient } from "@/lib/api/client";
 
-import { createBurger, getBurgers } from "./burger.service";
+import { getBurgers } from "./burger.service";
 
 vi.mock("@/lib/api/client", () => ({
   apiClient: {
     get: vi.fn(),
-    post: vi.fn(),
   },
 }));
 
@@ -36,26 +35,5 @@ describe("burger.service", () => {
     expect(apiClient.get).toHaveBeenCalledWith(
       "/api/burgers?restaurantId=restaurant-1",
     );
-  });
-
-  it("createBurger posts payload", async () => {
-    const payload = {
-      title: "New Burger",
-      address: "1 Main St",
-      imageUrl: "https://example.com/burger.jpg",
-      reviewScore: 4.0,
-      scores: { taste: 4, texture: 4, visualPresentation: 4 },
-    };
-
-    vi.mocked(apiClient.post).mockResolvedValue({
-      id: "99",
-      ...payload,
-      reviewCount: 0,
-    });
-
-    const burger = await createBurger(payload);
-
-    expect(apiClient.post).toHaveBeenCalledWith("/api/burgers", payload);
-    expect(burger.id).toBe("99");
   });
 });

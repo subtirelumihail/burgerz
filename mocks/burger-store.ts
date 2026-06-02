@@ -1,12 +1,7 @@
-import type {
-  Burger,
-  CreateBurgerRequest,
-  GetBurgersResponse,
-} from "@/types/burger";
+import type { Burger, GetBurgersResponse } from "@/types/burger";
 import { DEFAULT_BURGERS_PAGE_SIZE } from "@/types/burger";
 
 import { mockBurgers } from "@/mocks/data/burgers";
-import { getRestaurantSummaryById } from "@/mocks/data/restaurants";
 
 const burgers: Burger[] = [...mockBurgers];
 
@@ -15,10 +10,6 @@ interface ListBurgersOptions {
   restaurantId?: string | null;
   page?: number;
   pageSize?: number;
-}
-
-function createBurgerId(): string {
-  return `burger-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
 function filterBurgers(
@@ -99,26 +90,4 @@ export function parseListBurgersParams(
 
 export function getBurgerById(id: string): Burger | null {
   return burgers.find((burger) => burger.id === id) ?? null;
-}
-
-export function addBurger(body: CreateBurgerRequest): Burger {
-  const restaurant = getRestaurantSummaryById(body.restaurantId);
-
-  if (!restaurant) {
-    throw new Error("Restaurant not found");
-  }
-
-  const newBurger: Burger = {
-    id: createBurgerId(),
-    title: body.title,
-    restaurant,
-    image: body.image,
-    reviewCount: 0,
-    reviewScore: 0,
-    scores: body.scores,
-  };
-
-  burgers.unshift(newBurger);
-
-  return newBurger;
 }

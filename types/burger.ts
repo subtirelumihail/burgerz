@@ -31,12 +31,3 @@ export interface GetBurgersResponse {
   burgers: Burger[];
   pagination: PaginationMeta;
 }
-
-export interface CreateBurgerRequest {
-  title: string;
-  restaurantId: string;
-  image: ImageAsset;
-  scores: BurgerScores;
-}
-
-export type CreateBurgerResponse = Burger;
