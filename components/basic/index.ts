@@ -14,6 +14,8 @@ export { List } from "./List/List";
 export type { ListProps } from "./List/types";
 export { Pagination } from "./Pagination/Pagination";
 export type { PaginationProps } from "./Pagination/types";
+export { Tab, Tabs } from "./Tabs/Tabs";
+export type { TabItem, TabProps, TabsProps } from "./Tabs/types";
 export { Review } from "./Review/Review";
 export type { ReviewProps } from "./Review/types";
 export { Textarea } from "./Textarea/Textarea";
