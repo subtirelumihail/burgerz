@@ -16,6 +16,8 @@ export { Pagination } from "./Pagination/Pagination";
 export type { PaginationProps } from "./Pagination/types";
 export { Tab, Tabs } from "./Tabs/Tabs";
 export type { TabItem, TabProps, TabsProps } from "./Tabs/types";
+export { RadioButton } from "./RadioButton/RadioButton";
+export type { RadioButtonProps } from "./RadioButton/types";
 export { Review } from "./Review/Review";
 export type { ReviewProps } from "./Review/types";
 export {

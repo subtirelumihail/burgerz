@@ -1,0 +1,33 @@
+@reference "../../../app/globals.css";
+
+.root {
+  @apply inline-flex cursor-pointer items-center gap-md;
+}
+
+.root:has(.input:disabled) {
+  @apply cursor-not-allowed opacity-50;
+}
+
+.input {
+  @apply size-[1.125rem] shrink-0 appearance-none rounded-full border-2 border-border bg-surface-raised;
+  @apply transition-[border-color,box-shadow] duration-[180ms] ease-out-expo;
+}
+
+.input:hover:not(:disabled) {
+  @apply border-[oklch(0.78_0.03_var(--hue-neutral))];
+}
+
+.input:focus-visible {
+  @apply outline-2 outline-offset-2 outline-accent;
+}
+
+.input:checked {
+  @apply border-accent;
+  box-shadow:
+    inset 0 0 0 3px var(--color-surface-raised),
+    inset 0 0 0 6px var(--color-accent);
+}
+
+.label {
+  @apply text-base text-foreground select-none;
+}
