@@ -40,7 +40,7 @@ Read the guides that match the paths you are editing:
 
 | Scope                 | Paths                                            | Guide                                                                                      |
 | --------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------ |
-| API mocking           | `mocks/`, services, local dev                    | [docs/agents/api-mocking.md](./docs/agents/api-mocking.md)                                 |
+| Mock API              | `app/api/`, `mocks/`, services, local dev        | [docs/agents/api-mocking.md](./docs/agents/api-mocking.md)                                 |
 | Global types          | `types/`, `hooks/`, `lib/`                       | [docs/agents/global-types.md](./docs/agents/global-types.md)                               |
 | Backend services      | `lib/services/`, `hooks/`                        | [docs/agents/backend-services.md](./docs/agents/backend-services.md)                       |
 | React hooks           | `hooks/use*.ts`                                  | [docs/agents/react-hooks.md](./docs/agents/react-hooks.md)                                 |

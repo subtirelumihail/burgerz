@@ -11,11 +11,11 @@ Use fixed versions in `package.json` — no `^`, `~`, or `*`.
 ```json
 // ❌ BAD
 "lodash": "^4.17.21"
-"msw": "~2.14.0"
+"axios": "~1.7.0"
 
 // ✅ GOOD
 "lodash": "4.17.21"
-"msw": "2.14.6"
+"axios": "1.7.9"
 ```
 
 Install with an exact save:

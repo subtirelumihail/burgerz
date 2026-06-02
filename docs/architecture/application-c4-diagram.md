@@ -16,13 +16,12 @@ C4Container
         Container(apiClient, "HTTP Client", "lib/api/client.ts", "Base URL, JSON, errors.")
     }
 
-    Container_Boundary(mocking, "MSW Mocking") {
-        Container_Ext(mswBootstrap, "MSW Bootstrap", "instrumentation, MswProvider", "MswWrapper in layout; Node and browser MSW startup.")
-        Container_Ext(msw, "MSW Handlers", "mocks/handlers", "Intercepts fetch when mocking enabled.")
+    Container_Boundary(mockApi, "Mock API (Next.js Routes)") {
+        Container(apiRoutes, "API Route Handlers", "app/api/*", "Same-origin REST endpoints backed by in-memory stores.")
         ContainerDb_Ext(mockStores, "Mock Data Stores", "mocks/*-store.ts", "In-memory seed and state.")
     }
 
-    Container_Boundary(backend, "Backend API Service") {
+    Container_Boundary(backend, "Backend API Service (when available)") {
         Container(apiService, "REST API", "HTTP service", "Exposes burgers, restaurants, and reviews.")
         ContainerDb(database, "Database", "SQL database", "Persistent burger, restaurant, and review data.")
     }
@@ -35,17 +34,15 @@ C4Container
     Rel_R(hooks, services, "Invokes")
     Rel_D(services, apiClient, "Delegates transport")
 
-    Rel_R(mswBootstrap, msw, "Starts")
-    Rel_D(msw, mockStores, "Uses")
-
-    Rel_D(apiClient, msw, "Intercepted")
+    Rel_R(apiRoutes, mockStores, "Reads and writes")
+    Rel_D(apiClient, apiRoutes, "Same-origin when NEXT_PUBLIC_API_URL is unset")
 
     Rel_R(apiService, database, "")
-    Rel_D(apiClient, apiService, "")
+    Rel_D(apiRoutes, apiService, "")
 
     UpdateRelStyle(clientUI, hooks, $offsetX="-15")
     UpdateRelStyle(services, apiClient, $offsetX="-15")
-    UpdateRelStyle(apiClient, msw, $offsetX="-20")
+    UpdateRelStyle(apiClient, apiRoutes, $offsetX="-20")
     UpdateRelStyle(apiClient, apiService, $offsetX="20")
     UpdateRelStyle(clientUI, geolocation, $offsetX="-35", $offsetY="-5")
 ```
