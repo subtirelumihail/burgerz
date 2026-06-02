@@ -1,6 +1,7 @@
 import {
   Children,
   isValidElement,
+  type ComponentProps,
   type ReactElement,
   type ReactNode,
 } from "react";
@@ -21,13 +22,17 @@ export interface UseTabsOptions<T extends string> {
   defaultTabId: T;
 }
 
+export type TabButtonKeyDownEvent = Parameters<
+  NonNullable<ComponentProps<"button">["onKeyDown"]>
+>[0];
+
 export interface TabButtonProps {
   id: string;
   role: "tab";
   "aria-selected": boolean;
   "aria-controls": string;
   onClick: () => void;
-  onKeyDown: (event: KeyboardEvent<HTMLButtonElement>) => void;
+  onKeyDown: (event: TabButtonKeyDownEvent) => void;
 }
 
 export interface TabPanelProps {

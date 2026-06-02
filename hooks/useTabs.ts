@@ -1,8 +1,9 @@
 "use client";
 
-import { useId, useState, type KeyboardEvent } from "react";
+import { useId, useState } from "react";
 
 import type {
+  TabButtonKeyDownEvent,
   TabButtonProps,
   TabPanelProps,
   UseTabsOptions,
@@ -37,7 +38,7 @@ export function useTabs<T extends string>({
     );
   }
 
-  function handleTabKeyDown(event: KeyboardEvent<HTMLButtonElement>, tabId: T) {
+  function handleTabKeyDown(event: TabButtonKeyDownEvent, tabId: T) {
     const currentIndex = getFocusedTabIndex();
     const startIndex =
       currentIndex === -1

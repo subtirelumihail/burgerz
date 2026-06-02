@@ -1,6 +1,7 @@
 import { renderHook, act } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import type { KeyboardEvent } from "react";
+
+import type { TabButtonKeyDownEvent } from "@/components/basic/Tabs/types";
 
 import { useTabs } from "./useTabs";
 
@@ -45,7 +46,7 @@ describe("useTabs", () => {
       result.current.getTabButtonProps("second").onKeyDown({
         key: "Enter",
         preventDefault: () => {},
-      } as KeyboardEvent<HTMLButtonElement>);
+      } as TabButtonKeyDownEvent);
     });
 
     expect(result.current.activeTabId).toBe("second");
